@@ -1,0 +1,2200 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ressources | SmartWrist Rehab</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary: #2E8B57;
+            --primary-light: #e8f3ed;
+            --primary-dark: #1e5e3b;
+            --primary-glow: rgba(46, 139, 87, 0.3);
+            --primary-glow-strong: rgba(46, 139, 87, 0.5);
+            --secondary-glow: rgba(67, 97, 238, 0.3);
+            --accent-glow: rgba(245, 158, 11, 0.3);
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --white: #ffffff;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(46,139,87,0.15);
+            --shadow-lg: 0 8px 24px rgba(46,139,87,0.2);
+            --shadow-glow: 0 0 20px var(--primary-glow);
+            --shadow-glow-strong: 0 0 30px var(--primary-glow-strong);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-xl: 30px;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes float-slow {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 var(--primary-glow); }
+            50% { box-shadow: 0 0 0 12px rgba(46,139,87,0); }
+            100% { box-shadow: 0 0 0 0 rgba(46,139,87,0); }
+        }
+
+        @keyframes pulse-glow-soft {
+            0% { box-shadow: 0 0 0 0 var(--primary-glow); }
+            70% { box-shadow: 0 0 0 8px rgba(46,139,87,0); }
+            100% { box-shadow: 0 0 0 0 rgba(46,139,87,0); }
+        }
+
+        @keyframes shine {
+            0% { background-position: -100% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255,255,255,0.08), transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(46,139,87,0.08), transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(67,97,238,0.05), transparent 45%);
+            pointer-events: none;
+            animation: float-slow 8s ease-in-out infinite;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(2px 2px at 10% 20%, white, rgba(0,0,0,0)),
+                        radial-gradient(2px 2px at 85% 45%, white, rgba(0,0,0,0)),
+                        radial-gradient(3px 3px at 50% 70%, rgba(255,255,255,0.6), rgba(0,0,0,0)),
+                        radial-gradient(1px 1px at 95% 15%, white, rgba(0,0,0,0)),
+                        radial-gradient(2px 2px at 30% 90%, rgba(255,255,255,0.8), rgba(0,0,0,0));
+            background-repeat: no-repeat;
+            pointer-events: none;
+            opacity: 0.6;
+            animation: float-slow 4s ease-in-out infinite;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
+            padding: 15px 25px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,255,255,0.2);
+            flex-wrap: wrap;
+            gap: 15px;
+            animation: slideInLeft 0.5s ease-out;
+            transition: all 0.3s ease;
+        }
+        .header:hover {
+            box-shadow: var(--shadow-glow);
+            border-color: var(--primary);
+        }
+
+        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo-icon {
+            width: 45px; height: 45px; border-radius: 12px; overflow: hidden;
+            position: relative; cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .logo-icon img { width: 100%; height: 100%; object-fit: cover; }
+        .logo-icon:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-glow);
+        }
+        .logo-icon .upload-overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: rgba(0,0,0,0.6); color: white; font-size: 10px;
+            text-align: center; padding: 2px; opacity: 0; transition: opacity 0.3s;
+        }
+        .logo-icon:hover .upload-overlay { opacity: 1; }
+        .logo-text h1 { font-size: 1.3rem; font-weight: 800; color: var(--primary-dark); margin: 0; }
+        .logo-text p { font-size: 0.7rem; color: var(--gray-500); margin: 0; }
+
+        .header-actions { display: flex; align-items: center; gap: 15px; }
+        .lang-switch { display: flex; gap: 6px; }
+        .lang-btn {
+            width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--gray-300);
+            background: white; cursor: pointer; font-weight: 700; font-size: 12px; 
+            transition: all 0.3s ease;
+        }
+        .lang-btn:hover {
+            transform: scale(1.1);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-glow);
+        }
+        .lang-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        .back-btn {
+            background: var(--primary-light); border: none; padding: 8px 16px;
+            border-radius: 40px; cursor: pointer; display: flex; align-items: center;
+            gap: 8px; text-decoration: none; color: var(--gray-700); font-size: 0.85rem; font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .back-btn:hover { 
+            background: var(--primary); 
+            color: white; 
+            transform: translateX(-3px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .resources-container { max-width: 1400px; margin: 0 auto; }
+
+        .page-title { text-align: center; margin-bottom: 30px; animation: fadeInScale 0.6s ease-out; }
+        .page-title h1 {
+            font-size: 2rem; font-weight: 800; color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2); margin-bottom: 10px;
+            background: linear-gradient(90deg, #fff, var(--primary-light), #fff);
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: shine 3s linear infinite;
+        }
+        .citation {
+            font-style: italic;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.85);
+            background: rgba(255,255,255,0.15);
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 50px;
+            backdrop-filter: blur(5px);
+            margin-top: 5px;
+            transition: all 0.3s ease;
+            animation: pulse-glow-soft 3s infinite;
+        }
+        .citation:hover {
+            transform: scale(1.02);
+            background: rgba(255,255,255,0.25);
+        }
+        .citation i { margin: 0 5px; }
+
+        .search-filters {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
+            padding: 20px 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,255,255,0.3);
+            animation: slideInUp 0.5s ease-out;
+            transition: all 0.3s ease;
+        }
+        .search-filters:hover {
+            box-shadow: var(--shadow-glow);
+            border-color: var(--primary);
+        }
+
+        .search-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .search-box {
+            flex: 2;
+            position: relative;
+        }
+        .search-box i {
+            position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+            color: var(--gray-400);
+            transition: all 0.3s ease;
+        }
+        .search-box:hover i {
+            color: var(--primary);
+        }
+        .search-input {
+            width: 100%; padding: 12px 16px 12px 45px;
+            border: 1px solid var(--gray-200); border-radius: 50px;
+            font-size: 0.9rem; outline: none; transition: all 0.3s ease;
+        }
+        .search-input:focus { 
+            border-color: var(--primary); 
+            box-shadow: 0 0 0 3px var(--primary-glow);
+            transform: translateY(-1px);
+        }
+        
+        .category-select {
+            padding: 12px 20px; border: 1px solid var(--gray-200);
+            border-radius: 50px; font-size: 0.9rem; outline: none;
+            background: white; cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .category-select:hover {
+            border-color: var(--primary);
+            transform: translateY(-1px);
+        }
+        .category-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-glow);
+        }
+
+        .filter-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+        .filter-chip {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 6px 14px; background: var(--gray-100);
+            border-radius: 30px; font-size: 0.75rem; font-weight: 500;
+            cursor: pointer; transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .filter-chip::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+        .filter-chip:hover::before {
+            left: 100%;
+        }
+        .filter-chip:hover { 
+            background: var(--primary-light); 
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+        .filter-chip.active { 
+            background: var(--primary); 
+            color: white;
+            animation: pulse-glow 2s infinite;
+        }
+
+        .add-btn {
+            background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+            color: white; border: none; padding: 12px 24px;
+            border-radius: 50px; font-weight: 600; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: pulse-glow-soft 3s infinite;
+        }
+        .add-btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s ease;
+        }
+        .add-btn:hover::before {
+            left: 100%;
+        }
+        .add-btn:hover { 
+            transform: translateY(-3px); 
+            box-shadow: var(--shadow-glow-strong);
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .resource-card {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(255,255,255,0.3);
+            animation: slideInUp 0.5s ease both;
+            position: relative;
+        }
+        .resource-card:nth-child(1) { animation-delay: 0.05s; }
+        .resource-card:nth-child(2) { animation-delay: 0.1s; }
+        .resource-card:nth-child(3) { animation-delay: 0.15s; }
+        .resource-card:nth-child(4) { animation-delay: 0.2s; }
+        .resource-card:nth-child(5) { animation-delay: 0.25s; }
+        .resource-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(46,139,87,0.1), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .resource-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-glow-strong);
+            border-color: var(--primary);
+        }
+        .resource-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon {
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .card-icon::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 50%, rgba(255,255,255,0.2) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .card-icon:hover::after {
+            opacity: 1;
+        }
+        .card-icon:hover { 
+            transform: scale(1.05);
+            filter: brightness(1.05);
+        }
+        .card-icon.pdf { background: linear-gradient(145deg, #ef4444, #dc2626); color: white; }
+        .card-icon.video { background: linear-gradient(145deg, #3b82f6, #2563eb); color: white; }
+        .card-icon.image { background: linear-gradient(145deg, #10b981, #059669); color: white; }
+        .card-icon.link { background: linear-gradient(145deg, #f59e0b, #d97706); color: white; }
+
+        .card-content { padding: 20px; }
+        .resource-title {
+            font-size: 1.1rem; font-weight: 700; color: var(--gray-800);
+            margin-bottom: 8px; display: flex; justify-content: space-between;
+            align-items: center;
+        }
+        .resource-type {
+            display: inline-block; padding: 3px 10px; border-radius: 30px;
+            font-size: 0.65rem; font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .resource-type:hover {
+            transform: scale(1.05);
+        }
+        .type-pdf { background: #fee2e2; color: #dc2626; }
+        .type-video { background: #e0e7ff; color: #3b82f6; }
+        .type-image { background: #d1fae5; color: #059669; }
+        .type-link { background: #fef3c7; color: #d97706; }
+
+        .resource-desc {
+            font-size: 0.8rem; color: var(--gray-500);
+            margin: 12px 0;
+            line-height: 1.5;
+        }
+        .resource-stats {
+            display: flex;
+            gap: 15px;
+            font-size: 0.65rem;
+            color: var(--gray-400);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        .stat-item i { margin-right: 3px; transition: all 0.3s ease; }
+        .stat-item:hover i {
+            color: var(--primary);
+            transform: scale(1.1);
+        }
+        .card-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .action-icon {
+            background: none; border: none; padding: 6px 12px;
+            border-radius: 30px; font-size: 0.7rem; font-weight: 600;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .action-icon::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+        .action-icon:hover::before {
+            left: 100%;
+        }
+        .action-icon.view { background: var(--gray-100); color: var(--gray-700); }
+        .action-icon.download { background: var(--gray-100); color: var(--gray-700); }
+        .action-icon.share { background: var(--primary-light); color: var(--primary); }
+        .action-icon.delete { background: #fee2e2; color: #dc2626; }
+        .action-icon:hover { transform: translateY(-3px); }
+
+        .empty-state {
+            text-align: center; padding: 60px; color: var(--gray-400);
+            background: rgba(255,255,255,0.9); border-radius: var(--radius-xl);
+            animation: fadeInScale 0.5s ease-out;
+        }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+            z-index: 1000; display: flex; align-items: center; justify-content: center;
+            animation: fadeInScale 0.2s ease-out;
+        }
+        .modal-content {
+            background: white; border-radius: var(--radius-xl);
+            width: 550px; max-width: 90%; padding: 30px;
+            max-height: 80vh; overflow-y: auto;
+            animation: slideInUp 0.3s ease-out;
+        }
+        .modal-content h3 { font-size: 1.3rem; margin-bottom: 20px; color: var(--gray-800); }
+        .form-group { margin-bottom: 20px; }
+        .form-group label {
+            display: block; font-size: 0.75rem; font-weight: 600;
+            color: var(--gray-600); margin-bottom: 5px; text-transform: uppercase;
+        }
+        .form-control {
+            width: 100%; padding: 10px 12px; border: 1px solid var(--gray-200);
+            border-radius: var(--radius-md); font-size: 0.9rem; outline: none;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus { 
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-glow);
+            transform: translateY(-1px);
+        }
+        .patient-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            margin-bottom: 15px;
+        }
+        .patient-item {
+            padding: 12px;
+            border-bottom: 1px solid var(--gray-200);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s ease;
+        }
+        .patient-item:hover { 
+            background: var(--primary-light); 
+            transform: translateX(5px);
+        }
+        .patient-item.selected { 
+            background: var(--primary-light); 
+            border-left: 3px solid var(--primary);
+        }
+        .modal-buttons { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+        .btn-primary { 
+            background: var(--primary); color: white; border: none; 
+            padding: 10px 20px; border-radius: 40px; cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+        .btn-secondary { 
+            background: var(--gray-200); border: none; 
+            padding: 10px 20px; border-radius: 40px; cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background: var(--gray-300);
+            transform: translateY(-2px);
+        }
+
+        .viewer-content {
+            text-align: center;
+        }
+        .viewer-content img, .viewer-content video {
+            max-width: 100%;
+            max-height: 60vh;
+            border-radius: var(--radius-lg);
+            animation: fadeInScale 0.3s ease-out;
+        }
+        .viewer-content iframe {
+            width: 100%;
+            height: 60vh;
+            border-radius: var(--radius-lg);
+            border: none;
+        }
+        .viewer-content .pdf-viewer {
+            width: 100%;
+            height: 70vh;
+            border: none;
+        }
+
+        .footer {
+            text-align: center; margin-top: 40px; padding: 20px;
+            color: rgba(255,255,255,0.6); font-size: 0.75rem;
+            animation: fadeInScale 0.6s ease-out;
+        }
+
+        .notification-toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 2000;
+            animation: slideIn 0.3s ease;
+            box-shadow: var(--shadow-lg);
+            font-weight: 500;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .resources-grid { grid-template-columns: 1fr; }
+            .search-row { flex-direction: column; }
+            .button-container { justify-content: center; }
+        }
+
+        [dir="rtl"] .notification-toast {
+            right: auto;
+            left: 20px;
+        }
+       .pdf-modal {
+    width: 900px;
+    max-width: 95%;
+}
+
+        .pdf-viewer {
+            width: 100%;
+            height: 70vh;
+            border: none;
+            border-radius: 12px;
+            background: white;
+        }
+        /* ===== MODAL DETAILS MODERNE ===== */
+.details-modal {
+    width: 920px;
+    max-width: 95%;
+    max-height: 88vh;
+    padding: 0;
+    border-radius: 28px;
+    overflow: hidden;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.22);
+    animation: fadeInScale 0.28s ease;
+    border: 1px solid rgba(255,255,255,0.5);
+    display: flex;
+    flex-direction: column;
+}
+
+.details-header {
+    position: relative;
+    padding: 26px 30px 18px 30px;
+    background: linear-gradient(135deg, #2E8B57 0%, #3aa76a 45%, #5f7cff 100%);
+    color: white;
+    overflow: visible;
+    flex-shrink: 0;
+}
+
+.details-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 15% 20%, rgba(255,255,255,0.22), transparent 28%),
+        radial-gradient(circle at 85% 30%, rgba(255,255,255,0.18), transparent 24%),
+        radial-gradient(circle at 60% 85%, rgba(255,255,255,0.12), transparent 25%);
+    pointer-events: none;
+}
+
+.details-header-top {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    z-index: 2;
+}
+
+.details-title-wrap h3 {
+    margin: 0;
+    font-size: 1.55rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: white;
+    line-height: 1.2;
+}
+
+.details-title-wrap p {
+    margin: 8px 0 0 0;
+    color: rgba(255,255,255,0.92);
+    font-size: 0.92rem;
+    line-height: 1.45;
+}
+
+.details-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.18);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.25);
+    white-space: nowrap;
+}
+
+.details-body {
+    padding: 20px 28px 18px 28px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.details-summary-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.details-summary-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f6faf8 100%);
+    border: 1px solid #e7edf4;
+    border-radius: 20px;
+    padding: 14px;
+    box-shadow: 0 10px 24px rgba(46,139,87,0.06);
+    transition: all 0.25s ease;
+    min-height: 120px;
+}
+
+.details-summary-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 30px rgba(46,139,87,0.12);
+}
+
+.details-summary-label {
+    font-size: 0.8rem;
+    color: #64748b;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.details-summary-value {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #1e293b;
+    line-height: 1;
+}
+
+.details-summary-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    font-size: 1rem;
+}
+
+.icon-share { background: rgba(59,130,246,0.12); color: #2563eb; }
+.icon-view { background: rgba(16,185,129,0.14); color: #059669; }
+.icon-download { background: rgba(245,158,11,0.14); color: #d97706; }
+.icon-complete { background: rgba(139,92,246,0.14); color: #7c3aed; }
+
+.details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.details-section {
+    background: #ffffff;
+    border: 1px solid #e8edf5;
+    border-radius: 22px;
+    padding: 16px;
+    box-shadow: 0 8px 24px rgba(15,23,42,0.05);
+}
+
+.details-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    gap: 12px;
+}
+
+.details-section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.18rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin: 0;
+}
+
+.details-section-pill {
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 999px;
+    color: white;
+}
+
+.pill-share { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+.pill-view { background: linear-gradient(135deg, #10b981, #059669); }
+.pill-download { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.pill-complete { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+
+.details-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 180px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.details-list::-webkit-scrollbar {
+    width: 8px;
+}
+.details-list::-webkit-scrollbar-thumb {
+    background: #d7dee8;
+    border-radius: 999px;
+}
+.details-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.details-user-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid #e7edf4;
+    border-radius: 16px;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    transition: all 0.25s ease;
+}
+
+.details-user-card:hover {
+    transform: translateX(4px);
+    border-color: #cde7d8;
+    box-shadow: 0 10px 22px rgba(46,139,87,0.08);
+}
+
+.details-user-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #2E8B57, #4f46e5);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.95rem;
+    flex: 0 0 auto;
+}
+
+.details-user-info strong {
+    display: block;
+    color: #1e293b;
+    font-size: 0.95rem;
+    margin-bottom: 3px;
+}
+
+.details-user-info small {
+    color: #64748b;
+    font-size: 0.82rem;
+}
+
+.details-empty {
+    text-align: center;
+    padding: 20px 12px;
+    border: 1px dashed #d8e1eb;
+    border-radius: 16px;
+    color: #94a3b8;
+    background: #fbfdff;
+    font-size: 0.9rem;
+}
+
+.details-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 14px 28px 20px 28px;
+    background: #fff;
+    flex-shrink: 0;
+    border-top: 1px solid #eef2f7;
+}
+
+.details-close-btn {
+    background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+    color: #1e293b;
+    border: none;
+    border-radius: 999px;
+    padding: 12px 22px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.details-close-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(15,23,42,0.10);
+}
+
+@media (max-width: 900px) {
+    .details-summary-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .details-modal {
+        max-height: 90vh;
+    }
+}
+
+@media (max-width: 600px) {
+    .details-modal {
+        width: 100%;
+        max-width: 100%;
+        max-height: 92vh;
+        border-radius: 20px;
+    }
+
+    .details-header,
+    .details-body,
+    .details-footer {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .details-summary-row {
+        grid-template-columns: 1fr;
+    }
+
+    .details-title-wrap h3 {
+        font-size: 1.25rem;
+    }
+
+    .details-header-top {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .details-list {
+        max-height: 150px;
+    }
+}
+    </style>
+    <link rel="stylesheet" href="{% static 'assets/css/responsive-guard.css' %}">
+</head>
+<body>
+
+<div class="resources-container">
+    <header class="header">
+        <a href="{% url 'ergotherapeute' %}" class="logo">
+            <div class="logo-icon" id="logoIcon">
+                <img id="logoImg" src="{% static 'assets/img/ergo/Ressources.png' %}" alt="SmartWrist">
+                <div class="upload-overlay" onclick="event.preventDefault(); document.getElementById('logoUpload').click();">
+                    <i class="fas fa-camera"></i>
+                </div>
+                <input type="file" id="logoUpload" style="display:none;" accept="image/*" onchange="changeLogo(this)">
+            </div>
+            <div class="logo-text">
+                <h1>SmartWrist Rehab</h1>
+                <p data-i18n="brand_sub"></p>
+            </div>
+        </a>
+        <div class="header-actions">
+            <a href="{% url 'ergotherapeute' %}" class="back-btn">
+                <i class="fas fa-arrow-left"></i> <span data-i18n="back">Retour</span>
+            </a>
+            <div class="lang-switch">
+                <button class="lang-btn active" onclick="changeLanguage('fr')">FR</button>
+                <button class="lang-btn" onclick="changeLanguage('en')">EN</button>
+                <button class="lang-btn" onclick="changeLanguage('ar')">AR</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-title">
+        <h1><i class="fas fa-book-open"></i> <span data-i18n="page_title">Ressources éducatives</span></h1>
+        <div class="citation">
+            <i class="fas fa-quote-left"></i> <span data-i18n="citation">"La connaissance est le premier pas vers la guérison"</span> <i class="fas fa-quote-right"></i>
+        </div>
+        <p data-i18n="page_subtitle" style="margin-top: 10px; color: rgba(255,255,255,0.8);">Outils pédagogiques pour une rééducation éclairée</p>
+    </div>
+
+    <div class="search-filters">
+        <div class="search-row">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" class="search-input" data-i18n-placeholder="search_placeholder" placeholder="Rechercher une ressource...">
+            </div>
+            <select id="categorySelect" class="category-select">
+                <option value="all" data-i18n="all_categories">📂 Toutes les catégories</option>
+                <option value="pdf">📄 PDF</option>
+                <option value="video">🎬 Vidéo</option>
+                <option value="image">🖼️ Image</option>
+                <option value="link">🔗 Lien</option>
+            </select>
+        </div>
+        <div class="filter-badges" id="filterBadges">
+            <span class="filter-chip active" data-filter="all" onclick="setResourceFilter('all')"><i class="fas fa-th-large"></i> <span data-i18n="all">Tous</span></span>
+            <span class="filter-chip" data-filter="recent" onclick="setResourceFilter('recent')"><i class="fas fa-clock"></i> <span data-i18n="recent">Récents</span></span>
+            <span class="filter-chip" data-filter="shared" onclick="setResourceFilter('shared')"><i class="fas fa-share-alt"></i> <span data-i18n="shared">Partagés</span></span>
+            <span class="filter-chip" data-filter="most_viewed" onclick="setResourceFilter('most_viewed')"><i class="fas fa-eye"></i> <span data-i18n="most_viewed">Les plus vus</span></span>
+        </div>
+    </div>
+
+    <!-- UN SEUL BOUTON AJOUTER -->
+    <div class="button-container">
+        
+        <button class="add-btn" onclick="openAddModal()">
+            <i class="fas fa-plus-circle"></i> <span data-i18n="add_resource">Ajouter une ressource</span>
+        </button>
+    </div>
+
+    <div id="questionJourRessourcesBlock" class="search-filters" style="margin-bottom:25px; display:none;">
+        <h3 style="color:var(--primary-dark); font-weight:800; margin-bottom:12px;">
+            <i class="fas fa-question-circle"></i> Question du jour
+        </h3>
+        <textarea id="questionJourText" class="form-control" rows="3" placeholder="Rédiger la question du jour à envoyer aux patients..."></textarea>
+        <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:12px;">
+            <select id="questionJourPatients" class="form-select" multiple style="min-height:110px; flex:1; min-width:260px;"></select>
+            <button type="button" class="add-btn" onclick="envoyerQuestionJour()" style="margin:0;">
+                <i class="fas fa-paper-plane"></i> Envoyer la question
+            </button>
+        </div>
+        <small style="display:block; color:var(--gray-500); margin-top:8px;">Laissez tous les patients sélectionnés pour un envoi global.</small>
+    </div>
+
+    <div class="resources-grid" id="resourcesGrid">
+    {% if ressources %}
+        {% for res in ressources %}
+        <div class="resource-card">
+            <div class="card-icon {{ res.type_ressource }}" onclick="viewResource('{{ res.id }}')">
+                {% if res.type_ressource == 'pdf' %}
+                    <i class="fas fa-file-pdf fa-4x"></i>
+                {% elif res.type_ressource == 'video' %}
+                    <i class="fas fa-video fa-4x"></i>
+                {% elif res.type_ressource == 'image' %}
+                    <i class="fas fa-image fa-4x"></i>
+                {% else %}
+                    <i class="fas fa-link fa-4x"></i>
+                {% endif %}
+            </div>
+
+            <div class="card-content">
+                <div class="resource-title">
+                    <span>{{ res.titre }}</span>
+                    <span class="resource-type type-{{ res.type_ressource }}">{{ res.type_ressource|upper }}</span>
+                </div>
+
+                {% if res.description %}
+                <div class="resource-desc">{{ res.description }}</div>
+                {% endif %}
+
+                <div class="resource-stats">
+                    <span class="stat-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        {{ res.date_creation_local|date:"d/m/Y" }}
+                    </span>
+                    <span class="stat-item">
+                        <i class="fas fa-clock"></i>
+                        {{ res.date_creation_local|time:"H:i" }}
+                    </span>
+                    <span class="stat-item"><i class="fas fa-eye"></i> {{ res.nombre_vues }} vue(s)</span>
+                    <span class="stat-item"><i class="fas fa-download"></i> {{ res.nombre_telechargements }} téléchargement(s)</span>
+                    <span class="stat-item"><i class="fas fa-share-alt"></i> {{ res.partages_patient.count }} partage(s)</span>
+                </div>
+
+                <div class="card-actions">
+                    <button class="action-icon view" onclick="viewResource('{{ res.id }}')">
+                        <i class="fas fa-eye"></i> Voir
+                    </button>
+
+                    <button class="action-icon download" onclick="downloadResource('{{ res.id }}')">
+                        <i class="fas fa-download"></i> Télécharger
+                    </button>
+
+                    <button class="action-icon share" onclick="shareResource('{{ res.id }}')">
+                        <i class="fas fa-share-alt"></i> Partager
+                    </button>
+                    <button class="action-icon view" onclick="showResourceDetails('{{ res.id }}')">
+                        <i class="fas fa-chart-line"></i> Détails
+                    </button>
+                    <button class="action-icon delete" onclick="deleteResource('{{ res.id }}')">
+                        <i class="fas fa-trash-alt"></i> Supprimer
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <i class="fas fa-folder-open fa-3x"></i>
+            <p>Aucune ressource pour le moment</p>
+        </div>
+    {% endif %}
+</div>
+
+    <div class="footer">
+        <p>© 2026 SmartWrist Rehab · Tous droits réservés</p>
+    </div>
+</div>
+{{ ressources_json|json_script:"resources-data" }}
+<script>
+    // ==================== TRADUCTIONS ====================
+    const translations = {
+        fr: {
+            brand_sub: "", back: "Retour", page_title: "Ressources éducatives", 
+            citation: "La connaissance est le premier pas vers la guérison",
+            page_subtitle: "Outils pédagogiques pour une rééducation éclairée",
+            search_placeholder: "Rechercher une ressource...", all_categories: "📂 Toutes les catégories",
+            all: "Tous", recent: "Récents", shared: "Partagés", most_viewed: "Les plus vus",
+            add_resource: "Ajouter une ressource",
+            no_resources: "Aucune ressource pour le moment",
+            title: "Titre", description: "Description", type: "Type", file: "Fichier", url: "URL",
+            cancel: "Annuler", add: "Ajouter", view: "Voir", download: "Télécharger", share: "Partager", delete: "Supprimer",
+            select_patient: "Sélectionner un patient", send: "Envoyer", shared_with: "Partagé avec",
+            views: "vues", downloads: "téléchargements", shared_count: "partages",
+            resource_viewer: "Aperçu de la ressource", close: "Fermer", no_patients: "Aucun patient enregistré"
+        },
+        en: {
+            brand_sub: "", back: "Back", page_title: "Educational Resources", 
+            citation: "Knowledge is the first step towards healing",
+            page_subtitle: "Educational tools for informed rehabilitation",
+            search_placeholder: "Search a resource...", all_categories: "📂 All categories",
+            all: "All", recent: "Recent", shared: "Shared", most_viewed: "Most viewed",
+            add_resource: "Add resource",
+            no_resources: "No resources yet",
+            title: "Title", description: "Description", type: "Type", file: "File", url: "URL",
+            cancel: "Cancel", add: "Add", view: "View", download: "Download", share: "Share", delete: "Delete",
+            select_patient: "Select a patient", send: "Send", shared_with: "Shared with",
+            views: "views", downloads: "downloads", shared_count: "shares",
+            resource_viewer: "Resource preview", close: "Close", no_patients: "No patients registered"
+        },
+        ar: {
+            brand_sub: "", back: "رجوع", page_title: "الموارد التعليمية", 
+            citation: "المعرفة هي الخطوة الأولى نحو الشفاء",
+            page_subtitle: "أدوات تعليمية لإعادة تأهيل واعية",
+            search_placeholder: "البحث في الموارد...", all_categories: "📂 جميع الفئات",
+            all: "الكل", recent: "الأخيرة", shared: "المشاركة", most_viewed: "الأكثر مشاهدة",
+            add_resource: "إضافة مورد",
+            no_resources: "لا توجد موارد حالياً",
+            title: "العنوان", description: "الوصف", type: "النوع", file: "ملف", url: "رابط",
+            cancel: "إلغاء", add: "إضافة", view: "عرض", download: "تحميل", share: "مشاركة", delete: "حذف",
+            select_patient: "اختر مريضاً", send: "إرسال", shared_with: "تمت المشاركة مع",
+            views: "مشاهدة", downloads: "تحميل", shared_count: "مشاركة",
+            resource_viewer: "معاينة المورد", close: "إغلاق", no_patients: "لا يوجد مرضى مسجلين"
+        }
+    };
+    let currentPdfObjectUrl = null;
+    let currentLang = 'fr';
+    let resources = [];
+    function loadResourcesFromServer() {
+    const node = document.getElementById('resources-data');
+
+    try {
+        const parsed = JSON.parse(node.textContent || '[]');
+        resources = Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+        resources = [];
+        console.error("Erreur chargement ressources :", error);
+    }
+}
+    let currentFilter = 'all';
+    let currentSearch = '';
+    let currentCategory = 'all';
+
+    async function chargerPatientsQuestionJour() {
+        const select = document.getElementById('questionJourPatients');
+        if (!select) return;
+        try {
+            const response = await fetch('/api/patients/');
+            const data = await response.json();
+            const patients = data.patients || [];
+            select.innerHTML = patients.map(p => `<option value="${p.id}" selected>${escapeHtml((p.prenom || '') + ' ' + (p.nom || ''))}</option>`).join('');
+        } catch (error) {
+            select.innerHTML = '';
+        }
+    }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            document.cookie.split(';').forEach(cookie => {
+                const c = cookie.trim();
+                if (c.substring(0, name.length + 1) === `${name}=`) {
+                    cookieValue = decodeURIComponent(c.substring(name.length + 1));
+                }
+            });
+        }
+        return cookieValue;
+    }
+
+    async function envoyerQuestionJour() {
+        const question = document.getElementById('questionJourText')?.value.trim();
+        const select = document.getElementById('questionJourPatients');
+        const patientIds = Array.from(select?.selectedOptions || []).map(option => option.value);
+        if (!question) {
+            showNotification('Question vide', 'error');
+            return;
+        }
+        const response = await fetch('/api/question-jour/envoyer/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken') },
+            body: JSON.stringify({ question, patient_ids: patientIds.length ? patientIds : ['all'] })
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || data.success === false) {
+            showNotification(data.error || 'Erreur envoi question', 'error');
+            return;
+        }
+        document.getElementById('questionJourText').value = '';
+        showNotification('Question du jour envoyée', 'success');
+    }
+
+    // ==================== NOTIFICATION ====================
+    function showNotification(message, type = 'success') {
+        const notification = document.createElement('div');
+        notification.className = 'notification-toast';
+        notification.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${message}`;
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.remove();
+        }, 3000);
+    }
+
+    
+    // ==================== FONCTIONS D'AFFICHAGE ====================
+    function getTypeClass(type) {
+        switch(type) {
+            case 'pdf': return 'type-pdf';
+            case 'video': return 'type-video';
+            case 'image': return 'type-image';
+            case 'link': return 'type-link';
+            default: return '';
+        }
+    }
+
+    function getTypeName(type) {
+        const names = { pdf: 'PDF', video: 'Vidéo', image: 'Image', link: 'Lien' };
+        return names[type] || type;
+    }
+
+   function formatDate(dateStr) {
+    if (!dateStr) return '';
+    return dateStr;
+}
+
+function formatDateTime(dateStr) {
+    if (!dateStr) return '';
+    
+    try {
+        const date = new Date(dateStr);
+        if (isNaN(date.getTime())) return dateStr;
+        
+        // Ajouter le décalage UTC+1 pour l'Algérie
+        const algeriaDate = new Date(date.getTime() + (60 * 60 * 1000));
+        
+        return algeriaDate.toLocaleString(
+            currentLang === 'fr' ? 'fr-FR' : currentLang === 'en' ? 'en-US' : 'ar-MA',
+            {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            }
+        );
+    } catch(e) {
+        return dateStr;
+    }
+}
+
+
+function dataURLToBlob(dataURL) {
+    const parts = dataURL.split(',');
+    const mimeMatch = parts[0].match(/:(.*?);/);
+    const mime = mimeMatch ? mimeMatch[1] : 'application/octet-stream';
+    const byteString = atob(parts[1]);
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+
+    for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([ab], { type: mime });
+}
+  async function viewResource(resourceId) {
+    const resource = resources.find(r => r.id === resourceId);
+    if (!resource) return;
+
+    // Envoyer une requête pour tracer la vue par l'ergo
+    try {
+        await fetch(`/ressources/vision-ergo/${resourceId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCSRFToken()
+            }
+        });
+    } catch(e) { console.error(e); }
+
+    // Ouvrir la ressource
+    if (resource.type === 'link') {
+        window.open(resource.data, '_blank');
+    } else if (resource.data) {
+        window.open(resource.data, '_blank');
+    }
+}
+
+
+async function downloadResource(id) {
+    try {
+        await fetch(`/ressources/download/${id}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCSRFToken()
+            }
+        });
+
+        window.location.reload();
+    } catch (error) {
+        console.error(error);
+        showNotification("Erreur lors du téléchargement", "error");
+    }
+}
+
+
+async function shareResource(id) {
+    const resource = resources.find(r => r.id === id);
+    if (!resource) return;
+
+    const t = translations[currentLang];
+    const patients = await fetchRealPatients();
+
+    if (patients.length === 0) {
+        showNotification("Aucun patient trouvé", "error");
+        return;
+    }
+
+    let selectedPatients = [];
+
+    const modalHtml = `
+        <div class="modal-overlay" id="shareModal">
+            <div class="modal-content" style="width: 650px; max-width: 95%;">
+                <h3><i class="fas fa-share-alt"></i> ${t.share} : ${escapeHtml(resource.title)}</h3>
+                <p style="color: var(--gray-500); margin-bottom: 15px;">
+                    <i class="fas fa-info-circle"></i> Cliquez sur les patients pour les sélectionner/désélectionner
+                </p>
+                
+                <div style="margin-bottom: 15px;">
+                    <button onclick="selectAllPatients()" class="btn-secondary" style="margin-right: 10px;">
+                        <i class="fas fa-check-double"></i> Tout sélectionner
+                    </button>
+                    <button onclick="deselectAllPatients()" class="btn-secondary">
+                        <i class="fas fa-times"></i> Tout désélectionner
+                    </button>
+                </div>
+                
+                <div class="patient-list" id="patientList" style="max-height: 400px; overflow-y: auto;">
+                    ${patients.map(p => `
+                        <div class="patient-item" 
+                             data-patient-id="${p.id}" 
+                             onclick="togglePatientSelectionById('${p.id}', this)"
+                             style="cursor: pointer; transition: all 0.2s ease;">
+                            <div style="width: 45px; height: 45px; background: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                                ${p.initiales || 'P'}
+                            </div>
+                            <div>
+                                <strong>${escapeHtml(p.prenom)} ${escapeHtml(p.nom)}</strong>
+                            </div>
+                            <div style="margin-left: auto;">
+                                <i class="fas fa-check-circle" style="color: var(--primary); display: none;"></i>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div style="margin-top: 20px; padding: 10px; background: var(--primary-light); border-radius: 12px;">
+                    <strong><i class="fas fa-users"></i> ${patients.length} patient(s) disponible(s)</strong>
+                </div>
+                
+                <div class="modal-buttons" style="margin-top: 20px;">
+                    <button class="btn-secondary" onclick="closeModal()">${t.cancel}</button>
+                    <button class="btn-primary" id="confirmShareBtn" onclick="confirmShareWithDelay('${resource.id}')">
+                        <i class="fas fa-paper-plane"></i> ${t.send} (<span id="selectedCount">0</span>)
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    
+    // Mettre à jour le compteur des sélections
+    updateSelectedCount();
+}
+
+// Fonction pour mettre à jour le compteur
+function updateSelectedCount() {
+    const selected = document.querySelectorAll('.patient-item.selected');
+    const countSpan = document.getElementById('selectedCount');
+    if (countSpan) countSpan.textContent = selected.length;
+}
+
+// Fonction pour sélectionner/désélectionner avec visuel
+function togglePatientSelectionById(patientId, element) {
+    element.classList.toggle('selected');
+    
+    // Ajouter l'icône visuelle
+    const checkIcon = element.querySelector('.fa-check-circle');
+    if (checkIcon) {
+        checkIcon.style.display = element.classList.contains('selected') ? 'inline-block' : 'none';
+    }
+    
+    updateSelectedCount();
+}
+
+// Sélectionner tous les patients
+function selectAllPatients() {
+    document.querySelectorAll('.patient-item').forEach(item => {
+        item.classList.add('selected');
+        const checkIcon = item.querySelector('.fa-check-circle');
+        if (checkIcon) checkIcon.style.display = 'inline-block';
+    });
+    updateSelectedCount();
+}
+
+// Désélectionner tous les patients
+function deselectAllPatients() {
+    document.querySelectorAll('.patient-item').forEach(item => {
+        item.classList.remove('selected');
+        const checkIcon = item.querySelector('.fa-check-circle');
+        if (checkIcon) checkIcon.style.display = 'none';
+    });
+    updateSelectedCount();
+}
+
+// Confirmer avec délai visuel
+async function confirmShareWithDelay(resourceId) {
+    const selectedItems = document.querySelectorAll('.patient-item.selected');
+    
+    if (selectedItems.length === 0) {
+        showNotification('❌ Veuillez sélectionner au moins un patient', 'error');
+        return;
+    }
+    
+    // Désactiver le bouton pendant l'envoi
+    const btn = document.getElementById('confirmShareBtn');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
+    btn.disabled = true;
+    
+    let successCount = 0;
+    
+    for (const item of selectedItems) {
+        const patientId = item.dataset.patientId;
+        
+        try {
+            const response = await fetch('/ressources/partager/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()
+                },
+                body: JSON.stringify({
+                    ressource_id: resourceId,
+                    patient_id: patientId
+                })
+            });
+            
+            const data = await response.json();
+            if (data.success) successCount++;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    
+    // Restaurer le bouton
+    btn.innerHTML = originalText;
+    btn.disabled = false;
+    
+    if (successCount > 0) {
+        showNotification(`✅ ${successCount} ressource(s) partagée(s) avec succès`, 'success');
+        closeModal();
+        setTimeout(() => window.location.reload(), 1000);
+    }
+}
+function togglePatientSelection(patientId, resourceId) {
+    const resource = resources.find(r => r.id === resourceId);
+    if (!resource) return;
+
+    if (!resource.sharedWith) resource.sharedWith = [];
+
+    patientId = String(patientId);
+
+    const index = resource.sharedWith.indexOf(patientId);
+    if (index === -1) {
+        resource.sharedWith.push(patientId);
+    } else {
+        resource.sharedWith.splice(index, 1);
+    }
+
+    localStorage.setItem('smartwrist_resources', JSON.stringify(resources));
+
+    const patientItem = document.querySelector(`.patient-item[data-patient-id="${patientId}"]`);
+    if (patientItem) {
+        patientItem.classList.toggle('selected');
+    }
+}
+    
+async function confirmShare(resourceId) {
+    const selectedItems = document.querySelectorAll('.patient-item.selected');
+
+    if (selectedItems.length === 0) {
+        showNotification('Aucun patient sélectionné', 'error');
+        return;
+    }
+
+    let successCount = 0;
+
+    try {
+        for (const item of selectedItems) {
+            const patientId = item.dataset.patientId;
+
+            const response = await fetch('/ressources/partager/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()
+                },
+                body: JSON.stringify({
+                    ressource_id: resourceId,
+                    patient_id: patientId
+                })
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                successCount++;
+            }
+        }
+
+        if (successCount > 0) {
+            showNotification(`${successCount} ressource(s) partagée(s) avec succès`, 'success');
+            closeModal();
+            
+            // Recharger les données pour mettre à jour les compteurs
+            await fetchResourcesSilentlyForTherapist();
+            
+            // Optionnel : rafraîchir l'affichage des partages dans la carte
+            window.location.reload();
+        }
+    } catch (error) {
+        console.error(error);
+        showNotification('Erreur lors du partage', 'error');
+    }
+}
+    
+async function deleteResource(id) {
+    if (!confirm('Supprimer cette ressource ?')) return;
+
+    try {
+        const response = await fetch(`/ressources/supprimer/${id}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCSRFToken()
+            }
+        });
+
+        if (response.ok) {
+            showNotification('Ressource supprimée', 'success');
+            window.location.reload();
+        } else {
+            showNotification('Erreur lors de la suppression', 'error');
+        }
+    } catch (error) {
+        console.error(error);
+        showNotification('Erreur serveur', 'error');
+    }
+}
+
+function openAddModal() {
+    const t = translations[currentLang];
+    const modalHtml = `
+        <div class="modal-overlay" id="addModal">
+            <div class="modal-content">
+                <h3><i class="fas fa-plus-circle"></i> ${t.add_resource}</h3>
+                <div class="form-group">
+                    <label>${t.title} *</label>
+                    <input type="text" id="resTitle" class="form-control" placeholder="Titre de la ressource">
+                </div>
+                <div class="form-group">
+                    <label>${t.description}</label>
+                    <textarea id="resDesc" class="form-control" rows="2" placeholder="Description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>${t.type} *</label>
+                    <select id="resType" class="form-control">
+                        <option value="pdf">📄 PDF</option>
+                        <option value="video">🎬 Vidéo</option>
+                        <option value="image">🖼️ Image</option>
+                        <option value="link">🔗 Lien</option>
+                    </select>
+                </div>
+                <div class="form-group" id="fileGroup">
+                    <label>${t.file}</label>
+                    <input type="file" id="resFile" class="form-control" accept=".pdf,.mp4,.mov,.jpg,.jpeg,.png">
+                </div>
+                <div class="form-group" id="urlGroup" style="display: none;">
+                    <label>${t.url}</label>
+                    <input type="url" id="resUrl" class="form-control" placeholder="https://...">
+                </div>
+                <div class="modal-buttons">
+                    <button class="btn-secondary" onclick="closeModal()">${t.cancel}</button>
+                    <button class="btn-primary" onclick="addResource()">${t.add}</button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    
+    // Correction 1 : Changement du type (PDF/Video/Image/Lien)
+    const typeSelect = document.getElementById('resType');
+    const fileGroup = document.getElementById('fileGroup');
+    const urlGroup = document.getElementById('urlGroup');
+    
+    if (typeSelect) {
+        typeSelect.addEventListener('change', function() {
+            if (this.value === 'link') {
+                fileGroup.style.display = 'none';
+                urlGroup.style.display = 'block';
+            } else {
+                fileGroup.style.display = 'block';
+                urlGroup.style.display = 'none';
+            }
+        });
+    }
+}
+function toggleResourceTypeFields() {
+    const typeSelect = document.getElementById('resType');
+    const fileGroup = document.getElementById('fileGroup');
+    const urlGroup = document.getElementById('urlGroup');
+    
+    if (!typeSelect) return;
+    
+    if (typeSelect.value === 'link') {
+        if (fileGroup) fileGroup.style.display = 'none';
+        if (urlGroup) urlGroup.style.display = 'block';
+        // Rendre le fichier non requis
+        const fileInput = document.getElementById('resFile');
+        if (fileInput) fileInput.required = false;
+    } else {
+        if (fileGroup) fileGroup.style.display = 'block';
+        if (urlGroup) urlGroup.style.display = 'none';
+        // Rendre le fichier requis
+        const fileInput = document.getElementById('resFile');
+        if (fileInput) fileInput.required = true;
+    }
+}
+async function addResource() {
+    const title = document.getElementById('resTitle').value.trim();
+    const description = document.getElementById('resDesc').value.trim();
+    const type = document.getElementById('resType').value;
+    const fileInput = document.getElementById('resFile');
+    const url = document.getElementById('resUrl')?.value.trim();
+
+    if (!title) {
+        alert('Veuillez saisir un titre');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('titre', title);
+    formData.append('description', description);
+    formData.append('type_ressource', type);
+
+    if (type === 'link') {
+        if (!url) {
+            alert('Veuillez saisir une URL');
+            return;
+        }
+        formData.append('url', url);
+    } else {
+        if (!fileInput.files || !fileInput.files[0]) {
+            alert('Veuillez sélectionner un fichier');
+            return;
+        }
+        formData.append('fichier', fileInput.files[0]);
+    }
+
+    try {
+        const response = await fetch('/ressources/ajouter/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': getCSRFToken()
+            }
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            showNotification(data.message, 'success');
+            closeModal();
+            window.location.reload();
+        } else {
+            showNotification(data.error || "Erreur lors de l'ajout", 'error');
+        }
+    } catch (error) {
+        console.error('Erreur ajout ressource:', error);
+        showNotification("Erreur serveur lors de l'ajout", 'error');
+    }
+}
+
+function resetResourceForm() {
+    const title = document.getElementById('resTitle');
+    const desc = document.getElementById('resDesc');
+    const type = document.getElementById('resType');
+    const file = document.getElementById('resFile');
+    const url = document.getElementById('resUrl');
+
+    if (title) title.value = '';
+    if (desc) desc.value = '';
+    if (type) type.value = 'pdf';
+    if (file) file.value = '';
+    if (url) url.value = '';
+
+    const fileGroup = document.getElementById('fileGroup');
+    const urlGroup = document.getElementById('urlGroup');
+
+    if (fileGroup) fileGroup.style.display = 'block';
+    if (urlGroup) urlGroup.style.display = 'none';
+}
+    
+  function setResourceFilter(filter) {
+    currentFilter = filter;
+    
+    // Mettre à jour l'apparence des boutons
+    document.querySelectorAll('.filter-chip').forEach(chip => {
+        chip.classList.remove('active');
+        if (chip.getAttribute('data-filter') === filter) {
+            chip.classList.add('active');
+        }
+    });
+    
+    // Appliquer le filtre
+    let filtered = [...resources];
+    
+    if (filter === 'recent') {
+        filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+    } else if (filter === 'shared') {
+        filtered = filtered.filter(r => (r.sharedCount || 0) > 0);
+    } else if (filter === 'most_viewed') {
+        filtered.sort((a, b) => (b.views || 0) - (a.views || 0));
+    }
+    
+    // Reconstruire l'affichage
+    const container = document.getElementById('resourcesGrid');
+    if (!container) return;
+    
+    if (filtered.length === 0) {
+        container.innerHTML = `<div class="empty-state"><i class="fas fa-folder-open fa-3x"></i><p>Aucune ressource trouvée</p></div>`;
+        return;
+    }
+    
+    container.innerHTML = filtered.map(res => `
+        <div class="resource-card">
+            <div class="card-icon ${res.type}" onclick="viewResource('${res.id}')">
+                ${res.type === 'pdf' ? '<i class="fas fa-file-pdf fa-4x"></i>' : 
+                  res.type === 'video' ? '<i class="fas fa-video fa-4x"></i>' :
+                  res.type === 'image' ? '<i class="fas fa-image fa-4x"></i>' :
+                  '<i class="fas fa-link fa-4x"></i>'}
+            </div>
+            <div class="card-content">
+                <div class="resource-title">
+                    <span>${escapeHtml(res.title)}</span>
+                    <span class="resource-type type-${res.type}">${res.type.toUpperCase()}</span>
+                </div>
+                ${res.description ? `<div class="resource-desc">${escapeHtml(res.description)}</div>` : ''}
+                <div class="resource-stats">
+                    <span class="stat-item"><i class="fas fa-calendar-alt"></i> ${res.date_display || ''}</span>
+                    <span class="stat-item"><i class="fas fa-clock"></i> ${res.time_display || ''}</span>
+                    <span class="stat-item"><i class="fas fa-eye"></i> ${res.views || 0} vue(s)</span>
+                    <span class="stat-item"><i class="fas fa-download"></i> ${res.downloads || 0} téléchargement(s)</span>
+                    <span class="stat-item"><i class="fas fa-share-alt"></i> ${res.sharedCount || 0} partage(s)</span>
+                </div>
+                <div class="card-actions">
+                    <button class="action-icon view" onclick="viewResource('${res.id}')"><i class="fas fa-eye"></i> Voir</button>
+                    <button class="action-icon download" onclick="downloadResource('${res.id}')"><i class="fas fa-download"></i> Télécharger</button>
+                    <button class="action-icon share" onclick="shareResource('${res.id}')"><i class="fas fa-share-alt"></i> Partager</button>
+                    <button class="action-icon view" onclick="showResourceDetails('${res.id}')"><i class="fas fa-chart-line"></i> Détails</button>
+                    <button class="action-icon delete" onclick="deleteResource('${res.id}')"><i class="fas fa-trash-alt"></i> Supprimer</button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+    function applyFilters() {
+        currentSearch = document.getElementById('searchInput').value;
+        currentCategory = document.getElementById('categorySelect').value;
+        renderResources();
+    }
+function closeModal() {
+    document.querySelectorAll('.modal-overlay').forEach(modal => modal.remove());
+
+    if (currentPdfObjectUrl) {
+        URL.revokeObjectURL(currentPdfObjectUrl);
+        currentPdfObjectUrl = null;
+    }
+}
+function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m] || m));
+    }
+
+    function changeLogo(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                document.getElementById('logoImg').src = e.target.result;
+                localStorage.setItem('smartwrist_logo', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function loadSavedLogo() {
+        const savedLogo = localStorage.getItem('smartwrist_logo');
+        if (savedLogo) document.getElementById('logoImg').src = savedLogo;
+    }
+
+    // ==================== LANGUE ====================
+    function changeLanguage(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.textContent.toLowerCase() === lang) btn.classList.add('active');
+    });
+    
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][key] !== undefined) {
+            el.textContent = translations[lang][key];
+        }
+    });
+    
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (translations[lang] && translations[lang][key] !== undefined) {
+            el.placeholder = translations[lang][key];
+        }
+    });
+    
+    const categorySelect = document.getElementById('categorySelect');
+    if (categorySelect) {
+        categorySelect.options[0].textContent = translations[lang].all_categories;
+    }
+}
+    // Animation de suivi de souris
+    document.addEventListener('mousemove', function(e) {
+        const cards = document.querySelectorAll('.resource-card');
+        cards.forEach(card => {
+            const rect = card.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            card.style.setProperty('--x', `${x}%`);
+            card.style.setProperty('--y', `${y}%`);
+        });
+    });
+
+    // Écouteurs d'événements
+    document.getElementById('searchInput')?.addEventListener('input', applyFilters);
+    document.getElementById('categorySelect')?.addEventListener('change', applyFilters);
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadSavedLogo();
+    loadResourcesFromServer();
+    chargerPatientsQuestionJour();
+    changeLanguage('fr');
+
+    // Vérifie automatiquement toutes les 5 secondes
+    setInterval(fetchResourcesSilentlyForTherapist, 5000);
+
+    console.log('✅ Application ergothérapeute initialisée');
+});
+async function fetchRealPatients() {
+    try {
+        const response = await fetch('/api/patients/');
+        const data = await response.json();
+        return data.patients || [];
+    } catch (error) {
+        console.error('Erreur chargement patients :', error);
+        return [];
+    }
+}
+function getCSRFToken() {
+    const name = 'csrftoken=';
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+        cookie = cookie.trim();
+        if (cookie.startsWith(name)) {
+            return cookie.substring(name.length, cookie.length);
+        }
+    }
+    return '';
+}
+function showResourceDetails(resourceId) {
+    const resource = resources.find(r => r.id === String(resourceId));
+    if (!resource) return;
+
+    let dateDisplay = resource.date_display || '';
+    let timeDisplay = resource.time_display || '';
+    
+    if (timeDisplay && timeDisplay.includes(':')) {
+        let parts = timeDisplay.split(':');
+        let hour = parseInt(parts[0]);
+        let minute = parts[1];
+        hour = hour + 1;
+        if (hour >= 24) hour = hour - 24;
+        timeDisplay = hour.toString().padStart(2, '0') + ':' + minute;
+    }
+
+    const shared = resource.sharedWith || [];
+    const viewed = resource.viewedBy || [];
+    const downloaded = resource.downloadedBy || [];
+    const completed = resource.completedBy || [];
+    const fondatriceViews = resource.fondatrice_views || [];
+    const fondatriceDownloads = resource.fondatrice_downloads || [];
+
+    const getInitials = (prenom, nom) => {
+        if (nom === "Fondatrice") return "F";
+        return `${(prenom || '').charAt(0)}${(nom || '').charAt(0)}`.toUpperCase() || 'P';
+    };
+
+    const renderUserList = (items, emptyText, dateKey, isFondatrice = false) => {
+        if (!items.length) {
+            return `<div class="details-empty">${emptyText}</div>`;
+        }
+        return `
+            <div class="details-list">
+                ${items.map(item => `
+                    <div class="details-user-card">
+                        <div class="details-user-avatar" style="${isFondatrice ? 'background: linear-gradient(135deg, #f59e0b, #d97706);' : ''}">
+                            ${isFondatrice ? '👑' : getInitials(item.prenom, item.nom)}
+                        </div>
+                        <div class="details-user-info">
+                            <strong>${isFondatrice ? 'Fondatrice' : escapeHtml(item.prenom) + ' ' + escapeHtml(item.nom)}</strong>
+                            <small>${escapeHtml(item[dateKey] || item.date || '')}</small>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    };
+
+    const modalHtml = `
+        <div class="modal-overlay" id="detailsModal">
+            <div class="modal-content details-modal">
+                <div class="details-header">
+                    <div class="details-header-top">
+                        <div class="details-title-wrap">
+                            <h3><i class="fas fa-chart-line"></i> Détails de la ressource</h3>
+                            <p>Suivi complet des interactions pour <strong>${escapeHtml(resource.title)}</strong></p>
+                        </div>
+                        <div class="details-badge">
+                            <i class="fas fa-calendar-alt"></i>
+                            ${dateDisplay} ${timeDisplay}
+                        </div>
+                    </div>
+                </div>
+                <div class="details-body">
+                    <div class="details-summary-row">
+                        <div class="details-summary-card">
+                            <div class="details-summary-icon icon-share"><i class="fas fa-share-alt"></i></div>
+                            <span class="details-summary-label">Partages</span>
+                            <div class="details-summary-value">${shared.length}</div>
+                        </div>
+                        <div class="details-summary-card">
+                            <div class="details-summary-icon icon-view"><i class="fas fa-eye"></i></div>
+                            <span class="details-summary-label">Vues patients</span>
+                            <div class="details-summary-value">${viewed.length}</div>
+                        </div>
+                        <div class="details-summary-card">
+                            <div class="details-summary-icon icon-download"><i class="fas fa-download"></i></div>
+                            <span class="details-summary-label">Téléchargements patients</span>
+                            <div class="details-summary-value">${downloaded.length}</div>
+                        </div>
+                        <div class="details-summary-card">
+                            <div class="details-summary-icon icon-complete"><i class="fas fa-check-circle"></i></div>
+                            <span class="details-summary-label">Terminées</span>
+                            <div class="details-summary-value">${completed.length}</div>
+                        </div>
+                    </div>
+                    <div class="details-grid">
+                        <div class="details-section">
+                            <div class="details-section-header">
+                                <h4 class="details-section-title"><i class="fas fa-user-plus"></i> Partagé avec</h4>
+                                <span class="details-section-pill pill-share">${shared.length}</span>
+                            </div>
+                            ${renderUserList(shared, "Aucun patient n'a encore reçu cette ressource.", "date_partage", false)}
+                        </div>
+                        <div class="details-section">
+                            <div class="details-section-header">
+                                <h4 class="details-section-title"><i class="fas fa-eye"></i> Vu par (patients)</h4>
+                                <span class="details-section-pill pill-view">${viewed.length}</span>
+                            </div>
+                            ${renderUserList(viewed, "Aucune consultation enregistrée.", "date_vue", false)}
+                        </div>
+                        <div class="details-section">
+                            <div class="details-section-header">
+                                <h4 class="details-section-title"><i class="fas fa-download"></i> Téléchargé par (patients)</h4>
+                                <span class="details-section-pill pill-download">${downloaded.length}</span>
+                            </div>
+                            ${renderUserList(downloaded, "Aucun téléchargement enregistré.", "date_telechargement", false)}
+                        </div>
+                        <div class="details-section">
+                            <div class="details-section-header">
+                                <h4 class="details-section-title"><i class="fas fa-check-double"></i> Terminé par (patients)</h4>
+                                <span class="details-section-pill pill-complete">${completed.length}</span>
+                            </div>
+                            ${renderUserList(completed, "Aucune ressource terminée.", "date_fin", false)}
+                        </div>
+                        <div class="details-section">
+                            <div class="details-section-header">
+                                <h4 class="details-section-title"><i class="fas fa-crown"></i> Vu par (Fondatrice)</h4>
+                                <span class="details-section-pill pill-view" style="background: linear-gradient(135deg, #f59e0b, #d97706);">${fondatriceViews.length}</span>
+                            </div>
+                            ${renderUserList(fondatriceViews, "Aucune vue par la fondatrice.", "date", true)}
+                        </div>
+                        <div class="details-section">
+                            <div class="details-section-header">
+                                <h4 class="details-section-title"><i class="fas fa-download"></i> Téléchargé par (Fondatrice)</h4>
+                                <span class="details-section-pill pill-download" style="background: linear-gradient(135deg, #f59e0b, #d97706);">${fondatriceDownloads.length}</span>
+                            </div>
+                            ${renderUserList(fondatriceDownloads, "Aucun téléchargement par la fondatrice.", "date", true)}
+                        </div>
+                    </div>
+                </div>
+                <div class="details-footer">
+                    <button class="details-close-btn" onclick="closeModal()"><i class="fas fa-times"></i> Fermer</button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+}
+
+async function fetchResourcesSilentlyForTherapist() {
+    try {
+        const response = await fetch(window.location.href, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+
+        const data = await response.json();
+
+        if (!data.ressources) return;
+
+        if (JSON.stringify(resources) !== JSON.stringify(data.ressources)) {
+            resources = data.ressources;
+            window.location.reload();
+        }
+
+    } catch (error) {
+        console.error("Erreur mise à jour automatique thérapeute :", error);
+    }
+}
+function renderResources() {
+    let filteredResources = [...resources];
+    
+    // Filtre par recherche
+    const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
+    if (searchTerm) {
+        filteredResources = filteredResources.filter(r => 
+            r.title.toLowerCase().includes(searchTerm) || 
+            (r.description || '').toLowerCase().includes(searchTerm)
+        );
+    }
+    
+    // Filtre par catégorie
+    const category = document.getElementById('categorySelect')?.value || 'all';
+    if (category !== 'all') {
+        filteredResources = filteredResources.filter(r => r.type === category);
+    }
+    
+    // Filtre par badge (Tous, Récents, Partagés, Les plus vus)
+    if (currentFilter === 'recent') {
+        filteredResources.sort((a, b) => new Date(b.date) - new Date(a.date));
+    } else if (currentFilter === 'shared') {
+        filteredResources = filteredResources.filter(r => r.sharedCount > 0);
+    } else if (currentFilter === 'most_viewed') {
+        filteredResources.sort((a, b) => (b.views || 0) - (a.views || 0));
+    }
+    
+    const container = document.getElementById('resourcesGrid');
+    if (!container) return;
+    
+    if (filteredResources.length === 0) {
+        container.innerHTML = `<div class="empty-state"><i class="fas fa-folder-open fa-3x"></i><p>Aucune ressource trouvée</p></div>`;
+        return;
+    }
+    
+    // Reconstruire les cartes
+    container.innerHTML = filteredResources.map(res => `
+        <div class="resource-card">
+            <div class="card-icon ${res.type}" onclick="viewResource('${res.id}')">
+                ${res.type === 'pdf' ? '<i class="fas fa-file-pdf fa-4x"></i>' : 
+                  res.type === 'video' ? '<i class="fas fa-video fa-4x"></i>' :
+                  res.type === 'image' ? '<i class="fas fa-image fa-4x"></i>' :
+                  '<i class="fas fa-link fa-4x"></i>'}
+            </div>
+            <div class="card-content">
+                <div class="resource-title">
+                    <span>${escapeHtml(res.title)}</span>
+                    <span class="resource-type type-${res.type}">${res.type.toUpperCase()}</span>
+                </div>
+                ${res.description ? `<div class="resource-desc">${escapeHtml(res.description)}</div>` : ''}
+                <div class="resource-stats">
+                    <span class="stat-item"><i class="fas fa-calendar-alt"></i> ${res.date_display || ''}</span>
+                    <span class="stat-item"><i class="fas fa-clock"></i> ${res.time_display || ''}</span>
+                    <span class="stat-item"><i class="fas fa-eye"></i> ${res.views || 0} vue(s)</span>
+                    <span class="stat-item"><i class="fas fa-download"></i> ${res.downloads || 0} téléchargement(s)</span>
+                    <span class="stat-item"><i class="fas fa-share-alt"></i> ${res.sharedCount || 0} partage(s)</span>
+                </div>
+                <div class="card-actions">
+                    <button class="action-icon view" onclick="viewResource('${res.id}')"><i class="fas fa-eye"></i> Voir</button>
+                    <button class="action-icon download" onclick="downloadResource('${res.id}')"><i class="fas fa-download"></i> Télécharger</button>
+                    <button class="action-icon share" onclick="shareResource('${res.id}')"><i class="fas fa-share-alt"></i> Partager</button>
+                    <button class="action-icon view" onclick="showResourceDetails('${res.id}')"><i class="fas fa-chart-line"></i> Détails</button>
+                    <button class="action-icon delete" onclick="deleteResource('${res.id}')"><i class="fas fa-trash-alt"></i> Supprimer</button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+
+// Appliquer les filtres
+function applyFilters() {
+    renderResources();
+}
+
+// Initialiser les événements après chargement
+document.addEventListener('DOMContentLoaded', () => {
+    // ... ton code existant ...
+    
+    // Ajouter les écouteurs pour les filtres
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) searchInput.addEventListener('input', applyFilters);
+    
+    const categorySelect = document.getElementById('categorySelect');
+    if (categorySelect) categorySelect.addEventListener('change', applyFilters);
+});
+</script>
+</body>
+</html>

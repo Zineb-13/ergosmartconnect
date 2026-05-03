@@ -1,0 +1,353 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Traçabilité | SmartWrist Rehab</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .card { background: rgba(255,255,255,0.95); border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .btn-primary { background: #2E8B57; border: none; }
+        .btn-primary:hover { background: #1e5e3b; }
+        .btn-warning { background: #f59e0b; border: none; }
+        .btn-warning:hover { background: #d97706; }
+        .table-historique { width: 100%; border-collapse: collapse; }
+        .table-historique th { background: #2E8B57; color: white; padding: 12px; }
+        .table-historique td { padding: 12px; border-bottom: 1px solid #e5e7eb; }
+        .btn-eval { background: #2E8B57; color: white; border: none; padding: 5px 12px; border-radius: 20px; cursor: pointer; margin: 2px; font-size: 12px; }
+        .btn-eval-danger { background: #ef4444; }
+        .score-bon { color: #10b981; font-weight: 800; }
+        .score-moyen { color: #f59e0b; font-weight: 800; }
+        .score-mauvais { color: #ef4444; font-weight: 800; }
+        .badge-info { background: #e8f5e9; color: #2E8B57; padding: 5px 10px; border-radius: 20px; font-size: 12px; }
+    </style>
+    <link rel="stylesheet" href="{% static 'assets/css/responsive-guard.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="text-center mb-4">
+                <h1 style="color:#2E8B57;">🏥 SmartWrist Rehab</h1>
+                <p class="text-muted">Test de traçabilité des évaluations</p>
+            </div>
+            
+            <hr>
+            
+            <!-- Sélection du patient -->
+            <div class="row mb-4">
+                <div class="col-md-8">
+                    <label class="form-label fw-bold">👤 Patient :</label>
+                    <input type="text" id="patientName" class="form-control" placeholder="Nom du patient (ex: Zineb yb)">
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button onclick="ouvrirPatient()" class="btn btn-primary w-100">
+                        <i class="bi bi-folder2-open"></i> Ouvrir / Créer dossier
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Scores MCRO -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">🎯 Rendement (0-10)</label>
+                    <input type="number" id="rendement" class="form-control" step="0.1" value="6.5">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">😊 Satisfaction (0-10)</label>
+                    <input type="number" id="satisfaction" class="form-control" step="0.1" value="7.0">
+                </div>
+            </div>
+            
+            <!-- PRWE -->
+            <div class="mb-3">
+                <label class="form-label fw-bold">📊 PRWE (0-110)</label>
+                <input type="number" id="prwe" class="form-control" value="52">
+            </div>
+            
+            <!-- Synthèse -->
+            <div class="mb-3">
+                <label class="form-label fw-bold">📝 Observations cliniques</label>
+                <textarea id="observations" class="form-control" rows="2" placeholder="Observations...">Patient motivé, bonne progression</textarea>
+            </div>
+            
+            <!-- Boutons -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <button onclick="enregistrerEvaluation()" class="btn btn-primary w-100">
+                        <i class="bi bi-save-fill"></i> 💾 Enregistrer l'évaluation
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <button onclick="afficherHistorique()" class="btn btn-warning w-100">
+                        <i class="bi bi-arrow-repeat"></i> 🔄 Rafraîchir l'historique
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Historique -->
+            <div class="card" style="background: #f8fafc;">
+                <h4 class="mb-3">📋 Historique des évaluations</h4>
+                <div id="historiqueList">
+                    <div class="text-center p-5">
+                        <i class="bi bi-info-circle" style="font-size: 48px; color: #2E8B57;"></i>
+                        <p class="mt-3">Cliquez sur "Ouvrir un dossier" puis "Enregistrer l'évaluation"</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-3 text-center">
+                <span class="badge-info">
+                    <i class="bi bi-database"></i> Les données sont stockées dans votre navigateur
+                </span>
+                <button onclick="viderLocalStorage()" class="btn btn-sm btn-outline-danger ms-2">
+                    <i class="bi bi-trash"></i> Effacer toutes les données
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let patientActuel = null;
+        
+        // Ouvrir un patient
+        function ouvrirPatient() {
+            let nom = document.getElementById('patientName').value.trim();
+            if (!nom) {
+                nom = prompt("Entrez le nom du patient:", "Zineb yb");
+                if (!nom) return;
+                document.getElementById('patientName').value = nom;
+            }
+            patientActuel = nom;
+            localStorage.setItem('patientActuel', nom);
+            afficherNotification(`✅ Patient "${nom}" ouvert avec succès`, 'success');
+            afficherHistorique();
+        }
+        
+        // Afficher une notification
+        function afficherNotification(message, type) {
+            // Créer une notification temporaire
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#2E8B57' : '#ef4444'};
+                color: white;
+                padding: 12px 20px;
+                border-radius: 10px;
+                z-index: 9999;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                animation: fadeInOut 3s ease;
+            `;
+            notification.innerHTML = `<i class="bi bi-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i> ${message}`;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+        
+        // Enregistrer une évaluation
+        function enregistrerEvaluation() {
+            if (!patientActuel) {
+                alert("❌ Ouvrez d'abord un patient");
+                return;
+            }
+            
+            let rendement = parseFloat(document.getElementById('rendement').value) || 0;
+            let satisfaction = parseFloat(document.getElementById('satisfaction').value) || 0;
+            let prwe = parseFloat(document.getElementById('prwe').value) || 0;
+            let observations = document.getElementById('observations').value;
+            
+            let clef = 'evaluations_' + patientActuel;
+            let evaluations = [];
+            let data = localStorage.getItem(clef);
+            if (data) {
+                try {
+                    evaluations = JSON.parse(data);
+                } catch(e) {}
+            }
+            
+            let nouvelleEval = {
+                id: Date.now(),
+                date: new Date().toLocaleString('fr-FR'),
+                timestamp: new Date().toISOString(),
+                type: evaluations.length === 0 ? 'T1' : `T${evaluations.length + 1}`,
+                nom: evaluations.length === 0 ? '📋 Évaluation initiale' : `🔄 Réévaluation #${evaluations.length + 1}`,
+                rendement: rendement,
+                satisfaction: satisfaction,
+                prwe: prwe,
+                observations: observations
+            };
+            
+            evaluations.push(nouvelleEval);
+            localStorage.setItem(clef, JSON.stringify(evaluations));
+            
+            afficherNotification(`✅ Évaluation enregistrée !\n\n📋 ${nouvelleEval.nom}\n👤 ${patientActuel}`, 'success');
+            
+            afficherHistorique();
+        }
+        
+        // Afficher l'historique
+        function afficherHistorique() {
+            if (!patientActuel) {
+                let saved = localStorage.getItem('patientActuel');
+                if (saved) {
+                    patientActuel = saved;
+                    document.getElementById('patientName').value = saved;
+                } else {
+                    document.getElementById('historiqueList').innerHTML = `
+                        <div class="text-center p-5">
+                            <i class="bi bi-folder-x" style="font-size: 48px; color: #f59e0b;"></i>
+                            <p class="mt-3">Entrez un nom de patient et cliquez sur "Ouvrir"</p>
+                            <input type="text" id="patientInputTemp" class="form-control w-50 mx-auto" placeholder="Nom du patient">
+                            <button onclick="ouvrirPatientTemp()" class="btn btn-primary mt-2">Ouvrir</button>
+                        </div>
+                    `;
+                    return;
+                }
+            }
+            
+            let clef = 'evaluations_' + patientActuel;
+            let evaluations = [];
+            let data = localStorage.getItem(clef);
+            if (data) {
+                try {
+                    evaluations = JSON.parse(data);
+                } catch(e) {}
+            }
+            
+            let container = document.getElementById('historiqueList');
+            
+            if (evaluations.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center p-5">
+                        <i class="bi bi-inbox" style="font-size: 48px; color: #2E8B57;"></i>
+                        <p class="mt-3">Aucune évaluation pour <strong>${patientActuel}</strong></p>
+                        <button onclick="enregistrerEvaluation()" class="btn btn-primary mt-2">
+                            <i class="bi bi-plus-circle"></i> Créer la première évaluation
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = `
+                <div style="overflow-x:auto;">
+                    <table class="table-historique">
+                        <thead>
+                            <tr>
+                                <th>📅 Date</th>
+                                <th>📋 Évaluation</th>
+                                <th style="text-align:center">🎯 Rendement</th>
+                                <th style="text-align:center">😊 Satisfaction</th>
+                                <th style="text-align:center">📊 PRWE</th>
+                                <th style="text-align:center">🔧 Actions</th>
+                            </thead>
+                            <tbody>
+            `;
+            
+            for (let i = 0; i < evaluations.length; i++) {
+                let e = evaluations[i];
+                let rendClass = e.rendement >= 7 ? 'score-bon' : (e.rendement >= 4 ? 'score-moyen' : 'score-mauvais');
+                let satClass = e.satisfaction >= 7 ? 'score-bon' : (e.satisfaction >= 4 ? 'score-moyen' : 'score-mauvais');
+                
+                html += `
+                    <tr>
+                        <td style="font-size:12px">${e.date || '-'}<\/td>
+                        <td><strong>${e.nom || e.type}</strong><br><small style="color:#6b7280">${e.type || ''}</small><\/td>
+                        <td style="text-align:center"><span class="${rendClass}" style="font-size:18px;font-weight:800;">${e.rendement.toFixed(1)}</span>/10<\/td>
+                        <td style="text-align:center"><span class="${satClass}" style="font-size:18px;font-weight:800;">${e.satisfaction.toFixed(1)}</span>/10<\/td>
+                        <td style="text-align:center"><span style="font-size:16px;font-weight:800;color:#3b82f6">${e.prwe}</span>/110<\/td>
+                        <td style="text-align:center">
+                            <button class="btn-eval" onclick="chargerEvaluation(${i})">
+                                <i class="bi bi-folder2-open"></i> Charger
+                            </button>
+                            <button class="btn-eval btn-eval-danger" onclick="supprimerEvaluation(${i})">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        <\/td>
+                    </tr>
+                `;
+            }
+            
+            html += `
+                            </tbody>
+                         </table>
+                    </div>
+                    <div class="mt-3 p-2 bg-light rounded text-center">
+                        📊 <strong>${evaluations.length}</strong> évaluation(s) sauvegardée(s) pour <strong>${patientActuel}</strong>
+                    </div>
+                `;
+            
+            container.innerHTML = html;
+            window.evaluationsListe = evaluations;
+        }
+        
+        // Ouvrir patient temporaire
+        function ouvrirPatientTemp() {
+            let nom = document.getElementById('patientInputTemp').value.trim();
+            if (nom) {
+                document.getElementById('patientName').value = nom;
+                patientActuel = nom;
+                localStorage.setItem('patientActuel', nom);
+                afficherHistorique();
+            }
+        }
+        
+        // Charger une évaluation
+        function chargerEvaluation(index) {
+            let e = window.evaluationsListe[index];
+            if (!e) return;
+            
+            document.getElementById('rendement').value = e.rendement;
+            document.getElementById('satisfaction').value = e.satisfaction;
+            document.getElementById('prwe').value = e.prwe;
+            document.getElementById('observations').value = e.observations || '';
+            
+            afficherNotification(`✅ Évaluation chargée: ${e.nom}`, 'success');
+        }
+        
+        // Supprimer une évaluation
+        function supprimerEvaluation(index) {
+            if (!confirm("⚠️ Supprimer cette évaluation définitivement ?")) return;
+            
+            let clef = 'evaluations_' + patientActuel;
+            let evaluations = JSON.parse(localStorage.getItem(clef)) || [];
+            evaluations.splice(index, 1);
+            localStorage.setItem(clef, JSON.stringify(evaluations));
+            
+            afficherHistorique();
+            afficherNotification("✅ Évaluation supprimée", 'success');
+        }
+        
+        // Vider le localStorage
+        function viderLocalStorage() {
+            if (confirm("⚠️ ATTENTION : Effacer toutes les données ?\n\nCette action est irréversible.")) {
+                localStorage.clear();
+                patientActuel = null;
+                document.getElementById('patientName').value = '';
+                afficherHistorique();
+                afficherNotification("🗑️ Toutes les données ont été effacées", 'success');
+            }
+        }
+        
+        // Récupérer le patient sauvegardé au chargement
+        let savedPatient = localStorage.getItem('patientActuel');
+        if (savedPatient) {
+            patientActuel = savedPatient;
+            document.getElementById('patientName').value = savedPatient;
+            afficherHistorique();
+        }
+        
+        // Exposer les fonctions globalement
+        window.ouvrirPatient = ouvrirPatient;
+        window.enregistrerEvaluation = enregistrerEvaluation;
+        window.afficherHistorique = afficherHistorique;
+        window.chargerEvaluation = chargerEvaluation;
+        window.supprimerEvaluation = supprimerEvaluation;
+        window.viderLocalStorage = viderLocalStorage;
+        window.ouvrirPatientTemp = ouvrirPatientTemp;
+    </script>
+</body>
+</html>

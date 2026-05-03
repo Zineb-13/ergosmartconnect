@@ -1,0 +1,1496 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes ressources | SmartWrist Rehab</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2E8B57;
+            --primary-dark: #1f6a43;
+            --primary-soft: rgba(46, 139, 87, 0.10);
+            --primary-soft-2: rgba(46, 139, 87, 0.18);
+
+            --bg-1: #f7fbf8;
+            --bg-2: #edf7f0;
+            --card: rgba(255,255,255,0.94);
+
+            --text-1: #15261d;
+            --text-2: #475569;
+            --text-3: #7b8a97;
+
+            --border: 1px solid rgba(46,139,87,0.14);
+            --shadow-sm: 0 8px 24px rgba(15,23,42,0.06);
+            --shadow-md: 0 18px 38px rgba(15,23,42,0.08);
+
+            --radius-md: 20px;
+            --radius-lg: 28px;
+            --radius-xl: 34px;
+
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --success: #10b981;
+            --info: #3b82f6;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            color: var(--text-1);
+            background:
+                radial-gradient(circle at top left, rgba(46,139,87,0.10), transparent 28%),
+                radial-gradient(circle at top right, rgba(59,130,246,0.08), transparent 22%),
+                linear-gradient(145deg, var(--bg-1), var(--bg-2));
+        }
+
+        body[dir="rtl"] {
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body.dark-mode {
+            --primary: #43b36f;
+            --primary-dark: #2f8d56;
+            --primary-soft: rgba(67,179,111,0.12);
+            --primary-soft-2: rgba(67,179,111,0.20);
+
+            --bg-1: #0b1220;
+            --bg-2: #111b2e;
+            --card: rgba(15,23,42,0.90);
+
+            --text-1: #f8fafc;
+            --text-2: #cbd5e1;
+            --text-3: #94a3b8;
+
+            --border: 1px solid rgba(148,163,184,0.16);
+            --shadow-sm: 0 10px 26px rgba(0,0,0,0.26);
+            --shadow-md: 0 18px 40px rgba(0,0,0,0.34);
+
+            background:
+                radial-gradient(circle at top left, rgba(67,179,111,0.10), transparent 28%),
+                radial-gradient(circle at top right, rgba(59,130,246,0.10), transparent 22%),
+                linear-gradient(145deg, var(--bg-1), var(--bg-2));
+        }
+
+        .page-shell {
+            width: min(1180px, calc(100% - 24px));
+            margin: 18px auto 30px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            background: var(--card);
+            border: var(--border);
+            box-shadow: var(--shadow-sm);
+            border-radius: 24px;
+            padding: 14px 18px;
+            backdrop-filter: blur(12px);
+            margin-bottom: 18px;
+            position: sticky;
+            top: 10px;
+            z-index: 20;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: var(--primary);
+            background: var(--primary-soft);
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 999px;
+            white-space: nowrap;
+            transition: .2s ease;
+        }
+
+        .back-link:hover {
+            transform: translateY(-1px);
+            background: var(--primary-soft-2);
+        }
+
+        .title-wrap h1 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .title-wrap p {
+            color: var(--text-3);
+            font-size: .92rem;
+            margin-top: 4px;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .lang-switch {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--primary-soft);
+            padding: 4px;
+            border-radius: 999px;
+        }
+
+        .lang-btn {
+            border: none;
+            background: transparent;
+            color: var(--text-2);
+            font-weight: 700;
+            font-size: .82rem;
+            padding: 7px 12px;
+            border-radius: 999px;
+            cursor: pointer;
+        }
+
+        .lang-btn.active {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .icon-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            border: var(--border);
+            background: var(--card);
+            color: var(--text-2);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            font-size: 1rem;
+        }
+
+        .hero {
+            background: var(--card);
+            border: var(--border);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-md);
+            padding: 22px;
+            margin-bottom: 18px;
+            display: grid;
+            grid-template-columns: 1.2fr .8fr;
+            gap: 16px;
+        }
+
+        .hero h2 {
+            font-size: 1.45rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: var(--text-2);
+            line-height: 1.65;
+            font-size: .97rem;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: var(--primary-soft);
+            color: var(--primary-dark);
+            font-size: .83rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .hero-side {
+            display: grid;
+            gap: 12px;
+        }
+
+        .mini-card {
+            background: rgba(255,255,255,.46);
+            border: var(--border);
+            border-radius: 22px;
+            padding: 16px;
+        }
+
+        body.dark-mode .mini-card {
+            background: rgba(255,255,255,.03);
+        }
+
+        .mini-card small {
+            color: var(--text-3);
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .mini-card strong {
+            display: block;
+            font-size: 1.7rem;
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        .mini-card p {
+            color: var(--text-2);
+            font-size: .9rem;
+            line-height: 1.55;
+        }
+
+        .section {
+            margin-bottom: 18px;
+        }
+
+        .section-head {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .section-head h3 {
+            font-size: 1.05rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-head p {
+            color: var(--text-3);
+            font-size: .88rem;
+        }
+
+        .card {
+            background: var(--card);
+            border: var(--border);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            padding: 18px;
+            backdrop-filter: blur(10px);
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-3);
+        }
+
+        [dir="rtl"] .search-box i {
+            left: auto;
+            right: 16px;
+        }
+
+        .search-input,
+        .category-select {
+            width: 100%;
+            border: var(--border);
+            background: rgba(255,255,255,.60);
+            color: var(--text-1);
+            border-radius: 999px;
+            padding: 12px 16px 12px 42px;
+            font: inherit;
+            outline: none;
+        }
+
+        [dir="rtl"] .search-input {
+            padding: 12px 42px 12px 16px;
+        }
+
+        .category-select {
+            padding: 12px 16px;
+            min-width: 220px;
+            cursor: pointer;
+        }
+
+        body.dark-mode .search-input,
+        body.dark-mode .category-select {
+            background: rgba(255,255,255,.04);
+        }
+
+        .chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .chip {
+            border: none;
+            background: rgba(255,255,255,.55);
+            color: var(--text-2);
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: .82rem;
+            cursor: pointer;
+            border: var(--border);
+        }
+
+        body.dark-mode .chip {
+            background: rgba(255,255,255,.03);
+        }
+
+        .chip.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: transparent;
+        }
+
+        .today-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        .today-card {
+            border: var(--border);
+            border-radius: 20px;
+            padding: 16px;
+            background: rgba(255,255,255,.46);
+        }
+
+        body.dark-mode .today-card {
+            background: rgba(255,255,255,.03);
+        }
+
+        .today-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .today-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 16px;
+            background: var(--primary-soft);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .today-badge {
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: .75rem;
+            font-weight: 700;
+            align-self: flex-start;
+        }
+
+        .badge-today {
+            background: rgba(59,130,246,.12);
+            color: #2563eb;
+        }
+
+        .badge-important {
+            background: rgba(245,158,11,.14);
+            color: #d97706;
+        }
+
+        .badge-favorite {
+            background: rgba(16,185,129,.14);
+            color: #059669;
+        }
+
+        .today-card h4 {
+            font-size: .98rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .today-card p {
+            color: var(--text-2);
+            font-size: .89rem;
+            line-height: 1.55;
+            margin-bottom: 12px;
+        }
+
+        .today-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 14px;
+            padding: 10px 14px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+        }
+
+        .btn-soft {
+            background: var(--primary-soft);
+            color: var(--primary-dark);
+        }
+
+        .btn-link {
+            background: rgba(59,130,246,.12);
+            color: #2563eb;
+        }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+            gap: 14px;
+        }
+
+        .resource-card {
+            border: var(--border);
+            border-radius: 22px;
+            padding: 16px;
+            background: rgba(255,255,255,.46);
+            transition: .25s ease;
+        }
+
+        body.dark-mode .resource-card {
+            background: rgba(255,255,255,.03);
+        }
+
+        .resource-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .resource-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+            align-items: start;
+        }
+
+        .resource-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.25rem;
+            flex: 0 0 auto;
+        }
+
+        .resource-icon.pdf {
+            background: linear-gradient(145deg,#ef4444,#dc2626);
+        }
+
+        .resource-icon.video {
+            background: linear-gradient(145deg,#3b82f6,#2563eb);
+        }
+
+        .resource-icon.image {
+            background: linear-gradient(145deg,#10b981,#059669);
+        }
+
+        .resource-icon.link {
+            background: linear-gradient(145deg,#f59e0b,#d97706);
+        }
+
+        .resource-type {
+            font-size: .74rem;
+            font-weight: 700;
+            padding: 6px 10px;
+            border-radius: 999px;
+            white-space: nowrap;
+        }
+
+        .type-pdf {
+            background: rgba(239,68,68,.12);
+            color: #dc2626;
+        }
+
+        .type-video {
+            background: rgba(59,130,246,.12);
+            color: #2563eb;
+        }
+
+        .type-image {
+            background: rgba(16,185,129,.14);
+            color: #059669;
+        }
+
+        .type-link {
+            background: rgba(245,158,11,.14);
+            color: #d97706;
+        }
+
+        .resource-card h4 {
+            font-size: 1rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .resource-card p {
+            color: var(--text-2);
+            font-size: .89rem;
+            line-height: 1.55;
+            margin-bottom: 12px;
+            min-height: 56px;
+        }
+
+        .resource-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            color: var(--text-3);
+            font-size: .78rem;
+            margin-bottom: 12px;
+        }
+
+        .resource-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 44px 18px;
+            color: var(--text-3);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.66);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 16px;
+        }
+
+        .modal-card {
+            width: min(760px,100%);
+            max-height: 86vh;
+            overflow: auto;
+            background: var(--card);
+            border: var(--border);
+            border-radius: 26px;
+            padding: 22px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .modal-card h3 {
+            font-size: 1.15rem;
+            margin-bottom: 8px;
+            font-weight: 800;
+        }
+
+        .modal-card p {
+            color: var(--text-2);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .modal-preview {
+            background: rgba(255,255,255,.40);
+            border: var(--border);
+            border-radius: 20px;
+            padding: 16px;
+            min-height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        body.dark-mode .modal-preview {
+            background: rgba(255,255,255,.03);
+        }
+
+        .footer-note {
+            text-align: center;
+            color: var(--text-3);
+            font-size: .84rem;
+            padding-top: 6px;
+        }
+
+        @media (max-width: 1000px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .today-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .page-shell {
+                width: min(100% - 16px, 100%);
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .topbar-left,
+            .topbar-right {
+                justify-content: space-between;
+            }
+
+            .controls {
+                grid-template-columns: 1fr;
+            }
+
+            .resource-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'assets/css/responsive-guard.css' %}">
+</head>
+<body>
+    <div class="page-shell">
+        <header class="topbar">
+            <div class="topbar-left">
+                <a href="{% url 'patient_dashboard' %}" class="back-link">
+                    <i class="bi bi-arrow-left"></i>
+                    <span id="backText">Retour</span>
+                </a>
+
+                <div class="title-wrap">
+                    <h1 id="pageTitle">Mes ressources</h1>
+                    <p id="pageSubtitle">Une page simple, prête à afficher les ressources quand elles seront envoyées.</p>
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <div class="lang-switch">
+                    <button type="button" class="lang-btn active" onclick="changeLanguage('fr')">FR</button>
+                    <button type="button" class="lang-btn" onclick="changeLanguage('en')">EN</button>
+                    <button type="button" class="lang-btn" onclick="changeLanguage('ar')">AR</button>
+                </div>
+
+                <button type="button" class="icon-btn" onclick="toggleDarkMode()" aria-label="Mode sombre">
+                    <i class="bi bi-moon-stars" id="themeIcon"></i>
+                </button>
+            </div>
+        </header>
+
+        <section class="hero">
+            <div>
+                <div class="hero-badge">
+                    <i class="bi bi-journal-medical"></i>
+                    <span id="heroBadge">Ressources du patient</span>
+                </div>
+
+                <h2 id="heroTitle">Vos documents et supports apparaîtront ici</h2>
+
+                <p id="heroText">
+                    Dès que des ressources seront ajoutées à votre espace, vous pourrez les consulter ici
+                    de façon claire et organisée.
+                </p>
+            </div>
+
+            <div class="hero-side">
+                <div class="mini-card">
+                    <small id="summaryLabel">Total des ressources</small>
+                    <strong id="resourceCount">0</strong>
+                </div>
+
+                <div class="mini-card">
+                    <small id="adviceLabel">Conseil</small>
+                    <p id="adviceText">
+                        Quand une nouvelle ressource sera disponible, elle pourra apparaître dans la section du jour.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-head">
+                <div>
+                    <h3><i class="bi bi-sun"></i> <span id="todayTitle">Ressources du jour</span></h3>
+                    <p id="todaySub">Les ressources les plus utiles pour aujourd’hui.</p>
+                </div>
+            </div>
+
+            <div class="today-grid" id="todayGrid"></div>
+        </section>
+
+        <section class="section">
+            <div class="card">
+                <div class="section-head">
+                    <div>
+                        <h3><i class="bi bi-funnel"></i> <span id="filtersTitle">Recherche rapide</span></h3>
+                        <p id="filtersSub">Retrouvez facilement une ressource lorsqu’elle sera disponible.</p>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <div class="search-box">
+                        <i class="bi bi-search"></i>
+                        <input
+                            type="text"
+                            id="searchInput"
+                            class="search-input"
+                            placeholder="Rechercher une ressource..."
+                            oninput="applyFilters()"
+                        >
+                    </div>
+
+                    <select id="categorySelect" class="category-select" onchange="applyFilters()">
+                        <option value="all">Toutes les catégories</option>
+                        <option value="pdf">PDF</option>
+                        <option value="video">Vidéo</option>
+                        <option value="image">Image</option>
+                        <option value="link">Lien</option>
+                    </select>
+
+                    <button type="button" class="btn btn-soft" onclick="clearFilters()" id="clearBtn">Effacer</button>
+                </div>
+
+                <div class="chip-row">
+                    <button type="button" class="chip active" data-filter="all" onclick="setFilter('all', this)" id="chipAll">Tous</button>
+                    <button type="button" class="chip" data-filter="today" onclick="setFilter('today', this)" id="chipToday">Du jour</button>
+                    <button type="button" class="chip" data-filter="favorites" onclick="setFilter('favorites', this)" id="chipFavorites">Favoris</button>
+                    <button type="button" class="chip" data-filter="recent" onclick="setFilter('recent', this)" id="chipRecent">Récents</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-head">
+                <div>
+                    <h3><i class="bi bi-collection"></i> <span id="allResourcesTitle">Toutes mes ressources</span></h3>
+                    <p id="allResourcesSub">Vos documents, vidéos et liens utiles apparaîtront ici.</p>
+                </div>
+            </div>
+
+            <div class="resource-grid" id="resourcesGrid"></div>
+        </section>
+    <div class="footer-note" id="footerText">© 2026 SmartWrist Rehab · Tous droits réservés</div>
+
+    </div>
+
+    {{ patient_resources|default:"[]"|json_script:"resources-data" }}
+
+    <script>
+        const FAVORITES_KEY = 'smartwrist_resources_favorites';
+
+        const translations = {
+            fr: {
+                backText: 'Retour',
+                pageTitle: 'Mes ressources',
+                pageSubtitle: 'Une page simple, prête à afficher les ressources quand elles seront envoyées.',
+                heroBadge: 'Ressources du patient',
+                heroTitle: 'Vos documents et supports apparaîtront ici',
+                heroText: 'Dès que des ressources seront ajoutées à votre espace, vous pourrez les consulter ici de façon claire et organisée.',
+                summaryLabel: 'Total des ressources',
+                adviceLabel: 'Conseil',
+                adviceText: 'Quand une nouvelle ressource sera disponible, elle pourra apparaître dans la section du jour.',
+                todayTitle: 'Ressources du jour',
+                todaySub: 'Les ressources les plus utiles pour aujourd’hui.',
+                filtersTitle: 'Recherche rapide',
+                filtersSub: 'Retrouvez facilement une ressource lorsqu’elle sera disponible.',
+                clearBtn: 'Effacer',
+                chipAll: 'Tous',
+                chipToday: 'Du jour',
+                chipFavorites: 'Favoris',
+                chipRecent: 'Récents',
+                allResourcesTitle: 'Toutes mes ressources',
+                allResourcesSub: 'Vos documents, vidéos et liens utiles apparaîtront ici.',
+                footerText: '© 2026 SmartWrist Rehab · Tous droits réservés',
+                searchPlaceholder: 'Rechercher une ressource...',
+                allCategories: 'Toutes les catégories',
+                pdf: 'PDF',
+                video: 'Vidéo',
+                image: 'Image',
+                link: 'Lien',
+                today: 'Aujourd’hui',
+                important: 'Important',
+                favorite: 'Favori',
+                open: 'Ouvrir',
+                download: 'Télécharger',
+                addFavorite: 'Favori',
+                removeFavorite: 'Retirer',
+                views: 'vues',
+                downloads: 'téléchargements',
+                empty: 'Aucune ressource disponible pour le moment.',
+                emptyToday: 'Aucune ressource du jour pour le moment.',
+                noPreview: 'Aperçu non disponible',
+                close: 'Fermer',
+                previewText: 'Vous pouvez consulter cette ressource ici.',
+                downloadMessage: 'Le téléchargement serait lancé dans la version réelle.'
+            },
+            en: {
+                backText: 'Back',
+                pageTitle: 'My resources',
+                pageSubtitle: 'A simple page, ready to show resources when they are sent.',
+                heroBadge: 'Patient resources',
+                heroTitle: 'Your documents and supports will appear here',
+                heroText: 'As soon as resources are added to your space, you will be able to consult them here in a clear and organized way.',
+                summaryLabel: 'Total resources',
+                adviceLabel: 'Tip',
+                adviceText: 'When a new resource becomes available, it may appear in today’s section.',
+                todayTitle: 'Today’s resources',
+                todaySub: 'The most useful resources for today.',
+                filtersTitle: 'Quick search',
+                filtersSub: 'Find a resource easily when it becomes available.',
+                clearBtn: 'Clear',
+                chipAll: 'All',
+                chipToday: 'Today',
+                chipFavorites: 'Favorites',
+                chipRecent: 'Recent',
+                allResourcesTitle: 'All my resources',
+                allResourcesSub: 'Your documents, videos and useful links will appear here.',
+                footerText: '© 2026 SmartWrist Rehab · Tous droits réservés',
+                searchPlaceholder: 'Search a resource...',
+                allCategories: 'All categories',
+                pdf: 'PDF',
+                video: 'Video',
+                image: 'Image',
+                link: 'Link',
+                today: 'Today',
+                important: 'Important',
+                favorite: 'Favorite',
+                open: 'Open',
+                download: 'Download',
+                addFavorite: 'Favorite',
+                removeFavorite: 'Remove',
+                views: 'views',
+                downloads: 'downloads',
+                empty: 'No resources available for now.',
+                emptyToday: 'No resources for today yet.',
+                noPreview: 'Preview not available',
+                close: 'Close',
+                previewText: 'You can view this resource here.',
+                downloadMessage: 'The download would start in the real version.'
+            },
+            ar: {
+                backText: 'رجوع',
+                pageTitle: 'مواردي',
+                pageSubtitle: 'صفحة بسيطة جاهزة لإظهار الموارد عند إرسالها.',
+                heroBadge: 'موارد المريض',
+                heroTitle: 'ستظهر مستنداتك ووسائطك هنا',
+                heroText: 'بمجرد إضافة الموارد إلى مساحتك، ستتمكن من الاطلاع عليها هنا بشكل واضح ومنظم.',
+                summaryLabel: 'إجمالي الموارد',
+                adviceLabel: 'نصيحة',
+                adviceText: 'عند توفر مورد جديد، يمكن أن يظهر في قسم موارد اليوم.',
+                todayTitle: 'موارد اليوم',
+                todaySub: 'أهم الموارد لليوم.',
+                filtersTitle: 'بحث سريع',
+                filtersSub: 'اعثر على المورد بسهولة عندما يصبح متاحاً.',
+                clearBtn: 'مسح',
+                chipAll: 'الكل',
+                chipToday: 'اليوم',
+                chipFavorites: 'المفضلة',
+                chipRecent: 'الأحدث',
+                allResourcesTitle: 'كل مواردي',
+                allResourcesSub: 'ستظهر هنا مستنداتك وفيديوهاتك وروابطك المفيدة.',
+                footerText: '© 2026 SmartWrist Rehab · Tous droits réservés',
+                searchPlaceholder: 'ابحث عن مورد...',
+                allCategories: 'كل الفئات',
+                pdf: 'PDF',
+                video: 'فيديو',
+                image: 'صورة',
+                link: 'رابط',
+                today: 'اليوم',
+                important: 'مهم',
+                favorite: 'مفضل',
+                open: 'فتح',
+                download: 'تحميل',
+                addFavorite: 'مفضل',
+                removeFavorite: 'إزالة',
+                views: 'مشاهدات',
+                downloads: 'تحميلات',
+                empty: 'لا توجد موارد متاحة حالياً.',
+                emptyToday: 'لا توجد موارد لليوم حالياً.',
+                noPreview: 'المعاينة غير متاحة',
+                close: 'إغلاق',
+                previewText: 'يمكنك الاطلاع على هذا المورد هنا.',
+                downloadMessage: 'سيبدأ التحميل في النسخة الحقيقية.'
+            }
+        };
+
+        let resources = [];
+        let currentLang = "{{ current_lang|default:'fr'|escapejs }}";
+        let currentFilter = 'all';
+
+        function getFavorites() {
+            return JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');
+        }
+
+        function saveFavorites(favs) {
+            localStorage.setItem(FAVORITES_KEY, JSON.stringify(favs));
+        }
+
+function loadResources() {
+    const node = document.getElementById('resources-data');
+
+    try {
+        const parsed = JSON.parse(node.textContent || '[]');
+        resources = Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+        resources = [];
+    }
+
+
+    applyFavoriteState();
+    updateSummary();
+}
+
+        function applyFavoriteState() {
+            const favs = getFavorites();
+            resources = resources.map(r => ({ ...r, favorite: favs.includes(r.id) }));
+        }
+
+        function updateSummary() {
+            document.getElementById('resourceCount').textContent = resources.length;
+        }
+
+        function t() {
+            return translations[currentLang];
+        }
+
+        function getTypeIcon(type) {
+            return {
+                pdf: 'bi-filetype-pdf',
+                video: 'bi-camera-video',
+                image: 'bi-image',
+                link: 'bi-link-45deg'
+            }[type] || 'bi-file-earmark';
+        }
+
+        function getTypeClass(type) {
+            return {
+                pdf: 'type-pdf',
+                video: 'type-video',
+                image: 'type-image',
+                link: 'type-link'
+            }[type] || '';
+        }
+
+        function getTypeName(type) {
+            const tr = t();
+            return tr[type] || type;
+        }
+
+        function formatDateTime(dateStr) {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+
+    if (isNaN(date.getTime())) return dateStr;
+
+    return date.toLocaleString(
+        currentLang === 'fr' ? 'fr-FR' : currentLang === 'en' ? 'en-US' : 'ar-MA',
+        {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        }
+    );
+}
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>"]/g, m => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;'
+            }[m]));
+        }
+function renderTodayResources() {
+    const tr = t();
+    const container = document.getElementById('todayGrid');
+    const todayResources = resources.filter(r => r.is_today).slice(0, 3);
+
+    if (!todayResources.length) {
+        container.innerHTML = `
+            <div class="card" style="grid-column:1/-1">
+                <div class="empty-state">
+                    <i class="bi bi-calendar2-check"></i>
+                    <p>${tr.emptyToday}</p>
+                </div>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = todayResources.map(res => `
+        <div class="today-card">
+            <div class="today-top">
+                <div class="today-icon">
+                    <i class="bi ${getTypeIcon(res.type)}"></i>
+                </div>
+                <span class="today-badge ${res.favorite ? 'badge-favorite' : res.important ? 'badge-important' : 'badge-today'}">
+                    ${res.favorite ? tr.favorite : res.important ? tr.important : tr.today}
+                </span>
+            </div>
+
+            <h4>${escapeHtml(res.title)}</h4>
+            <p>${escapeHtml(res.description || '')}</p>
+
+            <div class="resource-meta">
+    <span><i class="bi bi-calendar3"></i> ${formatDateTime(res.date)}</span>
+    <span><i class="bi bi-${res.statut === 'non_vue' ? 'envelope' : (res.statut === 'terminee' ? 'check-circle' : 'eye')}"></i> 
+        ${res.statut === 'non_vue' ? 'Non vu' : (res.statut === 'terminee' ? 'Terminé' : 'Vu')}
+    </span>
+</div>
+
+            <div class="today-actions">
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    onclick="openPatientResource('${res.partage_id}', '${res.url || ''}', '${res.id}')"
+                >
+                    ${tr.open}
+                </button>
+                
+                <button
+                    type="button"
+                    class="btn btn-soft"
+                    onclick="downloadPatientResource('${res.partage_id}', '${res.url || ''}', '${escapeHtml(res.fileName || res.title || 'ressource')}')"
+                >
+                    ${tr.download}
+                </button>
+
+                <button type="button" class="btn btn-link" onclick="toggleFavorite('${res.id}')">
+                    ${res.favorite ? tr.removeFavorite : tr.addFavorite}
+                </button>
+                <button
+                    type="button"
+                    class="btn btn-success"
+                    onclick="markAsCompleted('${res.partage_id}')"
+                >
+                    Terminer
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function getFilteredResources() {
+            let list = [...resources];
+            const search = document.getElementById('searchInput').value.trim().toLowerCase();
+            const category = document.getElementById('categorySelect').value;
+
+            if (search) {
+                list = list.filter(r =>
+                    (r.title || '').toLowerCase().includes(search) ||
+                    (r.description || '').toLowerCase().includes(search)
+                );
+            }
+
+            if (category !== 'all') {
+                list = list.filter(r => r.type === category);
+            }
+
+            if (currentFilter === 'today') {
+                list = list.filter(r => r.is_today);
+            } else if (currentFilter === 'favorites') {
+                list = list.filter(r => r.favorite);
+            } else if (currentFilter === 'recent') {
+                list.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+            }
+
+            return list;
+        }
+function renderResources() {
+    const tr = t();
+    const container = document.getElementById('resourcesGrid');
+    const list = getFilteredResources();
+
+    if (!list.length) {
+        container.innerHTML = `
+            <div class="card" style="grid-column:1/-1">
+                <div class="empty-state">
+                    <i class="bi bi-folder2-open"></i>
+                    <p>${tr.empty}</p>
+                </div>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = list.map(res => `
+        <div class="resource-card">
+            <div class="resource-head">
+                <div class="resource-icon ${res.type}">
+                    <i class="bi ${getTypeIcon(res.type)}"></i>
+                </div>
+                <span class="resource-type ${getTypeClass(res.type)}">${getTypeName(res.type)}</span>
+            </div>
+
+            <h4>${escapeHtml(res.title)}</h4>
+            <p>${escapeHtml(res.description || '')}</p>
+
+            <div class="resource-meta">
+    <span><i class="bi bi-calendar3"></i> ${formatDateTime(res.date)}</span>
+    <span><i class="bi bi-${res.statut === 'non_vue' ? 'envelope' : (res.statut === 'terminee' ? 'check-circle' : 'eye')}"></i> 
+        ${res.statut === 'non_vue' ? 'Non vu' : (res.statut === 'terminee' ? 'Terminé' : 'Vu')}
+    </span>
+</div>
+
+            <div class="resource-actions">
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    onclick="openPatientResource('${res.partage_id}', '${res.url || ''}', '${res.id}')"
+                >
+                    ${tr.open}
+                </button>
+                <button
+                    type="button"
+                    class="btn btn-soft"
+                    onclick="downloadPatientResource('${res.partage_id}', '${res.url || ''}', '${escapeHtml(res.fileName || res.title || 'ressource')}')"
+                >
+                    ${tr.download}
+                </button>
+
+                <button type="button" class="btn btn-link" onclick="toggleFavorite('${res.id}')">
+                    ${res.favorite ? tr.removeFavorite : tr.addFavorite}
+                </button>
+                <button
+                    type="button"
+                    class="btn btn-success"
+                    onclick="markAsCompleted('${res.partage_id}')"
+                >
+                    Terminer
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+function closeModal() {
+            const modal = document.getElementById('resourceModal');
+            if (modal) modal.remove();
+        }
+
+function toggleFavorite(id) {
+            let favs = getFavorites();
+
+            if (favs.includes(id)) {
+                favs = favs.filter(x => x !== id);
+            } else {
+                favs.push(id);
+            }
+
+            saveFavorites(favs);
+            applyFavoriteState();
+            renderTodayResources();
+            renderResources();
+        }
+
+        function setFilter(filter, el) {
+            currentFilter = filter;
+            document.querySelectorAll('.chip').forEach(chip => chip.classList.remove('active'));
+            if (el) el.classList.add('active');
+            renderResources();
+        }
+
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('categorySelect').value = 'all';
+            currentFilter = 'all';
+
+            document.querySelectorAll('.chip').forEach(chip => chip.classList.remove('active'));
+            document.querySelector('.chip[data-filter="all"]').classList.add('active');
+
+            renderResources();
+        }
+
+        function applyFilters() {
+            renderResources();
+        }
+
+        function applyTexts() {
+            const tr = t();
+
+            document.getElementById('backText').textContent = tr.backText;
+            document.getElementById('pageTitle').textContent = tr.pageTitle;
+            document.getElementById('pageSubtitle').textContent = tr.pageSubtitle;
+            document.getElementById('heroBadge').textContent = tr.heroBadge;
+            document.getElementById('heroTitle').textContent = tr.heroTitle;
+            document.getElementById('heroText').textContent = tr.heroText;
+            document.getElementById('summaryLabel').textContent = tr.summaryLabel;
+            document.getElementById('adviceLabel').textContent = tr.adviceLabel;
+            document.getElementById('adviceText').textContent = tr.adviceText;
+            document.getElementById('todayTitle').textContent = tr.todayTitle;
+            document.getElementById('todaySub').textContent = tr.todaySub;
+            document.getElementById('filtersTitle').textContent = tr.filtersTitle;
+            document.getElementById('filtersSub').textContent = tr.filtersSub;
+            document.getElementById('clearBtn').textContent = tr.clearBtn;
+            document.getElementById('chipAll').textContent = tr.chipAll;
+            document.getElementById('chipToday').textContent = tr.chipToday;
+            document.getElementById('chipFavorites').textContent = tr.chipFavorites;
+            document.getElementById('chipRecent').textContent = tr.chipRecent;
+            document.getElementById('allResourcesTitle').textContent = tr.allResourcesTitle;
+            document.getElementById('allResourcesSub').textContent = tr.allResourcesSub;
+            document.getElementById('footerText').textContent = tr.footerText;
+            document.getElementById('searchInput').placeholder = tr.searchPlaceholder;
+
+            const select = document.getElementById('categorySelect');
+            select.options[0].textContent = tr.allCategories;
+            select.options[1].textContent = tr.pdf;
+            select.options[2].textContent = tr.video;
+            select.options[3].textContent = tr.image;
+            select.options[4].textContent = tr.link;
+
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if (btn.textContent.trim().toLowerCase() === currentLang) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            applyTexts();
+            renderTodayResources();
+            renderResources();
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.getElementById('themeIcon');
+            icon.classList.toggle('bi-moon-stars');
+            icon.classList.toggle('bi-brightness-high');
+        }
+async function fetchResourcesSilently() {
+    try {
+        const response = await fetch(window.location.href, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+
+        const data = await response.json();
+
+        if (!data.resources) return;
+
+        // Comparaison simple pour détecter les changements
+        const newIds = data.resources.map(r => r.id).sort().join(',');
+        const oldIds = resources.map(r => r.id).sort().join(',');
+
+        if (newIds !== oldIds) {
+            console.log("🔄 Nouvelles ressources détectées, rechargement...");
+            resources = data.resources;
+            applyFavoriteState();
+            updateSummary();
+            renderTodayResources();
+            renderResources();
+            
+            // Afficher une notification
+            showNotification("📚 Nouvelle ressource disponible !", "success");
+        }
+
+    } catch (error) {
+        console.error("Erreur mise à jour automatique des ressources :", error);
+    }
+}
+
+// Ajouter cette fonction pour les notifications
+function showNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: var(--primary);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 12px;
+        z-index: 9999;
+        animation: slideIn 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    `;
+    notification.innerHTML = `<i class="bi bi-check-circle"></i> ${message}`;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => notification.remove(), 3000);
+}
+
+
+function init() {
+            loadResources();
+            applyTexts();
+            renderTodayResources();
+            renderResources();
+
+            // Vérifie toutes les 5 secondes s'il y a une nouvelle ressource
+            setInterval(fetchResourcesSilently, 5000);
+        }
+
+        window.onload = init;
+        function openResourceDetails(resourceId) {
+            const res = resources.find(item => String(item.id) === String(resourceId));
+            if (!res) return;
+            const modal = document.createElement('div');
+            modal.setAttribute('data-resource-modal', 'true');
+            modal.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(15,23,42,.55);display:flex;align-items:center;justify-content:center;padding:20px;';
+            modal.innerHTML = `
+                <div style="background:#fff;max-width:720px;width:100%;border-radius:18px;padding:24px;box-shadow:0 24px 70px rgba(0,0,0,.25);">
+                    <h3 style="margin:0 0 12px;color:#1f2937;">${escapeHtml(res.title || 'Ressource')}</h3>
+                    <div style="white-space:pre-wrap;color:#334155;line-height:1.7;">${escapeHtml(res.details || res.description || '')}</div>
+                    <div style="text-align:right;margin-top:18px;">
+                        <button type="button" class="btn btn-primary" onclick="this.closest('[data-resource-modal]').remove()">OK</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        async function openPatientResource(partageId, fallbackUrl, resourceId) {
+    try {
+        const response = await fetch(`/ressources/vue/${partageId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCSRFToken()
+            }
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            const finalUrl = data.url || fallbackUrl;
+            if (finalUrl) {
+                window.open(finalUrl, '_blank');
+            } else {
+                openResourceDetails(resourceId);
+            }
+            if (finalUrl) window.location.reload();
+        }
+    } catch (error) {
+        console.error('Erreur ouverture ressource :', error);
+    }
+}
+
+async function downloadPatientResource(partageId, fallbackUrl, fileName) {
+    try {
+        const response = await fetch(`/ressources/telecharger/${partageId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCSRFToken()
+            }
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            const finalUrl = data.url || fallbackUrl;
+
+            if (finalUrl) {
+                const link = document.createElement('a');
+                link.href = finalUrl;
+                link.download = fileName || 'ressource';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+            window.location.reload();
+        }
+    } catch (error) {
+        console.error('Erreur téléchargement ressource :', error);
+    }
+}
+function getCSRFToken() {
+    const name = 'csrftoken=';
+    const cookies = document.cookie.split(';');
+
+    for (let cookie of cookies) {
+        cookie = cookie.trim();
+        if (cookie.startsWith(name)) {
+            return cookie.substring(name.length);
+        }
+    }
+    return '';
+}
+async function markAsCompleted(partageId) {
+    try {
+        const response = await fetch(`/ressources/terminer/${partageId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCSRFToken()
+            }
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            alert("Ressource terminée ✅");
+            window.location.reload();
+        }
+
+    } catch (error) {
+        console.error("Erreur terminer ressource :", error);
+    }
+}
+</script>
+</body>
+</html>

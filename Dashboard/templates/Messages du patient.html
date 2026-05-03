@@ -1,0 +1,3690 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages | SmartWrist Rehab</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+
+        :root{
+            --primary:#2E8B57;
+            --primary-dark:#1f6a43;
+            --primary-soft:rgba(46,139,87,.10);
+            --primary-soft-2:rgba(46,139,87,.18);
+            --bg-1:#f7fbf8;
+            --bg-2:#edf7f0;
+            --card:rgba(255,255,255,.94);
+            --text-1:#15261d;
+            --text-2:#475569;
+            --text-3:#7b8a97;
+            --border:1px solid rgba(46,139,87,.14);
+            --shadow-sm:0 8px 24px rgba(15,23,42,.06);
+            --shadow-md:0 18px 38px rgba(15,23,42,.08);
+            --radius-md:20px;
+            --radius-lg:28px;
+            --radius-xl:34px;
+            --danger:#ef4444;
+            --success:#10b981;
+            --info:#3b82f6;
+            --warning:#f59e0b;
+        }
+
+        body{
+            font-family:'Outfit',sans-serif;
+            min-height:100vh;
+            color:var(--text-1);
+            background:
+                radial-gradient(circle at top left, rgba(46,139,87,.10), transparent 28%),
+                radial-gradient(circle at top right, rgba(59,130,246,.08), transparent 22%),
+                linear-gradient(145deg,var(--bg-1),var(--bg-2));
+        }
+
+        body[dir="rtl"]{font-family:'Tajawal',sans-serif}
+
+        body.dark-mode{
+            --primary:#43b36f;
+            --primary-dark:#2f8d56;
+            --primary-soft:rgba(67,179,111,.12);
+            --primary-soft-2:rgba(67,179,111,.20);
+            --bg-1:#0b1220;
+            --bg-2:#111b2e;
+            --card:rgba(15,23,42,.90);
+            --text-1:#f8fafc;
+            --text-2:#cbd5e1;
+            --text-3:#94a3b8;
+            --border:1px solid rgba(148,163,184,.16);
+            --shadow-sm:0 10px 26px rgba(0,0,0,.26);
+            --shadow-md:0 18px 40px rgba(0,0,0,.34);
+            background:
+                radial-gradient(circle at top left, rgba(67,179,111,.10), transparent 28%),
+                radial-gradient(circle at top right, rgba(59,130,246,.10), transparent 22%),
+                linear-gradient(145deg,var(--bg-1),var(--bg-2));
+        }
+
+        .page-shell{
+            width:min(1160px, calc(100% - 24px));
+            margin:18px auto 26px;
+        }
+
+        .topbar{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:14px;
+            background:var(--card);
+            border:var(--border);
+            box-shadow:var(--shadow-sm);
+            border-radius:24px;
+            padding:14px 18px;
+            backdrop-filter:blur(12px);
+            margin-bottom:18px;
+            position:sticky;
+            top:10px;
+            z-index:20;
+        }
+
+        .topbar-left{
+            display:flex;
+            align-items:center;
+            gap:14px;
+            min-width:0;
+        }
+
+        .back-link{
+            text-decoration:none;
+            color:var(--primary);
+            background:var(--primary-soft);
+            font-weight:700;
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            padding:10px 14px;
+            border-radius:999px;
+            white-space:nowrap;
+            transition:.2s ease;
+        }
+
+        .back-link:hover{transform:translateY(-1px);background:var(--primary-soft-2)}
+
+        .title-wrap h1{
+            font-size:1.35rem;
+            font-weight:800;
+            line-height:1.2;
+        }
+
+        .title-wrap p{
+            color:var(--text-3);
+            font-size:.92rem;
+            margin-top:4px;
+        }
+
+        .topbar-right{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            flex-wrap:wrap;
+        }
+
+        .lang-switch{
+            display:inline-flex;
+            align-items:center;
+            gap:4px;
+            background:var(--primary-soft);
+            padding:4px;
+            border-radius:999px;
+        }
+
+        .lang-btn{
+            border:none;
+            background:transparent;
+            color:var(--text-2);
+            font-weight:700;
+            font-size:.82rem;
+            padding:7px 12px;
+            border-radius:999px;
+            cursor:pointer;
+        }
+
+        .lang-btn.active{background:var(--primary);color:#fff}
+
+        .icon-btn{
+            width:42px;
+            height:42px;
+            border-radius:14px;
+            border:var(--border);
+            background:var(--card);
+            color:var(--text-2);
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            cursor:pointer;
+            box-shadow:var(--shadow-sm);
+            font-size:1rem;
+        }
+
+        .hero{
+            background:var(--card);
+            border:var(--border);
+            border-radius:var(--radius-xl);
+            box-shadow:var(--shadow-md);
+            padding:22px;
+            margin-bottom:18px;
+            display:grid;
+            grid-template-columns:1.12fr .88fr;
+            gap:16px;
+        }
+
+        .hero-badge{
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            padding:8px 12px;
+            border-radius:999px;
+            background:var(--primary-soft);
+            color:var(--primary-dark);
+            font-size:.83rem;
+            font-weight:700;
+            margin-bottom:12px;
+        }
+
+        .hero h2{
+            font-size:1.45rem;
+            font-weight:800;
+            margin-bottom:10px;
+        }
+
+        .hero p{
+            color:var(--text-2);
+            line-height:1.65;
+            font-size:.97rem;
+        }
+
+        .hero-side{display:grid;gap:12px}
+
+        .mini-card{
+            background:rgba(255,255,255,.46);
+            border:var(--border);
+            border-radius:22px;
+            padding:16px;
+        }
+
+        body.dark-mode .mini-card{background:rgba(255,255,255,.03)}
+
+        .mini-card small{
+            color:var(--text-3);
+            display:block;
+            margin-bottom:6px;
+            font-weight:600;
+        }
+
+        .mini-card strong{
+            display:block;
+            font-size:1.65rem;
+            color:var(--primary);
+            font-weight:800;
+        }
+
+        .mini-card p{
+            color:var(--text-2);
+            font-size:.9rem;
+            line-height:1.55;
+        }
+
+        .section{margin-bottom:18px}
+
+        .chat-shell{
+            background:var(--card);
+            border:var(--border);
+            border-radius:var(--radius-lg);
+            box-shadow:var(--shadow-md);
+            overflow:hidden;
+            display:grid;
+            grid-template-columns:310px 1fr;
+            min-height:620px;
+        }
+
+        .conversations-panel{
+            border-right:var(--border);
+            background:rgba(255,255,255,.42);
+            padding:16px;
+            display:flex;
+            flex-direction:column;
+            gap:14px;
+        }
+
+        body.dark-mode .conversations-panel{background:rgba(255,255,255,.03)}
+
+        .panel-title h3{
+            font-size:1rem;
+            font-weight:800;
+            margin-bottom:4px;
+        }
+
+        .panel-title p{
+            color:var(--text-3);
+            font-size:.85rem;
+        }
+
+        .search-box{
+            position:relative;
+        }
+
+        .search-box i{
+            position:absolute;
+            left:14px;
+            top:50%;
+            transform:translateY(-50%);
+            color:var(--text-3);
+        }
+
+        [dir="rtl"] .search-box i{
+            left:auto;
+            right:14px;
+        }
+
+        .search-input{
+            width:100%;
+            border:var(--border);
+            background:rgba(255,255,255,.62);
+            color:var(--text-1);
+            border-radius:999px;
+            padding:11px 14px 11px 38px;
+            font:inherit;
+            outline:none;
+        }
+
+        [dir="rtl"] .search-input{
+            padding:11px 38px 11px 14px;
+        }
+
+        body.dark-mode .search-input{background:rgba(255,255,255,.04)}
+
+        .conversation-list{
+            display:grid;
+            gap:10px;
+        }
+
+        .conversation-card{
+            border:var(--border);
+            background:rgba(255,255,255,.56);
+            border-radius:18px;
+            padding:14px;
+            cursor:pointer;
+            transition:.2s ease;
+        }
+
+        body.dark-mode .conversation-card{background:rgba(255,255,255,.03)}
+
+        .conversation-card.active{
+            border-color:rgba(46,139,87,.32);
+            background:var(--primary-soft);
+        }
+
+        .conversation-top{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:10px;
+            margin-bottom:8px;
+        }
+
+        .conversation-user{
+            display:flex;
+            align-items:center;
+            gap:10px;
+        }
+
+        .conversation-avatar,
+.chat-avatar{
+    flex: 0 0 auto;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(46,139,87,.18);
+}
+
+.conversation-avatar{
+    font-size: 1rem;
+}
+
+.chat-avatar{
+    font-size: 1.05rem;
+}
+        .conversation-info h4{
+            font-size:.96rem;
+            font-weight:800;
+            margin-bottom:2px;
+        }
+
+        .conversation-info p{
+            color:var(--text-3);
+            font-size:.8rem;
+        }
+
+        .unread-dot{
+            min-width:22px;
+            height:22px;
+            border-radius:999px;
+            background:var(--danger);
+            color:#fff;
+            font-size:.72rem;
+            font-weight:800;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            padding:0 6px;
+        }
+
+        .conversation-preview{
+            color: var(--text-2);
+            font-size: .84rem;
+            line-height: 1.5;
+
+            display: -webkit-box;
+            display: box; /* <-- AJOUT IMPORTANT */
+
+            -webkit-box-orient: vertical;
+            box-orient: vertical; /* <-- AJOUT */
+
+            -webkit-line-clamp: 2;
+            line-clamp: 2; /* <-- AJOUT */
+
+            overflow: hidden;
+}
+        .chat-panel{
+            display:flex;
+            flex-direction:column;
+            min-width:0;
+        }
+
+        .chat-header{
+            padding:16px 18px;
+            border-bottom:var(--border);
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:12px;
+            background:rgba(255,255,255,.58);
+        }
+
+        body.dark-mode .chat-header{background:rgba(255,255,255,.03)}
+
+        .chat-header-left{
+            display:flex;
+            align-items:center;
+            gap:12px;
+        }
+
+
+        .chat-meta h3{
+            font-size:1rem;
+            font-weight:800;
+            margin-bottom:3px;
+        }
+
+        .chat-meta p{
+            color:var(--success);
+            font-size:.83rem;
+            font-weight:600;
+            display:flex;
+            align-items:center;
+            gap:6px;
+        }
+
+        .header-note{
+            color:var(--text-3);
+            font-size:.82rem;
+            text-align:right;
+        }
+
+        .messages-area{
+            flex:1;
+            overflow:auto;
+            padding:18px;
+            display:flex;
+            flex-direction:column;
+            gap:14px;
+            background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,0));
+        }
+
+        .date-separator{
+            text-align:center;
+            margin:8px 0;
+        }
+
+        .date-separator span{
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            background:rgba(148,163,184,.14);
+            color:var(--text-3);
+            padding:6px 12px;
+            border-radius:999px;
+            font-size:.76rem;
+            font-weight:700;
+        }
+
+        .message-row{
+            display:flex;
+            max-width:82%;
+            position:relative;
+        }
+
+        .message-row.therapist{align-self:flex-start}
+        .message-row.patient{align-self:flex-end}
+
+        .message-bubble{
+            padding:12px 14px;
+            border-radius:18px;
+            box-shadow:var(--shadow-sm);
+        }
+
+        .message-row.therapist .message-bubble{
+            background:rgba(255,255,255,.70);
+            border:var(--border);
+            border-top-left-radius:6px;
+        }
+
+        body.dark-mode .message-row.therapist .message-bubble{background:rgba(255,255,255,.04)}
+
+        .message-row.patient .message-bubble{
+            background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+            color:#fff;
+            border-top-right-radius:6px;
+        }
+
+        .message-text{
+            font-size:.93rem;
+            line-height:1.58;
+            word-break:break-word;
+        }
+
+        .message-meta{
+            display:flex;
+            align-items:center;
+            gap:8px;
+            margin-top:6px;
+            font-size:.72rem;
+            color:var(--text-3);
+        }
+
+        .message-row.patient .message-meta{
+            color:rgba(255,255,255,.78);
+            justify-content:flex-end;
+        }
+
+        .message-actions{
+    display:flex;
+    gap:6px;
+    margin-top:8px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+}
+
+.mini-action{
+    border:none;
+    background:rgba(148,163,184,.12);
+    color:var(--text-2);
+    border-radius:999px;
+    padding:6px 10px;
+    font-size:.75rem;
+    font-weight:700;
+    cursor:pointer;
+    transition:.2s ease;
+}
+
+.mini-action:hover{
+    transform:translateY(-1px);
+    background:var(--primary-soft-2);
+    color:var(--primary-dark);
+}
+
+.message-row.patient .mini-action{
+    background:rgba(255,255,255,.16);
+    color:#fff;
+}
+
+.message-row.patient .mini-action:hover{
+    background:rgba(255,255,255,.24);
+    color:#fff;
+}
+
+        .message-row.patient .mini-action{
+            background:rgba(255,255,255,.16);
+            color:#fff;
+        }
+
+        .attachment-preview{
+            display:flex;
+            align-items:center;
+            gap:8px;
+            margin-top:10px;
+            padding:9px 12px;
+            border-radius:14px;
+            background:rgba(0,0,0,.05);
+            font-size:.82rem;
+            cursor:pointer;
+        }
+
+        .message-row.patient .attachment-preview{
+            background:rgba(255,255,255,.18);
+        }
+
+        .typing-indicator{
+            display:none;
+            align-items:center;
+            gap:8px;
+            background:rgba(255,255,255,.70);
+            border:var(--border);
+            border-radius:18px;
+            padding:10px 14px;
+            width:max-content;
+            margin:0 18px 12px;
+        }
+
+        body.dark-mode .typing-indicator{background:rgba(255,255,255,.04)}
+
+        .typing-dots{
+            display:flex;
+            gap:4px;
+        }
+
+        .typing-dots span{
+            width:6px;
+            height:6px;
+            border-radius:50%;
+            background:var(--text-3);
+            animation:typing 1.4s infinite;
+        }
+
+        .typing-dots span:nth-child(2){animation-delay:.2s}
+        .typing-dots span:nth-child(3){animation-delay:.4s}
+
+        @keyframes typing{
+            0%,60%,100%{transform:translateY(0);opacity:.45}
+            30%{transform:translateY(-4px);opacity:1}
+        }
+
+        .preview-area{
+            display:none;
+            gap:10px;
+            padding:0 18px 12px;
+            flex-wrap:wrap;
+        }
+
+        .preview-file{
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            background:rgba(255,255,255,.72);
+            border:var(--border);
+            border-radius:999px;
+            padding:8px 12px;
+            font-size:.8rem;
+        }
+
+        body.dark-mode .preview-file{background:rgba(255,255,255,.04)}
+
+        .preview-remove{
+            color:var(--danger);
+            cursor:pointer;
+        }
+
+        .message-input-area{
+            padding:16px 18px 18px;
+            border-top:var(--border);
+            background:rgba(255,255,255,.56);
+        }
+
+        body.dark-mode .message-input-area{background:rgba(255,255,255,.03)}
+
+        .input-help{
+            color:var(--text-3);
+            font-size:.8rem;
+            margin-bottom:10px;
+        }
+
+        .input-wrapper{
+            display:flex;
+            align-items:flex-end;
+            gap:10px;
+            background:rgba(255,255,255,.72);
+            border:var(--border);
+            border-radius:24px;
+            padding:8px 8px 8px 16px;
+        }
+
+        body.dark-mode .input-wrapper{background:rgba(255,255,255,.04)}
+
+        .message-input{
+            flex:1;
+            border:none;
+            background:transparent;
+            color:var(--text-1);
+            font:inherit;
+            resize:none;
+            outline:none;
+            min-height:44px;
+            max-height:110px;
+            padding:10px 0;
+        }
+
+        .attachment-buttons{
+            display:flex;
+            align-items:center;
+            gap:6px;
+            flex-wrap:wrap;
+        }
+
+        .attach-btn,.send-btn{
+            border:none;
+            width:42px;
+            height:42px;
+            border-radius:50%;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            cursor:pointer;
+            font-size:1rem;
+            transition:.2s ease;
+        }
+
+        .attach-btn{
+            background:rgba(148,163,184,.14);
+            color:var(--text-2);
+        }
+
+        .attach-btn:hover{transform:translateY(-1px);color:var(--primary)}
+
+        .send-btn{
+            background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+            color:#fff;
+        }
+
+        .send-btn:hover{transform:translateY(-1px)}
+
+        .footer-note{
+            text-align:center;
+            color:var(--text-3);
+            font-size:.84rem;
+            padding-top:8px;
+        }
+
+        @media (max-width:980px){
+            .hero{grid-template-columns:1fr}
+            .chat-shell{grid-template-columns:1fr}
+            .conversations-panel{border-right:none;border-bottom:var(--border)}
+        }
+
+        @media (max-width:760px){
+            .page-shell{width:min(100% - 16px, 100%)}
+            .topbar{flex-direction:column;align-items:stretch}
+            .topbar-left,.topbar-right{justify-content:space-between}
+            .message-row{max-width:94%}
+            .header-note{display:none}
+        }
+        .conversation-user,
+.chat-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.conversation-info,
+.chat-meta {
+    min-width: 0;
+    flex: 1;
+}
+
+.conversation-info h4,
+.chat-meta h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 800;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.conversation-info p,
+.chat-meta p {
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--text-3);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.conversation-avatar,
+.chat-avatar {
+    flex: 0 0 auto;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(46,139,87,.18);
+}
+
+.chat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: nowrap;
+}
+
+.header-note {
+    flex: 0 0 auto;
+    margin-left: 16px;
+    white-space: nowrap;
+}
+
+[dir="rtl"] .header-note {
+    margin-left: 0;
+    margin-right: 16px;
+}
+.online-dot{
+    font-size:8px;
+    color:#22c55e;
+}
+.camera-modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+    padding:20px;
+}
+
+.camera-box{
+    width:min(100%, 520px);
+    background:var(--card);
+    border:var(--border);
+    border-radius:24px;
+    box-shadow:var(--shadow-md);
+    padding:16px;
+}
+
+.camera-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:12px;
+}
+
+.camera-close{
+    border:none;
+    background:transparent;
+    color:var(--text-2);
+    font-size:1.1rem;
+    cursor:pointer;
+}
+
+#cameraVideo{
+    width:100%;
+    max-height:420px;
+    border-radius:18px;
+    background:#000;
+    object-fit:cover;
+}
+
+.camera-actions{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    margin-top:14px;
+    flex-wrap:wrap;
+}
+
+.video-record-indicator{
+    margin-top:10px;
+    text-align:center;
+    font-size:.9rem;
+    color:#dc2626;
+    font-weight:700;
+}
+
+.dot-rec{
+    display:inline-block;
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:#dc2626;
+    margin-right:6px;
+    animation:blinkRec 1s infinite;
+}
+
+@keyframes blinkRec{
+    0%,100%{opacity:1}
+    50%{opacity:.3}
+}
+.attachment-preview{
+    text-decoration:none;
+    color:inherit;
+}
+.pinned-message{
+    position:relative;
+    border:2px solid #f59e0b !important;
+}
+
+.pinned-message::before{
+    content:"📌 Épinglé";
+    display:inline-block;
+    margin-bottom:8px;
+    font-size:11px;
+    font-weight:700;
+    background:#f59e0b;
+    color:#fff;
+    padding:3px 8px;
+    border-radius:999px;
+}
+
+.pinned-bar{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 14px;
+    margin:10px 18px 0;
+    border:var(--border);
+    border-radius:14px;
+    background:#fff7e6;
+    cursor:pointer;
+    box-shadow:var(--shadow-sm);
+}
+
+body.dark-mode .pinned-bar{
+    background:rgba(245,158,11,.12);
+}
+
+.pinned-bar-icon{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#f59e0b;
+    color:#fff;
+    flex:0 0 auto;
+}
+
+.pinned-bar-content{
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+}
+
+.pinned-bar-content strong{
+    font-size:.82rem;
+    color:#92400e;
+    line-height:1.2;
+}
+
+.pinned-bar-content span{
+    font-size:.8rem;
+    color:var(--text-2);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    max-width:320px;
+}
+.read-status{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    font-weight:600;
+}
+
+.message-row.patient .read-status{
+    color:rgba(255,255,255,.92);
+}
+.notification-item{
+    padding:12px 14px;
+    border-bottom:var(--border);
+    cursor:pointer;
+    transition:.2s ease;
+}
+
+.notification-item:hover{
+    background:var(--primary-soft);
+}
+
+.notification-title{
+    font-size:.88rem;
+    font-weight:700;
+    color:var(--text-1);
+    margin-bottom:4px;
+}
+
+.notification-text{
+    font-size:.8rem;
+    color:var(--text-2);
+    line-height:1.45;
+}
+
+.notification-time{
+    font-size:.72rem;
+    color:var(--text-3);
+    margin-top:6px;
+}
+.message-subject{
+    margin-bottom:8px;
+    padding:8px 12px;
+    border-radius:12px;
+    font-size:.82rem;
+    font-weight:800;
+    line-height:1.4;
+    background:rgba(46,139,87,.10);
+    color:var(--primary-dark);
+    border-left:4px solid var(--primary);
+}
+
+.message-row.patient .message-subject{
+    background:rgba(255,255,255,.16);
+    color:#fff;
+    border-left:4px solid rgba(255,255,255,.75);
+}
+
+[dir="rtl"] .message-subject{
+    border-left:none;
+    border-right:4px solid var(--primary);
+}
+
+[dir="rtl"] .message-row.patient .message-subject{
+    border-right:4px solid rgba(255,255,255,.75);
+}
+.chat-panel-hidden{
+    display:none !important;
+}
+    </style>
+    <link rel="stylesheet" href="{% static 'assets/css/responsive-guard.css' %}">
+</head>
+<body>
+    <div class="page-shell">
+        <header class="topbar">
+            <div class="topbar-left">
+                <a href="{% url 'patient_dashboard' %}" class="back-link">
+                    <i class="bi bi-arrow-left"></i>
+                    <span id="backText">Retour</span>
+                </a>
+
+                <div class="title-wrap">
+                    <h1 id="pageTitle">Messages</h1>
+                    <p id="pageSubtitle">Retrouvez vos échanges de façon claire et simple.</p>
+                </div>
+            </div>
+
+            <div class="topbar-right">
+    <div class="lang-switch">
+        <button type="button" class="lang-btn active" onclick="changeLanguage('fr')">FR</button>
+        <button type="button" class="lang-btn" onclick="changeLanguage('en')">EN</button>
+        <button type="button" class="lang-btn" onclick="changeLanguage('ar')">AR</button>
+    </div>
+
+    <div class="notification-wrapper" style="position:relative;">
+        <button type="button" class="icon-btn" onclick="toggleNotifications()" id="notifBtn" aria-label="Notifications">
+            <i class="bi bi-bell"></i>
+            <span id="notifBadge" style="
+                position:absolute;
+                top:-6px;
+                right:-6px;
+                min-width:18px;
+                height:18px;
+                border-radius:999px;
+                background:#ef4444;
+                color:white;
+                font-size:11px;
+                font-weight:700;
+                display:none;
+                align-items:center;
+                justify-content:center;
+                padding:0 5px;
+            ">0</span>
+        </button>
+
+        <div id="notificationsPanel" style="
+            display:none;
+            position:absolute;
+            top:52px;
+            right:0;
+            width:340px;
+            max-width:90vw;
+            background:var(--card);
+            border:var(--border);
+            border-radius:18px;
+            box-shadow:var(--shadow-md);
+            overflow:hidden;
+            z-index:9999;
+        ">
+            <div id="notificationsTitle" style="padding:14px 16px; font-weight:800; border-bottom:var(--border); display:flex; align-items:center; justify-content:space-between; gap:12px;">
+                <span>Notifications</span>
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:flex-end;">
+                    <button type="button" id="markAllNotificationsReadBtn" style="border:none; background:transparent; color:var(--brand); font-weight:700; cursor:pointer;">
+                        Tout lire
+                    </button>
+                    <button type="button" id="deleteAllNotificationsBtn" style="border:none; background:transparent; color:#ef4444; font-weight:700; cursor:pointer;">
+                        Tout supprimer
+                    </button>
+                </div>
+            </div>
+
+            <div id="notificationsList" style="max-height:320px; overflow-y:auto;">
+                <div id="emptyNotificationsText" style="padding:16px; color:var(--text-3); text-align:center;">
+                    Aucune notification
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="icon-btn" onclick="toggleDarkMode()" aria-label="Mode sombre">
+        <i class="bi bi-moon-stars" id="themeIcon"></i>
+    </button>
+</div>
+        </header>
+
+        <section class="hero">
+            <div>
+                <div class="hero-badge">
+                    <i class="bi bi-chat-square-dots"></i>
+                    <span id="heroBadge">Espace messages</span>
+                </div>
+
+                <h2 id="heroTitle">Consultez et envoyez vos messages facilement</h2>
+                <p id="heroText">
+                    Tous vos messages restent enregistrés sur cette page. Vous pouvez écrire, relire,
+                    rechercher et joindre des fichiers si besoin.
+                </p>
+            </div>
+
+            <div class="hero-side">
+                <div class="mini-card">
+                    <small id="summaryLabel">Messages enregistrés</small>
+                    <strong id="messageCount">{{ messages|length }}</strong>
+                </div>
+
+                <div class="mini-card">
+                    <small id="adviceLabel">Info</small>
+                    <p id="adviceText">Vos messages sont gardés dans l’historique de la page pour que vous puissiez les retrouver.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="chat-shell">
+                <aside class="conversations-panel">
+                    <div class="panel-title">
+                        <h3 id="conversationTitle">Conversations</h3>
+                        <p id="conversationSub">Historique simple de vos échanges.</p>
+                    </div>
+
+                    <div class="search-box">
+                        <i class="bi bi-search"></i>
+                        <input type="text" id="searchInput" class="search-input" placeholder="Rechercher un message..." oninput="filterMessages()">
+                    </div>
+
+                    <div class="conversation-list" id="conversationList">
+    <div class="conversation-card" id="mainConversationCard" onclick="toggleConversationPanel()">
+        <div class="conversation-top">
+            <div class="conversation-user">
+                <div class="conversation-avatar">YZ</div>
+                <div class="conversation-info">
+                    <h4>Youbi Zineb</h4>
+                    <p id="conversationCountText">{{ messages|length }} message(s)</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="conversation-preview" id="conversationPreviewText">
+            {% if messages and last_message %}
+                {{ last_message.contenu|truncatechars:80 }}
+            {% else %}
+                Aucun message pour le moment.
+            {% endif %}
+        </div>
+    </div>
+</div>
+                </aside>
+
+                <div class="chat-panel" id="chatPanel">
+    <div class="chat-header">
+        <div class="chat-header-left">
+            <div class="chat-avatar" id="chatAvatar">YZ</div>
+            <div class="chat-meta">
+                <h3 id="chatName">Youbi Zineb</h3>
+                <p><i class="bi bi-circle-fill online-dot"></i> <span id="statusText">En ligne</span></p>
+            </div>
+        </div>
+        <div class="header-note" id="headerNote">Les nouveaux messages apparaissent en bas.</div>
+    </div>
+
+    <div id="pinnedBar" class="pinned-bar" style="display:none;">
+    <button type="button" class="mini-action" id="pinnedPrevBtn" onclick="showPrevPinnedMessage()">
+        <i class="bi bi-chevron-left"></i>
+    </button>
+
+    <div class="pinned-bar-icon" onclick="openCurrentPinnedMessage()" style="cursor:pointer;">
+        <i class="bi bi-pin-angle-fill"></i>
+    </div>
+
+    <div class="pinned-bar-content" onclick="openCurrentPinnedMessage()" style="cursor:pointer;">
+        <strong id="pinnedTitle">Message épinglé</strong>
+        <span id="pinnedPreview"></span>
+    </div>
+
+    <button type="button" class="mini-action" id="pinnedNextBtn" onclick="showNextPinnedMessage()">
+        <i class="bi bi-chevron-right"></i>
+    </button>
+</div>
+
+    <div class="messages-area" id="messagesArea">
+    {% if messages %}
+    {% regroup messages by date_separateur as messages_by_date %}
+
+        {% for group in messages_by_date %}
+             <div class="date-separator">
+    <span class="message-date-separator" data-iso="{{ group.list.0.date_envoi|date:'c' }}"></span>
+</div>
+            {% for msg in group.list %}
+<div id="message-{{ msg.id }}" class="message-row {% if msg.expediteur == request.user %}patient{% else %}therapist{% endif %}">        <div class="message-bubble {% if msg.est_epingle %}pinned-message{% endif %}">
+            {% if msg.reponse_a %}
+    <div style="
+        background: rgba(0,0,0,0.06);
+        border-left: 4px solid var(--primary);
+        padding: 8px 10px;
+        border-radius: 10px;
+        margin-bottom: 8px;
+        font-size: 12px;
+    ">
+        <strong>
+            {% if msg.reponse_a.expediteur == request.user %}
+                Vous
+            {% else %}
+                Thérapeute
+            {% endif %}
+        </strong><br>
+        {{ msg.reponse_a.contenu|truncatechars:80 }}
+    </div>
+{% endif %}
+            {% if msg.sujet and msg.sujet|lower != "message patient" and msg.sujet|lower != "message" %}
+    <div class="message-subject">
+        <i class="bi bi-bookmark-fill"></i> {{ msg.sujet }}
+    </div>
+{% endif %}
+
+<div class="message-text">{{ msg.contenu }}</div>
+
+           {% if msg.piece_jointe %}
+    {% if msg.piece_jointe_type == 'image' %}
+        <div class="attachment-preview" style="display:block; background:transparent; padding:0;">
+            <img src="{{ msg.piece_jointe.url }}"
+                 alt="{{ msg.piece_jointe_nom }}"
+                 onclick="openMediaPreview('{{ msg.piece_jointe.url }}', 'image')"
+                 style="max-width:220px; border-radius:12px; cursor:pointer;">
+        </div>
+
+    {% elif msg.piece_jointe_type == 'video' %}
+        <div class="attachment-preview" style="display:block; background:transparent; padding:0;">
+            <video controls style="max-width:240px; border-radius:12px;">
+                <source src="{{ msg.piece_jointe.url }}">
+            </video>
+            <div style="margin-top:6px;">
+                <button type="button"
+                        class="mini-action"
+                        onclick="openMediaPreview('{{ msg.piece_jointe.url }}', 'video')">
+                    <i class="bi bi-arrows-fullscreen"></i>
+                </button>
+            </div>
+        </div>
+
+    {% elif msg.piece_jointe_type == 'audio' %}
+        <div class="attachment-preview" style="display:block;">
+            <audio controls style="max-width:240px;">
+                <source src="{{ msg.piece_jointe.url }}">
+            </audio>
+        </div>
+
+    {% else %}
+        <a href="{{ msg.piece_jointe.url }}" target="_blank" class="attachment-preview" style="text-decoration:none;">
+            <i class="bi bi-paperclip"></i>
+            <span>{{ msg.piece_jointe_nom|default:"Fichier joint" }}</span>
+        </a>
+    {% endif %}
+{% endif %}
+
+            <div class="message-meta">
+    <span class="message-datetime" data-iso="{{ msg.date_envoi|date:'c' }}"></span>
+
+    {% if msg.expediteur == request.user %}
+        <span class="read-status">
+            {% if msg.est_lu_par_destinataire %}
+                <i class="bi bi-check2-all" style="color:#d1fae5;"></i>
+                <span>Vu</span>
+            {% else %}
+                <i class="bi bi-check2"></i>
+                <span>Envoyé</span>
+            {% endif %}
+        </span>
+    {% endif %}
+</div>
+
+            <div class="message-actions">
+                <button type="button" class="mini-action" onclick="replyMessage('{{ msg.id }}', '{{ msg.contenu|escapejs }}')">
+                    <i class="bi bi-reply"></i>
+                </button>
+
+                <button type="button" class="mini-action" onclick="pinMessage('{{ msg.id }}')">
+                    <i class="bi bi-pin-angle"></i>
+                </button>
+
+                {% if msg.expediteur == request.user %}
+                    <button type="button" class="mini-action" onclick="editMessage('{{ msg.id }}', '{{ msg.contenu|escapejs }}')">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+
+                    <button type="button" class="mini-action" onclick="deleteMessage('{{ msg.id }}')">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endfor %}
+        {% endfor %}
+    {% else %}
+        <div class="date-separator">
+                <span id="emptyMessagesText">Aucun message pour le moment.</span>
+            </div>
+    {% endif %}
+</div>
+
+                    <div id="typingIndicator" class="typing-indicator">
+                        <span id="typingText">Écrit un message</span>
+                        <div class="typing-dots"><span></span><span></span><span></span></div>
+                    </div>
+
+                    <div id="replyPreview" class="preview-area" style="display:none;"></div>
+                    <div id="previewArea" class="preview-area"></div>
+                    <div id="cameraModal" class="camera-modal" style="display:none;">
+    <div class="camera-box">
+        <div class="camera-top">
+            <strong id="cameraTitle">Caméra</strong>
+            <button type="button" class="camera-close" onclick="closeCameraModal()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <video id="cameraVideo" autoplay playsinline></video>
+
+        <div id="videoRecordIndicator" class="video-record-indicator" style="display:none;">
+            <span class="dot-rec"></span> Enregistrement...
+        </div>
+
+        <div class="camera-actions">
+    <button type="button" class="attach-btn" onclick="capturePhoto()" id="capturePhotoBtn" title="Prendre une photo">
+        <i class="bi bi-camera-fill"></i>
+    </button>
+
+    <button type="button" class="attach-btn" onclick="toggleVideoRecording()" id="recordVideoBtn" title="Enregistrer une vidéo">
+        <i class="bi bi-record-circle"></i>
+    </button>
+
+    <button type="button" class="attach-btn" onclick="switchCamera()" id="switchCameraBtn" title="Changer caméra">
+        <i class="bi bi-arrow-repeat"></i>
+    </button>
+
+    <button type="button" class="attach-btn" onclick="closeCameraModal()" title="Fermer">
+        <i class="bi bi-x-circle"></i>
+    </button>
+</div>
+    </div>
+</div>
+                    <div class="message-input-area">
+    <div class="input-help" id="inputHelp">Écrivez votre message puis appuyez sur envoyer.</div>
+
+    <form method="post" action="{% url 'patient_send_message' %}" enctype="multipart/form-data" onsubmit="event.preventDefault(); sendMessage();">
+        {% csrf_token %}
+
+        <input type="hidden" name="reply_to_id" id="replyToId">
+
+        <div class="input-wrapper">
+            <textarea name="text" id="messageInput" class="message-input" rows="1" placeholder="Écrivez votre message..."></textarea>
+
+           <div class="attachment-buttons">
+    <!-- Fichier normal -->
+    <label class="attach-btn" title="Fichier" style="cursor:pointer;">
+        <i class="bi bi-paperclip"></i>
+        <input type="file"
+               id="attachmentInput"
+               accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.mp4,.webm,.mp3,.wav"
+               style="display:none;"
+               onchange="handleAttachmentChange(this.files[0], 'file')">
+    </label>
+
+    <!-- Photo directe par caméra -->
+    <button type="button" class="attach-btn" title="Photo" onclick="openCameraModal('photo')">
+        <i class="bi bi-camera"></i>
+    </button>
+
+    <!-- Vidéo directe par caméra -->
+    <button type="button" class="attach-btn" title="Vidéo" onclick="openCameraModal('video')">
+        <i class="bi bi-camera-video"></i>
+    </button>
+
+    <!-- Vocal -->
+    <button type="button" class="attach-btn" id="recordBtn" title="Vocal" onclick="toggleRecording()">
+        <i class="bi bi-mic"></i>
+    </button>
+
+    <button type="button" class="attach-btn" id="stopRecordBtn" title="Stop vocal" onclick="stopRecording()" style="display:none;">
+        <i class="bi bi-stop-circle"></i>
+    </button>
+
+    <!-- Envoi -->
+    <button type="button" class="send-btn" onclick="sendMessage()">
+        <i class="bi bi-send"></i>
+    </button>
+</div>
+        </div>
+    </form>
+</div>
+                </div>
+            </div>
+        </section>
+
+    <div class="footer-note" id="footerText">© 2026 SmartWrist Rehab · Tous droits réservés</div>
+    </div>
+
+    <script>
+    const translations = {
+        fr: {
+            backText: 'Retour',
+            pageTitle: 'Messages',
+            pageSubtitle: 'Retrouvez vos échanges de façon claire et simple.',
+            heroBadge: 'Espace messages',
+            heroTitle: 'Consultez et envoyez vos messages facilement',
+            heroText: 'Tous vos messages restent enregistrés sur cette page. Vous pouvez écrire, relire, rechercher et joindre des fichiers si besoin.',
+            summaryLabel: 'Messages enregistrés',
+            adviceLabel: 'Info',
+            adviceText: 'Vos messages sont gardés dans l’historique de la page pour que vous puissiez les retrouver.',
+            conversationTitle: 'Conversations',
+            conversationSub: 'Historique simple de vos échanges.',
+            statusText: 'En ligne',
+            headerNote: 'Les nouveaux messages apparaissent en bas.',
+            typingText: 'Écrit un message',
+            inputHelp: 'Écrivez votre message puis appuyez sur envoyer.',
+            footerText: '© 2026 SmartWrist Rehab · Tous droits réservés',
+            searchPlaceholder: 'Rechercher un message...',
+            messagePlaceholder: 'Écrivez votre message...',
+            noResults: 'Aucun message trouvé.'
+        },
+        en: {
+            backText: 'Back',
+            pageTitle: 'Messages',
+            pageSubtitle: 'Find your conversations in a clear and simple way.',
+            heroBadge: 'Messages area',
+            heroTitle: 'Read and send your messages easily',
+            heroText: 'All your messages stay saved on this page. You can write, reread, search and attach files if needed.',
+            summaryLabel: 'Saved messages',
+            adviceLabel: 'Info',
+            adviceText: 'Your messages are kept in the page history so you can find them later.',
+            conversationTitle: 'Conversations',
+            conversationSub: 'Simple history of your exchanges.',
+            statusText: 'Online',
+            headerNote: 'New messages appear at the bottom.',
+            typingText: 'Typing a message',
+            inputHelp: 'Write your message then press send.',
+            footerText: '© 2026 SmartWrist Rehab · Tous droits réservés',
+            searchPlaceholder: 'Search a message...',
+            messagePlaceholder: 'Write your message...',
+            noResults: 'No messages found.'
+        },
+        ar: {
+            backText: 'رجوع',
+            pageTitle: 'الرسائل',
+            pageSubtitle: 'اعثر على رسائلك بشكل واضح وبسيط.',
+            heroBadge: 'مساحة الرسائل',
+            heroTitle: 'اطّلع على رسائلك وأرسلها بسهولة',
+            heroText: '???? ???? ?????? ?????? ?? ??? ??????. ????? ??????? ????????? ?????? ?????? ??????? ??? ??????.',
+            summaryLabel: '??????? ????????',
+            adviceLabel: 'معلومة',
+            adviceText: '??? ???????? ??????? ?? ??? ?????? ??? ????? ?? ?????? ????? ??????.',
+            conversationTitle: 'المحادثات',
+            conversationSub: 'سجل بسيط لرسائلك.',
+            statusText: 'متصل',
+            headerNote: '???? ??????? ??????? ?? ??????.',
+            typingText: 'يكتب رسالة',
+            inputHelp: 'اكتب رسالتك ثم اضغط إرسال.',
+            footerText: '© 2026 SmartWrist Rehab · Tous droits réservés',
+            searchPlaceholder: 'ابحث عن رسالة...',
+            messagePlaceholder: 'اكتب رسالتك...',
+            noResults: 'لا توجد رسائل مطابقة.'
+        }
+    };
+    let lastRenderedMessageId = null;
+    let lastMessagesSignature = '';
+    let currentCameraId = null;
+    let currentLang = "{{ current_lang|default:'fr'|escapejs }}";
+    let currentAttachment = null;
+    let cameraStream = null;
+    let cameraMode = null; // "photo" ou "video"
+    let currentAttachmentKind = null; // file | photo | video | audio
+    let recordedChunks = [];
+    let recordedVideoBlob = null;
+    let currentFacingMode = 'environment';
+    let availableVideoDevices = [];
+    let conversationOpened = false;
+    let pinnedMessages = [];
+    let currentPinnedIndex = 0;
+    function getTr() {
+        return translations[currentLang];
+    }
+
+    function changeLanguage(lang) {
+        currentLang = lang;
+        applyTexts();
+    }
+
+    function applyTexts() {
+        const t = getTr();
+    const countText = document.getElementById('conversationCountText');
+    const messageCount = document.getElementById('messageCount');
+
+    if (countText && messageCount) {
+        const n = messageCount.textContent.trim() || '0';
+
+        if (currentLang === 'fr') {
+            countText.textContent = `${n} message(s)`;
+        } else if (currentLang === 'en') {
+            countText.textContent = `${n} message(s)`;
+        } else {
+            countText.textContent = `${n} رسالة`;
+        }
+            }
+         const emptyMessagesText = document.getElementById('emptyMessagesText');
+        if (emptyMessagesText) {
+            if (currentLang === 'fr') {
+                emptyMessagesText.textContent = 'Aucun message pour le moment.';
+            } else if (currentLang === 'en') {
+                emptyMessagesText.textContent = 'No messages yet.';
+            } else {
+                emptyMessagesText.textContent = 'لا توجد رسائل حالياً.';
+            }
+}
+            const notificationsTitle = document.getElementById('notificationsTitle');
+            if (notificationsTitle) {
+                if (currentLang === 'fr') notificationsTitle.textContent = 'Notifications';
+                else if (currentLang === 'en') notificationsTitle.textContent = 'Notifications';
+                else notificationsTitle.textContent = 'الإشعارات';
+            }
+
+            const emptyNotificationsText = document.getElementById('emptyNotificationsText');
+            if (emptyNotificationsText) {
+                if (currentLang === 'fr') emptyNotificationsText.textContent = 'Aucune notification';
+                else if (currentLang === 'en') emptyNotificationsText.textContent = 'No notifications';
+                else emptyNotificationsText.textContent = 'لا توجد إشعارات';
+            }
+        document.getElementById('backText').textContent = t.backText;
+        document.getElementById('pageTitle').textContent = t.pageTitle;
+        document.getElementById('pageSubtitle').textContent = t.pageSubtitle;
+        document.getElementById('heroBadge').textContent = t.heroBadge;
+        document.getElementById('heroTitle').textContent = t.heroTitle;
+        document.getElementById('heroText').textContent = t.heroText;
+        document.getElementById('summaryLabel').textContent = t.summaryLabel;
+        document.getElementById('adviceLabel').textContent = t.adviceLabel;
+        document.getElementById('adviceText').textContent = t.adviceText;
+        document.getElementById('conversationTitle').textContent = t.conversationTitle;
+        document.getElementById('conversationSub').textContent = t.conversationSub;
+        document.getElementById('statusText').textContent = t.statusText;
+        document.getElementById('headerNote').textContent = t.headerNote;
+        document.getElementById('typingText').textContent = t.typingText;
+        document.getElementById('inputHelp').textContent = t.inputHelp;
+        document.getElementById('footerText').textContent = t.footerText;
+        document.getElementById('searchInput').placeholder = t.searchPlaceholder;
+        document.getElementById('messageInput').placeholder = t.messagePlaceholder;
+
+        document.documentElement.lang = currentLang;
+        document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+
+        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            if (btn.textContent.trim().toLowerCase() === currentLang) {
+                btn.classList.add('active');
+            }
+        });
+    }
+
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        const icon = document.getElementById('themeIcon');
+        icon.classList.toggle('bi-moon-stars');
+        icon.classList.toggle('bi-brightness-high');
+    }
+
+    function renderAttachmentPreview() {
+    const area = document.getElementById('previewArea');
+
+    if (!currentAttachment) {
+        area.style.display = 'none';
+        area.innerHTML = '';
+        return;
+    }
+
+    const fileURL = URL.createObjectURL(currentAttachment);
+    let label = currentAttachment.name || 'Fichier prêt à envoyer';
+
+    if (currentAttachmentKind === 'photo') {
+        label = 'Photo prête à envoyer';
+    } else if (currentAttachmentKind === 'video') {
+        label = 'Vidéo prête à envoyer';
+    } else if (currentAttachmentKind === 'audio') {
+        label = 'Message vocal prêt à envoyer';
+    } else if (currentAttachmentKind === 'file') {
+        label = 'Fichier prêt à envoyer';
+    }
+
+    let content = `
+        <div class="preview-file" style="display:flex; flex-direction:column; align-items:flex-start; gap:8px; border-radius:16px; max-width:280px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; width:100%;">
+                <span style="font-weight:600; font-size:.82rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:220px;">
+                    ${label}
+                </span>
+                <i class="bi bi-x-circle preview-remove" onclick="clearAttachment()"></i>
+            </div>
+    `;
+
+    if (currentAttachment.type.startsWith('image/')) {
+        content += `
+            <img src="${fileURL}" alt="preview"
+                 onclick="openMediaPreview('${fileURL}', 'image')"
+                 style="max-width:220px; border-radius:12px; cursor:pointer;">
+        `;
+    } else if (currentAttachment.type.startsWith('video/')) {
+        content += `
+            <video controls style="max-width:240px; border-radius:12px;">
+                <source src="${fileURL}">
+            </video>
+        `;
+    } else if (currentAttachment.type.startsWith('audio/')) {
+        content += `
+            <audio controls style="max-width:240px;">
+                <source src="${fileURL}">
+            </audio>
+        `;
+    } else {
+        content += `
+            <a href="${fileURL}" target="_blank" style="font-size:.82rem; color:var(--primary); text-decoration:none;">
+                <i class="bi bi-paperclip"></i> ${currentAttachment.name}
+            </a>
+        `;
+    }
+
+    content += `</div>`;
+
+    area.innerHTML = content;
+    area.style.display = 'flex';
+}
+    
+function clearAttachment() {
+    currentAttachment = null;
+    currentAttachmentKind = null;
+
+    const attachmentInput = document.getElementById('attachmentInput');
+    if (attachmentInput) attachmentInput.value = '';
+
+    renderAttachmentPreview();
+}
+
+    function autoResizeTextarea() {
+        const input = document.getElementById('messageInput');
+        input.style.height = 'auto';
+        input.style.height = Math.min(input.scrollHeight, 110) + 'px';
+    }
+    
+    function filterMessages() {
+        const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
+        const rows = document.querySelectorAll('#messagesArea .message-row');
+        const separators = document.querySelectorAll('#messagesArea .date-separator');
+
+        rows.forEach(row => {
+            const text = row.innerText.toLowerCase();
+            row.style.display = text.includes(searchTerm) ? '' : 'none';
+        });
+
+        separators.forEach(separator => {
+            separator.style.display = '';
+        });
+    }
+
+function init() {
+    applyTexts();
+    renderAttachmentPreview();
+    formatMessageDatesToLocal();
+
+    const keepOpen = sessionStorage.getItem('patient_messages_keep_open') === '1';
+    const scrollTargetId = sessionStorage.getItem('patient_messages_scroll_target');
+
+    setConversationState(keepOpen);
+
+    const input = document.getElementById('messageInput');
+    if (input) {
+        input.addEventListener('input', autoResizeTextarea);
+    }
+
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.addEventListener('input', filterMessages);
+    }
+
+    const messagesArea = document.getElementById('messagesArea');
+    if (messagesArea) {
+        messagesArea.scrollTop = messagesArea.scrollHeight;
+    }
+
+    loadPinnedMessage();
+    updateNotificationBadge();
+    setInterval(updateNotificationBadge, 30000);
+    document.addEventListener('keydown', function(e) {
+    const active = document.activeElement;
+
+    if (
+        e.key === 'Enter' &&
+        !e.shiftKey &&
+        active &&
+        active.id === 'messageInput'
+    ) {
+        e.preventDefault();
+        sendMessage();
+    }
+    if (keepOpen && scrollTargetId) {
+        setTimeout(() => {
+            scrollToMessage(scrollTargetId);
+            sessionStorage.removeItem('patient_messages_scroll_target');
+            sessionStorage.removeItem('patient_messages_keep_open');
+        }, 250);
+    } else {
+        sessionStorage.removeItem('patient_messages_scroll_target');
+        sessionStorage.removeItem('patient_messages_keep_open');
+    }
+});
+}
+let replyMessageId = null;
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function replyMessage(messageId, text) {
+    setConversationState(true);
+
+    replyMessageId = messageId;
+
+    const preview = document.getElementById('replyPreview');
+    const input = document.getElementById('messageInput');
+    const hidden = document.getElementById('replyToId');
+
+    if (hidden) {
+        hidden.value = messageId;
+    }
+
+    if (preview) {
+        preview.innerHTML = `
+            <div class="preview-file" style="max-width:100%; display:flex; align-items:flex-start; gap:10px;">
+                <i class="bi bi-reply"></i>
+                <div style="display:flex; flex-direction:column; min-width:0;">
+                    <strong style="font-size:.78rem;">Réponse au message</strong>
+                    <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:320px;">
+                        ${text}
+                    </span>
+                </div>
+                <i class="bi bi-x-circle preview-remove" onclick="clearReply()"></i>
+            </div>
+        `;
+        preview.style.display = 'flex';
+    }
+
+    if (input) {
+        input.focus();
+    }
+}
+
+function clearReply() {
+    replyMessageId = null;
+
+    const preview = document.getElementById('replyPreview');
+    const hidden = document.getElementById('replyToId');
+
+    if (hidden) {
+        hidden.value = '';
+    }
+
+    if (preview) {
+        preview.innerHTML = '';
+        preview.style.display = 'none';
+    }
+}
+
+function copyMessage(id, text) {
+    const contenu = text || '';
+
+    if (!contenu) {
+        return;
+    }
+
+    // Méthode moderne
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(contenu)
+            .then(() => {
+                showCopyToast("Message copié");
+            })
+            .catch((error) => {
+                console.error("Erreur clipboard :", error);
+                fallbackCopyMessage(contenu);
+            });
+    } else {
+        // Fallback si clipboard API ne fonctionne pas
+        fallbackCopyMessage(contenu);
+    }
+}
+
+function fallbackCopyMessage(contenu) {
+    const textarea = document.createElement("textarea");
+    textarea.value = contenu;
+
+    // éviter de perturber l'affichage
+    textarea.style.position = "fixed";
+    textarea.style.opacity = "0";
+    textarea.style.left = "-9999px";
+    textarea.style.top = "0";
+
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+
+    try {
+        const success = document.execCommand("copy");
+
+        if (success) {
+            showCopyToast("Message copié");
+        } else {
+            alert("Impossible de copier le message");
+        }
+    } catch (error) {
+        console.error("Erreur fallback copy :", error);
+        alert("Impossible de copier le message");
+    }
+
+    document.body.removeChild(textarea);
+}
+
+function showCopyToast(message) {
+    let toast = document.getElementById("copyToast");
+
+    if (!toast) {
+        toast = document.createElement("div");
+        toast.id = "copyToast";
+        toast.style.position = "fixed";
+        toast.style.bottom = "20px";
+        toast.style.right = "20px";
+        toast.style.background = "#2E8B57";
+        toast.style.color = "#fff";
+        toast.style.padding = "10px 14px";
+        toast.style.borderRadius = "12px";
+        toast.style.fontSize = "14px";
+        toast.style.fontWeight = "600";
+        toast.style.zIndex = "99999";
+        toast.style.boxShadow = "0 8px 20px rgba(0,0,0,0.15)";
+        toast.style.opacity = "0";
+        toast.style.transition = "opacity 0.25s ease";
+        document.body.appendChild(toast);
+    }
+
+    toast.textContent = message;
+    toast.style.opacity = "1";
+
+    clearTimeout(toast._hideTimer);
+    toast._hideTimer = setTimeout(() => {
+        toast.style.opacity = "0";
+    }, 1500);
+}
+
+function pinMessage(id) {
+    fetch(`/messages/message/${id}/pin/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            fetch("{% url 'patient_messages_api' %}")
+                .then(res => res.json())
+                .then(apiData => {
+                    if (!apiData.success || !Array.isArray(apiData.messages)) {
+                        throw new Error("Impossible de recharger les messages");
+                    }
+
+                    renderAllMessagesFromServer(apiData.messages);
+
+                    if (apiData.messages.length) {
+                        lastRenderedMessageId = apiData.messages[apiData.messages.length - 1].id;
+                    }
+
+                    loadPinnedMessage();
+                })
+                .catch(error => {
+                    console.error('Erreur refresh après épinglage :', error);
+                    location.reload();
+                });
+        } else {
+            alert(data.error || "Erreur lors de l'épinglage");
+        }
+    })
+    .catch(error => {
+        console.error(error);
+        alert("Erreur serveur");
+    });
+}
+function editMessage(id, oldText) {
+    const newText = prompt('Modifier le message :', oldText);
+    if (newText === null) return;
+
+    const cleanText = newText.trim();
+    if (!cleanText) {
+        alert('Le message ne peut pas être vide');
+        return;
+    }
+
+    fetch(`/messages/message/${id}/edit/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            text: cleanText
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const row = document.getElementById(`message-${id}`);
+            if (row) {
+                const textEl = row.querySelector('.message-text');
+                if (textEl) {
+                    textEl.textContent = cleanText;
+                }
+            }
+
+            updateConversationPreview(cleanText);
+            setConversationState(true);
+            loadPinnedMessage();
+
+            const messagesArea = document.getElementById('messagesArea');
+            if (messagesArea) {
+                setTimeout(() => {
+                    messagesArea.scrollTop = messagesArea.scrollHeight;
+                }, 80);
+            }
+        } else {
+            alert(data.error || 'Erreur de modification');
+        }
+    })
+    .catch(error => {
+        console.error(error);
+        alert('Erreur serveur');
+    });
+}
+
+function deleteMessage(id) {
+    if (!confirm('Supprimer ce message ?')) return;
+
+    fetch(`/messages/message/${id}/delete/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const row = document.getElementById(`message-${id}`);
+            if (row) {
+                row.remove();
+            }
+
+            setConversationState(true);
+            loadPinnedMessage();
+
+            const messagesArea = document.getElementById('messagesArea');
+            if (messagesArea) {
+                setTimeout(() => {
+                    messagesArea.scrollTop = messagesArea.scrollHeight;
+                }, 80);
+            }
+        } else {
+            alert(data.error || 'Erreur de suppression');
+        }
+    })
+    .catch(error => {
+        console.error('Erreur suppression :', error);
+        alert('Erreur serveur');
+    });
+}
+    
+
+function updateConversationPreview(text) {
+    const preview = document.getElementById('conversationPreviewText');
+    if (!preview) return;
+
+    if (text && text.trim()) {
+        preview.textContent = text.length > 80 ? text.substring(0, 80) + '...' : text;
+    } else if (currentAttachment) {
+        preview.textContent = currentAttachment.name || 'Pièce jointe envoyée';
+    }
+}
+function updateConversationCount(increment = 1) {
+    const countText = document.getElementById('conversationCountText');
+    const messageCount = document.getElementById('messageCount');
+
+    if (!countText || !messageCount) return;
+
+    let current = parseInt(messageCount.textContent || '0', 10);
+    if (isNaN(current)) current = 0;
+
+    current += increment;
+
+    messageCount.textContent = current;
+
+    if (currentLang === 'ar') {
+        countText.textContent = `${current} رسالة`;
+    } else {
+        countText.textContent = `${current} message(s)`;
+    }
+}
+
+function appendNewPatientMessage(text, attachmentFile = null) {
+    const messagesArea = document.getElementById('messagesArea');
+    if (!messagesArea) return;
+
+    const now = new Date();
+    const jour = String(now.getDate()).padStart(2, '0');
+    const mois = String(now.getMonth() + 1).padStart(2, '0');
+    const annee = now.getFullYear();
+    const heures = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+
+    const fullDate = `${jour}/${mois}/${annee}`;
+    const fullTime = `${jour}/${mois}/${annee} ${heures}:${minutes}`;
+
+    const lastSeparator = messagesArea.querySelector('.date-separator:last-of-type .message-date-separator, .date-separator:last-of-type span');
+    let needsDateSeparator = true;
+
+    if (lastSeparator) {
+        const lastDateText = (lastSeparator.textContent || '').trim();
+        if (lastDateText === fullDate) {
+            needsDateSeparator = false;
+        }
+    }
+
+    let attachmentHtml = '';
+
+    if (attachmentFile) {
+        const fileURL = URL.createObjectURL(attachmentFile);
+
+        if (attachmentFile.type.startsWith('image/')) {
+            attachmentHtml = `
+                <div class="attachment-preview" style="display:block; background:transparent; padding:0;">
+                    <img src="${fileURL}"
+                         onclick="openMediaPreview('${fileURL}', 'image')"
+                         style="max-width:220px; border-radius:12px; cursor:pointer;">
+                </div>
+            `;
+        } else if (attachmentFile.type.startsWith('video/')) {
+            attachmentHtml = `
+                <div class="attachment-preview" style="display:block; background:transparent; padding:0;">
+                    <video controls style="max-width:240px; border-radius:12px;">
+                        <source src="${fileURL}">
+                    </video>
+                </div>
+            `;
+        } else if (attachmentFile.type.startsWith('audio/')) {
+            attachmentHtml = `
+                <div class="attachment-preview" style="display:block;">
+                    <audio controls style="max-width:240px;">
+                        <source src="${fileURL}">
+                    </audio>
+                </div>
+            `;
+        } else {
+            attachmentHtml = `
+                <a href="${fileURL}" target="_blank" class="attachment-preview" style="text-decoration:none;">
+                    <i class="bi bi-paperclip"></i>
+                    <span>${attachmentFile.name}</span>
+                </a>
+            `;
+        }
+    }
+
+    const dateSeparatorHtml = needsDateSeparator ? `
+        <div class="date-separator">
+            <span>${fullDate}</span>
+        </div>
+    ` : '';
+
+    const messageHtml = `
+        ${dateSeparatorHtml}
+        <div class="message-row patient">
+            <div class="message-bubble">
+                ${text ? `<div class="message-text"></div>` : ''}
+                ${attachmentHtml}
+                <div class="message-meta">
+                    <span>${fullTime}</span>
+                    <span class="read-status">
+                        <i class="bi bi-check2"></i>
+                        <span>Envoyé</span>
+                    </span>
+                </div>
+                <div class="message-actions">
+                    <button type="button" class="mini-action" disabled>
+                        <i class="bi bi-reply"></i>
+                    </button>
+                    <button type="button" class="mini-action" disabled>
+                        <i class="bi bi-pin-angle"></i>
+                    </button>
+                    <button type="button" class="mini-action" disabled>
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button type="button" class="mini-action" disabled>
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    messagesArea.insertAdjacentHTML('beforeend', messageHtml);
+
+    if (text) {
+        const rows = messagesArea.querySelectorAll('.message-row.patient .message-text');
+        const lastText = rows[rows.length - 1];
+        if (lastText) {
+            lastText.textContent = text;
+        }
+    }
+
+    messagesArea.scrollTop = messagesArea.scrollHeight;
+}
+
+function handleAttachmentChange(file, kind = 'file') {
+    if (!file) return;
+
+    currentAttachment = file;
+    currentAttachmentKind = kind;
+
+    renderAttachmentPreview();
+}
+async function openCameraModal(mode) {
+    cameraMode = mode;
+    recordedChunks = [];
+
+    const modal = document.getElementById('cameraModal');
+    const title = document.getElementById('cameraTitle');
+    const captureBtn = document.getElementById('capturePhotoBtn');
+    const recordBtn = document.getElementById('recordVideoBtn');
+    const indicator = document.getElementById('videoRecordIndicator');
+    const switchBtn = document.getElementById('switchCameraBtn');
+
+    if (!modal) return;
+
+    title.textContent = mode === 'photo' ? 'Prendre une photo' : 'Enregistrer une vidéo';
+    captureBtn.style.display = mode === 'photo' ? 'inline-flex' : 'none';
+    recordBtn.style.display = mode === 'video' ? 'inline-flex' : 'none';
+    indicator.style.display = 'none';
+
+    if (switchBtn) {
+        switchBtn.style.display = 'inline-flex';
+    }
+
+    // arrière par défaut à chaque ouverture
+    currentFacingMode = 'environment';
+    currentCameraId = null;
+
+    try {
+        await startCameraStream(mode);
+        modal.style.display = 'flex';
+    } catch (error) {
+        console.error('Erreur caméra :', error);
+        alert("Impossible d'accéder à la caméra.");
+    }
+}
+
+async function startCameraStream(mode) {
+    const video = document.getElementById('cameraVideo');
+    if (!video) return;
+
+    if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+        cameraStream = null;
+    }
+
+    try {
+        // priorité mobile : arrière / avant avec facingMode
+        cameraStream = await navigator.mediaDevices.getUserMedia({
+            video: {
+                facingMode: { ideal: currentFacingMode },
+                width: { ideal: 1280 },
+                height: { ideal: 720 }
+            },
+            audio: mode === 'video'
+        });
+    } catch (err) {
+        console.warn('Fallback camera devices...', err);
+
+        const permissionStream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: false
+        });
+        permissionStream.getTracks().forEach(track => track.stop());
+
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        availableVideoDevices = devices.filter(device => device.kind === 'videoinput');
+
+        if (!availableVideoDevices.length) {
+            throw new Error('Aucune caméra trouvée');
+        }
+
+        let selectedDevice = null;
+
+        if (currentFacingMode === 'environment') {
+            selectedDevice = availableVideoDevices.find(device => {
+                const label = (device.label || '').toLowerCase();
+                return (
+                    label.includes('back') ||
+                    label.includes('rear') ||
+                    label.includes('environment') ||
+                    label.includes('arrière')
+                );
+            });
+        } else {
+            selectedDevice = availableVideoDevices.find(device => {
+                const label = (device.label || '').toLowerCase();
+                return (
+                    label.includes('front') ||
+                    label.includes('user') ||
+                    label.includes('avant')
+                );
+            });
+        }
+
+        if (!selectedDevice) {
+            if (availableVideoDevices.length > 1) {
+                selectedDevice = currentFacingMode === 'environment'
+                    ? availableVideoDevices[availableVideoDevices.length - 1]
+                    : availableVideoDevices[0];
+            } else {
+                selectedDevice = availableVideoDevices[0];
+            }
+        }
+
+        currentCameraId = selectedDevice.deviceId;
+
+        cameraStream = await navigator.mediaDevices.getUserMedia({
+            video: {
+                deviceId: { exact: currentCameraId },
+                width: { ideal: 1280 },
+                height: { ideal: 720 }
+            },
+            audio: mode === 'video'
+        });
+    }
+
+    video.srcObject = cameraStream;
+    video.setAttribute('playsinline', true);
+    video.muted = true;
+
+    await video.play().catch(error => {
+        console.error('Erreur lecture vidéo :', error);
+    });
+}
+
+async function switchCamera() {
+    if (!cameraMode) return;
+
+    try {
+        currentFacingMode = currentFacingMode === 'environment' ? 'user' : 'environment';
+        await startCameraStream(cameraMode);
+    } catch (error) {
+        console.error('Erreur changement caméra :', error);
+        alert("Impossible de changer de caméra.");
+    }
+}
+
+function closeCameraModal() {
+    const modal = document.getElementById('cameraModal');
+    const video = document.getElementById('cameraVideo');
+    const indicator = document.getElementById('videoRecordIndicator');
+    const recordBtn = document.getElementById('recordVideoBtn');
+
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+    }
+
+    if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+        cameraStream = null;
+    }
+
+    if (video) {
+        video.pause();
+        video.srcObject = null;
+    }
+
+    if (indicator) {
+        indicator.style.display = 'none';
+    }
+
+    if (recordBtn) {
+        recordBtn.innerHTML = '<i class="bi bi-record-circle"></i>';
+    }
+
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+function capturePhoto() {
+    const video = document.getElementById('cameraVideo');
+    if (!video) return;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth || 1280;
+    canvas.height = video.videoHeight || 720;
+
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    canvas.toBlob(function(blob) {
+        if (!blob) return;
+
+        const file = new File([blob], `photo_${Date.now()}.png`, { type: 'image/png' });
+        currentAttachment = file;
+        currentAttachmentKind = 'photo';
+        renderAttachmentPreview();
+        closeCameraModal();
+    }, 'image/png');
+}
+
+function toggleVideoRecording() {
+    const indicator = document.getElementById('videoRecordIndicator');
+    const recordBtn = document.getElementById('recordVideoBtn');
+
+    if (!cameraStream) return;
+
+    if (!mediaRecorder || mediaRecorder.state === 'inactive') {
+        recordedChunks = [];
+
+        try {
+            mediaRecorder = new MediaRecorder(cameraStream, { mimeType: 'video/webm' });
+        } catch (e) {
+            mediaRecorder = new MediaRecorder(cameraStream);
+        }
+
+        mediaRecorder.ondataavailable = function(event) {
+            if (event.data && event.data.size > 0) {
+                recordedChunks.push(event.data);
+            }
+        };
+
+        mediaRecorder.onstop = function() {
+            const videoBlob = new Blob(recordedChunks, { type: 'video/webm' });
+            const file = new File([videoBlob], `video_${Date.now()}.webm`, { type: 'video/webm' });
+
+            currentAttachment = file;
+            currentAttachmentKind = 'video';
+            renderAttachmentPreview();
+            closeCameraModal();
+        };
+
+        mediaRecorder.start();
+
+        if (indicator) indicator.style.display = 'block';
+        if (recordBtn) recordBtn.innerHTML = '<i class="bi bi-stop-circle-fill"></i>';
+    } else {
+        mediaRecorder.stop();
+
+        if (indicator) indicator.style.display = 'none';
+        if (recordBtn) recordBtn.innerHTML = '<i class="bi bi-record-circle"></i>';
+    }
+}
+function closeCameraModal() {
+    const modal = document.getElementById('cameraModal');
+    const video = document.getElementById('cameraVideo');
+    const indicator = document.getElementById('videoRecordIndicator');
+    const recordBtn = document.getElementById('recordVideoBtn');
+
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+    }
+
+    if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+        cameraStream = null;
+    }
+
+    if (video) {
+        video.srcObject = null;
+    }
+
+    if (indicator) {
+        indicator.style.display = 'none';
+    }
+
+    if (recordBtn) {
+        recordBtn.innerHTML = '<i class="bi bi-record-circle"></i>';
+    }
+
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+function capturePhoto() {
+    const video = document.getElementById('cameraVideo');
+    if (!video) return;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth || 1280;
+    canvas.height = video.videoHeight || 720;
+
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    canvas.toBlob(function(blob) {
+        if (!blob) return;
+
+        const file = new File([blob], `photo_${Date.now()}.png`, { type: 'image/png' });
+
+        currentAttachment = file;
+        currentAttachmentKind = 'photo';
+        renderAttachmentPreview();
+        closeCameraModal();
+    }, 'image/png');
+}
+function toggleVideoRecording() {
+    const indicator = document.getElementById('videoRecordIndicator');
+    const recordBtn = document.getElementById('recordVideoBtn');
+
+    if (!cameraStream) return;
+
+    if (!mediaRecorder || mediaRecorder.state === 'inactive') {
+        recordedChunks = [];
+
+        try {
+            mediaRecorder = new MediaRecorder(cameraStream, { mimeType: 'video/webm' });
+        } catch (e) {
+            mediaRecorder = new MediaRecorder(cameraStream);
+        }
+
+        mediaRecorder.ondataavailable = function(event) {
+            if (event.data && event.data.size > 0) {
+                recordedChunks.push(event.data);
+            }
+        };
+
+        mediaRecorder.onstop = function() {
+            const videoBlob = new Blob(recordedChunks, { type: 'video/webm' });
+            const file = new File([videoBlob], `video_${Date.now()}.webm`, { type: 'video/webm' });
+
+            currentAttachment = file;
+            currentAttachmentKind = 'video';
+            renderAttachmentPreview();
+            closeCameraModal();
+        };
+
+        mediaRecorder.start();
+        if (indicator) indicator.style.display = 'block';
+        if (recordBtn) recordBtn.innerHTML = '<i class="bi bi-stop-circle-fill"></i>';
+
+    } else {
+        mediaRecorder.stop();
+        if (indicator) indicator.style.display = 'none';
+        if (recordBtn) recordBtn.innerHTML = '<i class="bi bi-record-circle"></i>';
+    }
+}
+
+async function toggleVoiceRecording() {
+    const voiceIcon = document.getElementById('voiceIcon');
+
+    if (!isRecording) {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+            audioChunks = [];
+            mediaRecorder = new MediaRecorder(stream);
+            isRecording = true;
+
+            mediaRecorder.ondataavailable = function(event) {
+                if (event.data.size > 0) {
+                    audioChunks.push(event.data);
+                }
+            };
+
+            mediaRecorder.onstop = function() {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                const audioFile = new File([audioBlob], `vocal_${Date.now()}.webm`, {
+                    type: 'audio/webm'
+                });
+
+                currentAttachment = audioFile;
+                renderAttachmentPreview();
+
+                stream.getTracks().forEach(track => track.stop());
+            };
+
+            mediaRecorder.start();
+            voiceIcon.classList.remove('bi-mic');
+            voiceIcon.classList.add('bi-stop-circle');
+        } catch (error) {
+            console.error(error);
+            alert("Impossible d'accéder au microphone.");
+        }
+    } else {
+        isRecording = false;
+
+        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+            mediaRecorder.stop();
+        }
+
+        voiceIcon.classList.remove('bi-stop-circle');
+        voiceIcon.classList.add('bi-mic');
+    }
+}
+    
+
+
+async function startRecording() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+        audioChunks = [];
+        mediaRecorder = new MediaRecorder(stream);
+        isRecording = true;
+
+        const recordBtn = document.getElementById('recordBtn');
+        const stopBtn = document.getElementById('stopRecordBtn');
+
+        if (recordBtn) {
+            recordBtn.style.background = '#dc2626';
+            recordBtn.style.color = 'white';
+        }
+
+        if (stopBtn) {
+            stopBtn.style.display = 'inline-flex';
+        }
+
+        mediaRecorder.ondataavailable = function(e) {
+            if (e.data.size > 0) {
+                audioChunks.push(e.data);
+            }
+        };
+
+        mediaRecorder.onstop = function() {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+            const audioFile = new File([audioBlob], `vocal_${Date.now()}.webm`, {
+                type: 'audio/webm'
+            });
+
+            currentAttachment = audioFile;
+            currentAttachmentKind = 'audio';
+            renderAttachmentPreview();
+
+            if (mediaRecorder.stream) {
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+            }
+
+            stopRecordingUI();
+        };
+
+        mediaRecorder.start();
+    } catch (error) {
+        console.error("Erreur micro :", error);
+        alert("Micro non autorisé ou indisponible");
+        stopRecordingUI();
+    }
+}
+
+function stopRecording() {
+    if (mediaRecorder && isRecording) {
+        mediaRecorder.stop();
+    }
+}
+
+function stopRecordingUI() {
+    isRecording = false;
+
+    const recordBtn = document.getElementById('recordBtn');
+    const stopBtn = document.getElementById('stopRecordBtn');
+
+    if (recordBtn) {
+        recordBtn.style.background = '';
+        recordBtn.style.color = '';
+    }
+
+    if (stopBtn) {
+        stopBtn.style.display = 'none';
+    }
+}
+    function openMediaPreview(url, type) {
+    const modal = document.getElementById('mediaPreviewModal');
+    const content = document.getElementById('mediaPreviewContent');
+
+    if (!modal || !content) return;
+
+    if (type === 'image') {
+        content.innerHTML = `
+            <img src="${url}" style="max-width:90vw; max-height:90vh; border-radius:16px;">
+        `;
+    } else if (type === 'video') {
+        content.innerHTML = `
+            <video controls autoplay style="max-width:90vw; max-height:90vh; border-radius:16px;">
+                <source src="${url}">
+            </video>
+        `;
+    }
+
+    modal.style.display = 'flex';
+}
+
+function closeMediaPreview() {
+    const modal = document.getElementById('mediaPreviewModal');
+    const content = document.getElementById('mediaPreviewContent');
+
+    if (content) content.innerHTML = '';
+    if (modal) modal.style.display = 'none';
+}
+
+document.addEventListener('click', function(e) {
+    const modal = document.getElementById('mediaPreviewModal');
+    if (e.target === modal) {
+        closeMediaPreview();
+    }
+});
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let isRecording = false;
+
+        async function toggleRecording() {
+            if (!isRecording) {
+                await startRecording();
+            } else {
+                stopRecording();
+            }
+        }
+
+        async function startRecording() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+                audioChunks = [];
+                mediaRecorder = new MediaRecorder(stream);
+                isRecording = true;
+
+                const recordBtn = document.getElementById('recordBtn');
+                const stopBtn = document.getElementById('stopRecordBtn');
+
+                if (recordBtn) {
+                    recordBtn.style.background = '#dc2626';
+                    recordBtn.style.color = 'white';
+                }
+
+                if (stopBtn) {
+                    stopBtn.style.display = 'inline-flex';
+                }
+
+                mediaRecorder.ondataavailable = function(e) {
+                    if (e.data.size > 0) {
+                        audioChunks.push(e.data);
+                    }
+                };
+
+                mediaRecorder.onstop = function() {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    const audioFile = new File([audioBlob], `vocal_${Date.now()}.webm`, {
+                        type: 'audio/webm'
+                    });
+
+                    currentAttachment = audioFile;
+                    currentAttachmentKind = 'audio';
+                    renderAttachmentPreview();
+
+                    stream.getTracks().forEach(track => track.stop());
+                    stopRecordingUI();
+                };
+
+                mediaRecorder.start();
+            } catch (error) {
+                console.error('Erreur micro :', error);
+                alert("Impossible d'accéder au microphone.");
+                stopRecordingUI();
+            }
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && isRecording) {
+                mediaRecorder.stop();
+            }
+        }
+
+        function stopRecordingUI() {
+            isRecording = false;
+
+            const recordBtn = document.getElementById('recordBtn');
+            const stopBtn = document.getElementById('stopRecordBtn');
+
+            if (recordBtn) {
+                recordBtn.style.background = '';
+                recordBtn.style.color = '';
+            }
+
+            if (stopBtn) {
+                stopBtn.style.display = 'none';
+            }
+        }
+  
+  
+
+    function scrollToMessage(id) {
+    const el = document.getElementById('message-' + id);
+    if (!el) return;
+
+    el.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+    });
+
+    const bubble = el.querySelector('.message-bubble');
+    if (bubble) {
+        const oldShadow = bubble.style.boxShadow;
+        bubble.style.boxShadow = '0 0 0 3px #f59e0b';
+        setTimeout(() => {
+            bubble.style.boxShadow = oldShadow;
+        }, 1600);
+    }
+}
+
+function updatePinnedBar() {
+    const bar = document.getElementById('pinnedBar');
+    const preview = document.getElementById('pinnedPreview');
+    const title = document.getElementById('pinnedTitle');
+    const prevBtn = document.getElementById('pinnedPrevBtn');
+    const nextBtn = document.getElementById('pinnedNextBtn');
+
+    if (!bar || !preview || !title) return;
+
+    if (!pinnedMessages.length) {
+        bar.style.display = 'none';
+        return;
+    }
+
+    const current = pinnedMessages[currentPinnedIndex];
+    if (!current) {
+        bar.style.display = 'none';
+        return;
+    }
+
+    const text = (current.text || 'Message épinglé').trim();
+    preview.textContent = text.length > 70 ? text.substring(0, 70) + '...' : text;
+
+    if (pinnedMessages.length === 1) {
+        title.textContent = 'Message épinglé';
+        if (prevBtn) prevBtn.style.display = 'none';
+        if (nextBtn) nextBtn.style.display = 'none';
+    } else {
+        title.textContent = `Message épinglé ${currentPinnedIndex + 1}/${pinnedMessages.length}`;
+        if (prevBtn) prevBtn.style.display = 'inline-flex';
+        if (nextBtn) nextBtn.style.display = 'inline-flex';
+    }
+
+    bar.style.display = 'flex';
+}
+
+function openCurrentPinnedMessage() {
+    if (!pinnedMessages.length) return;
+
+    const current = pinnedMessages[currentPinnedIndex];
+    if (!current || !current.id) return;
+
+    toggleConversationPanel(true);
+
+    setTimeout(() => {
+        scrollToMessage(current.id);
+    }, 120);
+}
+
+function showPrevPinnedMessage() {
+    if (!pinnedMessages.length) return;
+
+    currentPinnedIndex--;
+    if (currentPinnedIndex < 0) {
+        currentPinnedIndex = pinnedMessages.length - 1;
+    }
+
+    updatePinnedBar();
+}
+
+function showNextPinnedMessage() {
+    if (!pinnedMessages.length) return;
+
+    currentPinnedIndex++;
+    if (currentPinnedIndex >= pinnedMessages.length) {
+        currentPinnedIndex = 0;
+    }
+
+    updatePinnedBar();
+}
+
+function rebuildPinnedMessagesFromDOM() {
+    pinnedMessages = [];
+
+    document.querySelectorAll('#messagesArea .message-row .message-bubble.pinned-message').forEach(bubble => {
+        const row = bubble.closest('.message-row');
+        if (!row || !row.id) return;
+
+        const messageId = row.id.replace('message-', '');
+        const textEl = bubble.querySelector('.message-text');
+
+        let text = '';
+        if (textEl && textEl.innerText.trim()) {
+            text = textEl.innerText.trim();
+        } else {
+            text = 'Message épinglé';
+        }
+
+        pinnedMessages.push({
+            id: messageId,
+            text: text
+        });
+    });
+
+    // le plus récent en premier
+    pinnedMessages.reverse();
+    currentPinnedIndex = 0;
+
+    updatePinnedBar();
+}
+
+function updatePinnedBar() {
+    const bar = document.getElementById('pinnedBar');
+    const preview = document.getElementById('pinnedPreview');
+    const title = document.getElementById('pinnedTitle');
+    const prevBtn = document.getElementById('pinnedPrevBtn');
+    const nextBtn = document.getElementById('pinnedNextBtn');
+
+    if (!bar || !preview || !title) return;
+
+    if (!pinnedMessages.length) {
+        bar.style.display = 'none';
+        return;
+    }
+
+    const current = pinnedMessages[currentPinnedIndex];
+    if (!current) {
+        bar.style.display = 'none';
+        return;
+    }
+
+    title.textContent = pinnedMessages.length > 1
+        ? `Message épinglé ${currentPinnedIndex + 1}/${pinnedMessages.length}`
+        : 'Message épinglé';
+
+    preview.textContent = current.text.length > 70
+        ? current.text.substring(0, 70) + '...'
+        : current.text;
+
+    if (prevBtn) prevBtn.style.display = pinnedMessages.length > 1 ? 'inline-flex' : 'none';
+    if (nextBtn) nextBtn.style.display = pinnedMessages.length > 1 ? 'inline-flex' : 'none';
+
+    bar.style.display = 'flex';
+}
+
+function openCurrentPinnedMessage() {
+    if (!pinnedMessages.length) return;
+
+    const current = pinnedMessages[currentPinnedIndex];
+    if (!current || !current.id) return;
+
+    toggleConversationPanel(true);
+
+    setTimeout(() => {
+        scrollToMessage(current.id);
+    }, 120);
+}
+
+function showPrevPinnedMessage() {
+    if (!pinnedMessages.length) return;
+
+    currentPinnedIndex--;
+    if (currentPinnedIndex < 0) {
+        currentPinnedIndex = pinnedMessages.length - 1;
+    }
+
+    updatePinnedBar();
+}
+
+function showNextPinnedMessage() {
+    if (!pinnedMessages.length) return;
+
+    currentPinnedIndex++;
+    if (currentPinnedIndex >= pinnedMessages.length) {
+        currentPinnedIndex = 0;
+    }
+
+    updatePinnedBar();
+}
+
+function loadPinnedMessage() {
+    rebuildPinnedMessagesFromDOM();
+}
+function formatMessageDatesToLocal() {
+    // Convertir les heures des messages selon l'heure locale du navigateur
+    document.querySelectorAll('.message-datetime').forEach(el => {
+        const iso = el.dataset.iso;
+        if (!iso) return;
+
+        const date = new Date(iso);
+
+        if (isNaN(date.getTime())) return;
+
+        const jour = String(date.getDate()).padStart(2, '0');
+        const mois = String(date.getMonth() + 1).padStart(2, '0');
+        const annee = date.getFullYear();
+        const heures = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+
+        el.textContent = `${jour}/${mois}/${annee} ${heures}:${minutes}`;
+    });
+
+    // Convertir les séparateurs de date selon l'heure locale du navigateur
+    document.querySelectorAll('.message-date-separator').forEach(el => {
+        const iso = el.dataset.iso;
+        if (!iso) return;
+
+        const date = new Date(iso);
+
+        if (isNaN(date.getTime())) return;
+
+        const jour = String(date.getDate()).padStart(2, '0');
+        const mois = String(date.getMonth() + 1).padStart(2, '0');
+        const annee = date.getFullYear();
+
+        el.textContent = `${jour}/${mois}/${annee}`;
+    });
+}
+function formatNotificationTime(iso) {
+    if (!iso) return '';
+
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return '';
+
+    const jour = String(d.getDate()).padStart(2, '0');
+    const mois = String(d.getMonth() + 1).padStart(2, '0');
+    const annee = d.getFullYear();
+    const heures = String(d.getHours()).padStart(2, '0');
+    const minutes = String(d.getMinutes()).padStart(2, '0');
+
+    return `${jour}/${mois}/${annee} ${heures}:${minutes}`;
+}
+
+function updateNotificationBadge() {
+    fetch('/patient/messages/notifications/')
+        .then(res => res.json())
+        .then(data => {
+            const badge = document.getElementById('notifBadge');
+            if (!badge) return;
+
+            const count = data.unread_count ?? data.count ?? 0;
+            badge.textContent = count;
+            badge.style.display = count > 0 ? 'flex' : 'none';
+        })
+        .catch(error => console.error('Erreur notifications patient :', error));
+}
+
+function loadNotifications() {
+    fetch('/patient/messages/notifications/')
+        .then(res => res.json())
+        .then(data => {
+            const list = document.getElementById('notificationsList');
+            const badge = document.getElementById('notifBadge');
+            if (!list) return;
+
+            const notifications = data.notifications || [];
+            const count = data.unread_count ?? data.count ?? 0;
+
+            if (badge) {
+                badge.textContent = count;
+                badge.style.display = count > 0 ? 'flex' : 'none';
+            }
+
+            if (!notifications.length) {
+                let emptyText = 'Aucune notification';
+
+                if (currentLang === 'en') {
+                    emptyText = 'No notifications';
+                } else if (currentLang === 'ar') {
+                    emptyText = 'لا توجد إشعارات';
+                }
+
+                list.innerHTML = `
+                    <div style="padding:16px; color:var(--text-3); text-align:center;">
+                        ${emptyText}
+                    </div>
+                `;
+                return;
+            }
+
+            list.innerHTML = notifications.map(notif => {
+                const notificationType = notif.notification_type || 'message';
+                const notificationId = notificationType === 'action' ? notif.action_id : notif.message_id;
+                return `
+                <div class="notification-item" onclick="openNotificationMessage(${notif.message_id || 'null'}, '${notificationType}', '${escapeJsForInline(notif.target_url || '')}', ${notif.action_id || 'null'})" style="${notif.is_read ? 'opacity:.72;' : 'border-left:3px solid var(--brand);'}">
+                    <div class="notification-title">${escapeHtml(notif.sender_name || 'Thérapeute')}</div>
+                    <div class="notification-text">${escapeHtml(notif.text || '')}${notif.details ? `<br><span style="opacity:.75;">${escapeHtml(notif.details)}</span>` : ''}</div>
+                    <div class="notification-time">${formatNotificationTime(notif.time)} · ${notif.is_read ? 'Lu' : 'Non lu'}</div>
+                    <div style="margin-top:10px; display:flex; justify-content:flex-end; gap:8px; flex-wrap:wrap;">
+                        ${!notif.is_read ? `
+                        <button type="button" class="mini-action" onclick="markSingleNotificationRead(event, '${notificationType}', ${notif.message_id || 'null'}, ${notif.action_id || 'null'})">
+                            Marquer comme lu
+                        </button>
+                        ` : ''}
+                        <button type="button" class="mini-action" onclick="deleteSingleNotification(event, '${notificationType}', ${notificationId || 'null'})">
+                            Supprimer la notification
+                        </button>
+                    </div>
+                </div>
+            `;
+            }).join('');
+        })
+        .catch(error => console.error('Erreur chargement notifications patient :', error));
+}
+
+function toggleNotifications() {
+    const panel = document.getElementById('notificationsPanel');
+    if (!panel) return;
+
+    if (panel.style.display === 'block') {
+        panel.style.display = 'none';
+    } else {
+        loadNotifications();
+        panel.style.display = 'block';
+    }
+}
+
+function openNotificationMessage(messageId, notificationType = 'message', targetUrl = '', actionId = null) {
+    if (notificationType === 'action') {
+        const panel = document.getElementById('notificationsPanel');
+        if (panel) panel.style.display = 'none';
+        fetch(`/patient/messages/notification/action/read/${actionId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        })
+        .finally(() => {
+            updateNotificationBadge();
+            loadNotifications();
+            window.location.href = targetUrl || '/patient/programme/';
+        });
+        return;
+    }
+
+    toggleConversationPanel(true);
+
+    const panel = document.getElementById('notificationsPanel');
+    if (panel) panel.style.display = 'none';
+
+    setTimeout(() => {
+        scrollToMessage(messageId);
+    }, 120);
+
+    fetch(`/patient/messages/notification/read/${messageId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(() => {
+        updateNotificationBadge();
+        loadNotifications();
+    })
+    .catch(error => console.error('Erreur lecture notification :', error));
+}
+
+function markSingleNotificationRead(event, notificationType, messageId, actionId) {
+    event.stopPropagation();
+    const url = notificationType === 'action'
+        ? `/patient/messages/notification/action/read/${actionId}/`
+        : `/patient/messages/notification/read/${messageId}/`;
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(() => {
+        updateNotificationBadge();
+        loadNotifications();
+    })
+    .catch(error => console.error('Erreur lecture notification :', error));
+}
+
+document.addEventListener('click', function(e) {
+    const wrapper = document.querySelector('.notification-wrapper');
+    const panel = document.getElementById('notificationsPanel');
+
+    if (wrapper && panel && !wrapper.contains(e.target)) {
+        panel.style.display = 'none';
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const markAllBtn = document.getElementById('markAllNotificationsReadBtn');
+    if (markAllBtn) markAllBtn.addEventListener('click', function() {
+        fetch('/patient/messages/notifications/read-all/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        })
+        .then(() => {
+            updateNotificationBadge();
+            loadNotifications();
+        })
+        .catch(error => console.error('Erreur lecture notifications :', error));
+    });
+
+    const deleteAllBtn = document.getElementById('deleteAllNotificationsBtn');
+    if (deleteAllBtn) deleteAllBtn.addEventListener('click', function() {
+        if (!confirm('Supprimer toutes les notifications ?')) return;
+        fetch('/patient/messages/notifications/delete-all/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        })
+        .then(() => {
+            updateNotificationBadge();
+            loadNotifications();
+        })
+        .catch(error => console.error('Erreur suppression notifications :', error));
+    });
+});
+
+function deleteSingleNotification(event, notificationType, notificationId) {
+    event.stopPropagation();
+    if (!notificationId) return;
+
+    fetch('/patient/messages/notification/delete/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({
+            notification_type: notificationType,
+            notification_id: notificationId
+        })
+    })
+    .then(() => {
+        updateNotificationBadge();
+        loadNotifications();
+    })
+    .catch(error => console.error('Erreur suppression notification :', error));
+}
+function pingOnlineStatus() {
+    fetch('/messages/update-last-seen/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    }).catch(error => console.error('Erreur last_seen patient :', error));
+}
+
+function setConversationState(open) {
+    const chatPanel = document.getElementById('chatPanel');
+    const card = document.getElementById('mainConversationCard');
+
+    if (!chatPanel || !card) return;
+
+    conversationOpened = open;
+
+    chatPanel.style.display = '';
+    chatPanel.classList.remove('chat-panel-hidden');
+
+    if (open) {
+        chatPanel.style.display = 'flex';
+        card.classList.add('active');
+
+        const messagesArea = document.getElementById('messagesArea');
+        if (messagesArea) {
+            setTimeout(() => {
+                messagesArea.scrollTop = messagesArea.scrollHeight;
+            }, 50);
+        }
+    } else {
+        chatPanel.classList.add('chat-panel-hidden');
+        card.classList.remove('active');
+    }
+}
+
+function toggleConversationPanel(forceOpen = null) {
+    let shouldOpen;
+
+    if (forceOpen === true) {
+        shouldOpen = true;
+    } else if (forceOpen === false) {
+        shouldOpen = false;
+    } else {
+        shouldOpen = !conversationOpened;
+    }
+
+    setConversationState(shouldOpen);
+}
+window.onload = function () {
+    setInterval(() => {
+        if (document.hidden) return;
+        refreshMessagesAutomatically();
+    }, 30000);
+    init();
+    pingOnlineStatus();
+    setInterval(pingOnlineStatus, 30000);
+};
+function appendNewPatientMessageFromServer(message) {
+    const messagesArea = document.getElementById('messagesArea');
+    if (!messagesArea || !message) return;
+
+    const dateObj = message.time ? new Date(message.time) : new Date();
+
+    const jour = String(dateObj.getDate()).padStart(2, '0');
+    const mois = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const annee = dateObj.getFullYear();
+    const heures = String(dateObj.getHours()).padStart(2, '0');
+    const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+
+    const fullDate = `${jour}/${mois}/${annee}`;
+    const fullTime = `${jour}/${mois}/${annee} ${heures}:${minutes}`;
+
+    const lastSeparator = messagesArea.querySelector('.date-separator:last-of-type span');
+    let needsDateSeparator = true;
+
+    if (lastSeparator) {
+        const lastDateText = (lastSeparator.textContent || '').trim();
+        if (lastDateText === fullDate) {
+            needsDateSeparator = false;
+        }
+    }
+
+    let attachmentHtml = '';
+
+    const attachmentUrl = message.attachment_url || message.attachment || '';
+
+    if (attachmentUrl) {
+        if (message.attachment_type === 'image') {
+            attachmentHtml = `
+                <div class="attachment-preview" style="display:block; background:transparent; padding:0;">
+                    <img src="${attachmentUrl}"
+                         onclick="openMediaPreview('${attachmentUrl}', 'image')"
+                         style="max-width:220px; border-radius:12px; cursor:pointer;">
+                </div>
+            `;
+        } else if (message.attachment_type === 'video') {
+            attachmentHtml = `
+                <div class="attachment-preview" style="display:block; background:transparent; padding:0;">
+                    <video controls style="max-width:240px; border-radius:12px;">
+                        <source src="${attachmentUrl}">
+                    </video>
+                </div>
+            `;
+        } else if (message.attachment_type === 'audio') {
+            attachmentHtml = `
+                <div class="attachment-preview" style="display:block;">
+                    <audio controls style="max-width:240px;">
+                        <source src="${attachmentUrl}">
+                    </audio>
+                </div>
+            `;
+        } else {
+            attachmentHtml = `
+                <a href="${attachmentUrl}" target="_blank" class="attachment-preview" style="text-decoration:none;">
+                    <i class="bi bi-paperclip"></i>
+                    <span>${message.attachment_name || 'Fichier joint'}</span>
+                </a>
+            `;
+        }
+    }
+
+    const dateSeparatorHtml = needsDateSeparator ? `
+        <div class="date-separator">
+            <span>${fullDate}</span>
+        </div>
+    ` : '';
+
+    const replyHtml = message.reply_to ? `
+        <div style="
+            background: rgba(255,255,255,.16);
+            border-left: 4px solid rgba(255,255,255,.75);
+            padding: 8px 10px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            font-size: 12px;
+        ">
+            <strong>${message.reply_to.sender === 'patient' ? 'Vous' : 'Thérapeute'}</strong><br>
+            ${escapeHtml(message.reply_to.text || '')}
+        </div>
+    ` : '';
+
+    const messageHtml = `
+        ${dateSeparatorHtml}
+        <div id="message-${message.id}" class="message-row patient">
+        <div class="message-bubble ${message.is_pinned ? 'pinned-message' : ''}">
+                ${replyHtml}
+                ${message.text ? `<div class="message-text">${escapeHtml(message.text)}</div>` : ''}
+                ${attachmentHtml}
+                <div class="message-meta">
+                    <span>${fullTime}</span>
+                    <span class="read-status">
+                        <i class="bi bi-check2"></i>
+                        <span>Envoyé</span>
+                    </span>
+                </div>
+                <div class="message-actions">
+                    <button type="button" class="mini-action" onclick="replyMessage('${message.id}', '${escapeJsForInline(message.text || '')}')">
+                        <i class="bi bi-reply"></i>
+                    </button>
+                    <button type="button" class="mini-action" onclick="pinMessage('${message.id}')">
+                        <i class="bi bi-pin-angle"></i>
+                    </button>
+                    <button type="button" class="mini-action" onclick="editMessage('${message.id}', '${escapeJsForInline(message.text || '')}')">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button type="button" class="mini-action" onclick="deleteMessage('${message.id}')">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    messagesArea.insertAdjacentHTML('beforeend', messageHtml);
+
+    setConversationState(true);
+    messagesArea.scrollTop = messagesArea.scrollHeight;
+}
+function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+function escapeJsForInline(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+        .replace(/\\/g, '\\\\')
+        .replace(/'/g, "\\'")
+        .replace(/\n/g, '\\n')
+        .replace(/\r/g, '');
+}
+function renderAllMessagesFromServer(messages) {
+    const messagesArea = document.getElementById('messagesArea');
+    if (!messagesArea) return;
+
+    messagesArea.innerHTML = '';
+
+    let lastDate = null;
+
+    messages.forEach(msg => {
+        const dateObj = msg.time ? new Date(msg.time) : new Date();
+
+        const jour = String(dateObj.getDate()).padStart(2, '0');
+        const mois = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const annee = dateObj.getFullYear();
+        const heures = String(dateObj.getHours()).padStart(2, '0');
+        const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+
+        const fullDate = `${jour}/${mois}/${annee}`;
+        const fullTime = `${jour}/${mois}/${annee} ${heures}:${minutes}`;
+
+        if (lastDate !== fullDate) {
+            messagesArea.insertAdjacentHTML('beforeend', `
+                <div class="date-separator">
+                    <span>${fullDate}</span>
+                </div>
+            `);
+            lastDate = fullDate;
+        }
+
+        let attachmentHtml = '';
+        if (msg.attachment) {
+            if (msg.attachment_type === 'image') {
+                attachmentHtml = `
+                    <div class="attachment-preview" style="display:block; background:transparent; padding:0;">
+                        <img src="${msg.attachment}"
+                             onclick="openMediaPreview('${msg.attachment}', 'image')"
+                             style="max-width:220px; border-radius:12px; cursor:pointer;">
+                    </div>
+                `;
+            } else if (msg.attachment_type === 'video') {
+                attachmentHtml = `
+                    <div class="attachment-preview" style="display:block; background:transparent; padding:0;">
+                        <video controls style="max-width:240px; border-radius:12px;">
+                            <source src="${msg.attachment}">
+                        </video>
+                    </div>
+                `;
+            } else if (msg.attachment_type === 'audio') {
+                attachmentHtml = `
+                    <div class="attachment-preview" style="display:block;">
+                        <audio controls style="max-width:240px;">
+                            <source src="${msg.attachment}">
+                        </audio>
+                    </div>
+                `;
+            } else {
+                attachmentHtml = `
+                    <a href="${msg.attachment}" target="_blank" class="attachment-preview" style="text-decoration:none;">
+                        <i class="bi bi-paperclip"></i>
+                        <span>${msg.attachment_name || 'Fichier joint'}</span>
+                    </a>
+                `;
+            }
+        }
+
+        const isPatient = msg.sender === 'patient';
+
+        const actionsHtml = isPatient ? `
+            <div class="message-actions">
+                <button type="button" class="mini-action" onclick="replyMessage('${msg.id}', '${escapeJsForInline(msg.text || '')}')">
+                    <i class="bi bi-reply"></i>
+                </button>
+                <button type="button" class="mini-action" onclick="pinMessage('${msg.id}')">
+                    <i class="bi bi-pin-angle"></i>
+                </button>
+                <button type="button" class="mini-action" onclick="editMessage('${msg.id}', '${escapeJsForInline(msg.text || '')}')">
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <button type="button" class="mini-action" onclick="deleteMessage('${msg.id}')">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        ` : `
+            <div class="message-actions">
+                <button type="button" class="mini-action" onclick="replyMessage('${msg.id}', '${escapeJsForInline(msg.text || '')}')">
+                    <i class="bi bi-reply"></i>
+                </button>
+                <button type="button" class="mini-action" onclick="pinMessage('${msg.id}')">
+                    <i class="bi bi-pin-angle"></i>
+                </button>
+            </div>
+        `;
+
+        const seenHtml = isPatient ? `
+            <span class="read-status">
+                ${msg.seen ? '<i class="bi bi-check2-all" style="color:#d1fae5;"></i><span>Vu</span>' : '<i class="bi bi-check2"></i><span>Envoyé</span>'}
+            </span>
+        ` : '';
+
+        messagesArea.insertAdjacentHTML('beforeend', `
+            <div id="message-${msg.id}" class="message-row ${isPatient ? 'patient' : 'therapist'}">
+                <div class="message-bubble ${msg.is_pinned ? 'pinned-message' : ''}">
+                    ${msg.subject ? `<div class="message-subject"><i class="bi bi-bookmark-fill"></i> ${escapeHtml(msg.subject)}</div>` : ''}
+                                        ${msg.reply_to ? `
+                        <div style="
+                            background: ${isPatient ? 'rgba(255,255,255,.16)' : 'rgba(0,0,0,0.06)'};
+                            border-left: 4px solid ${isPatient ? 'rgba(255,255,255,.75)' : 'var(--primary)'};
+                            padding: 8px 10px;
+                            border-radius: 10px;
+                            margin-bottom: 8px;
+                            font-size: 12px;
+                        ">
+                            <strong>${msg.reply_to.sender === 'patient' ? 'Vous' : 'Thérapeute'}</strong><br>
+                            ${escapeHtml(msg.reply_to.text || '')}
+                        </div>
+                    ` : ''}
+                    <div class="message-text">${escapeHtml(msg.text || '')}</div>
+                    ${attachmentHtml}
+                    <div class="message-meta">
+                        <span>${fullTime}</span>
+                        ${seenHtml}
+                    </div>
+                    ${actionsHtml}
+                </div>
+            </div>
+        `);
+    });
+
+if (messages.length) {
+    lastRenderedMessageId = messages[messages.length - 1].id;
+} else {
+    lastRenderedMessageId = null;
+}
+
+lastMessagesSignature = buildMessagesSignature(messages);
+
+messagesArea.scrollTop = messagesArea.scrollHeight;
+loadPinnedMessage();
+}
+function buildMessagesSignature(messages) {
+    return JSON.stringify(
+        (messages || []).map(msg => ({
+            id: msg.id,
+            seen: !!msg.seen,
+            pinned: !!msg.is_pinned,
+            text: msg.text || '',
+            time: msg.time || ''
+        }))
+    );
+}
+
+function refreshMessagesAutomatically() {
+    if (!conversationOpened) return;
+
+    fetch("{% url 'patient_messages_api' %}")
+        .then(res => res.json())
+        .then(data => {
+            if (!data.success || !Array.isArray(data.messages)) return;
+
+            const latestId = data.messages.length ? data.messages[data.messages.length - 1].id : null;
+            const newSignature = buildMessagesSignature(data.messages);
+
+            const mustRefresh =
+                latestId !== lastRenderedMessageId ||
+                newSignature !== lastMessagesSignature;
+
+            if (mustRefresh) {
+                renderAllMessagesFromServer(data.messages);
+
+                if (!conversationOpened && latestId) {
+                    updateNotificationBadge();
+                }
+            }
+        })
+        .catch(error => {
+            console.error("Erreur refresh messages :", error);
+        });
+}
+
+function sendMessage() {
+    const input = document.getElementById('messageInput');
+    const hiddenReply = document.getElementById('replyToId');
+    const sendBtn = document.querySelector('.send-btn');
+
+    if (!input) return;
+
+    const text = input.value.trim();
+
+    if (!text && !currentAttachment) {
+        alert('Écrivez un message ou ajoutez un fichier.');
+        return;
+    }
+
+    if (!conversationOpened) {
+        toggleConversationPanel(true);
+    }
+
+    if (sendBtn) {
+        sendBtn.disabled = true;
+        sendBtn.style.opacity = '0.7';
+        sendBtn.style.pointerEvents = 'none';
+    }
+
+    const sentAttachment = currentAttachment;
+
+    const formData = new FormData();
+    formData.append('text', text);
+
+    if (hiddenReply && hiddenReply.value) {
+        formData.append('reply_to_id', hiddenReply.value);
+    }
+
+    if (currentAttachment) {
+        formData.append('attachment', currentAttachment);
+    }
+
+    fetch("{% url 'patient_send_message' %}", {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: formData
+    })
+    .then(async response => {
+        let data = {};
+
+        try {
+            data = await response.json();
+        } catch (e) {
+            throw new Error("Réponse serveur invalide");
+        }
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.error || "Erreur lors de l'envoi");
+        }
+
+        input.value = '';
+            input.style.height = 'auto';
+
+            clearAttachment();
+            clearReply();
+
+            /* garder la conversation ouverte après envoi */
+            setConversationState(true);
+
+        if (data.message) {
+    appendNewPatientMessageFromServer(data.message);
+    updateConversationPreview(data.message.text || data.message.attachment_name || 'Nouveau message');
+    updateConversationCount(1);
+    lastRenderedMessageId = data.message.id;
+} else {
+    appendNewPatientMessage(text, sentAttachment);
+    updateConversationPreview(text || (sentAttachment ? sentAttachment.name : 'Nouveau message'));
+    updateConversationCount(1);
+}
+
+setConversationState(true);
+
+const messagesArea = document.getElementById('messagesArea');
+if (messagesArea) {
+    setTimeout(() => {
+        messagesArea.scrollTop = messagesArea.scrollHeight;
+    }, 80);
+}
+    })
+    .catch(error => {
+        console.error('Erreur envoi patient :', error);
+        alert(error.message || 'Erreur serveur');
+    })
+    .finally(() => {
+        if (sendBtn) {
+            sendBtn.disabled = false;
+            sendBtn.style.opacity = '';
+            sendBtn.style.pointerEvents = '';
+        }
+    });
+}
+</script>
+<div id="mediaPreviewModal" style="
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.78);
+    z-index:10000;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+">
+    <div style="position:relative; max-width:95vw; max-height:95vh;">
+        <button type="button"
+                onclick="closeMediaPreview()"
+                style="
+                    position:absolute;
+                    top:-14px;
+                    right:-14px;
+                    width:40px;
+                    height:40px;
+                    border:none;
+                    border-radius:50%;
+                    background:white;
+                    color:#111;
+                    font-size:1.1rem;
+                    cursor:pointer;
+                    z-index:2;
+                ">
+            <i class="bi bi-x-lg"></i>
+        </button>
+
+        <div id="mediaPreviewContent"></div>
+    </div>
+</div>
+</body>
+</html>
+
+

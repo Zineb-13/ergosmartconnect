@@ -1,0 +1,20 @@
+<div class="container mt-5">
+
+  <h2>{{ p.user.nom }} {{ p.user.prenom }}</h2>
+  <p>{{ p.age }} ans - {{ p.sexe }}</p>
+
+  <hr>
+
+  <h4>Informations médicales</h4>
+  <p><strong>Fracture :</strong> {{ p.type_fracture }}</p>
+  <p><strong>Côté :</strong> {{ p.cote_atteint }}</p>
+  <p><strong>Date :</strong> {{ p.date_fracture }}</p>
+
+  <h4>Douleur</h4>
+  <p>Repos : {{ p.douleur_repos }}/10</p>
+  <p>Effort : {{ p.douleur_effort }}/10</p>
+
+  <h4>Objectif</h4>
+  <p>{{ p.objectif_principal }}</p>
+
+</div>

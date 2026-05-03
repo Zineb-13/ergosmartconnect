@@ -1,0 +1,2202 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda | SmartWrist Rehab</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary: #2E8B57;
+            --primary-light: #e8f3ed;
+            --primary-dark: #1e5e3b;
+            --primary-glow: rgba(46, 139, 87, 0.3);
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --white: #ffffff;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(46,139,87,0.15);
+            --shadow-lg: 0 8px 24px rgba(46,139,87,0.2);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-xl: 30px;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
+            padding: 15px 25px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,255,255,0.2);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .logo-icon .upload-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            font-size: 10px;
+            text-align: center;
+            padding: 2px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .logo-icon:hover .upload-overlay {
+            opacity: 1;
+        }
+
+        .logo-text h1 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin: 0;
+        }
+
+        .logo-text p {
+            font-size: 0.7rem;
+            color: var(--gray-500);
+            margin: 0;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .lang-switch {
+            display: flex;
+            gap: 6px;
+        }
+
+        .lang-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1px solid var(--gray-300);
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .lang-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .back-btn {
+            background: var(--primary-light);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--gray-700);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .back-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .notification-icon {
+            position: relative;
+            cursor: pointer;
+            color: var(--gray-600);
+            font-size: 1.2rem;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            font-size: 10px;
+            padding: 2px 5px;
+            border-radius: 20px;
+        }
+
+        .agenda-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            margin-bottom: 5px;
+        }
+
+        .page-title p {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.95rem;
+        }
+
+        /* Section Alertes */
+        .alerts-section {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .alerts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .alerts-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .clear-alerts {
+            background: none;
+            border: none;
+            color: var(--gray-500);
+            font-size: 0.7rem;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 20px;
+            transition: all 0.2s;
+        }
+
+        .clear-alerts:hover {
+            background: var(--gray-100);
+            color: var(--primary);
+        }
+
+        .alerts-list {
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .alert-item {
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            border-radius: var(--radius-md);
+            background: var(--gray-50);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            border-left: 3px solid var(--primary);
+        }
+
+        .alert-item.new {
+            background: var(--primary-light);
+            border-left-color: var(--primary);
+        }
+
+        .alert-icon {
+            width: 28px;
+            color: var(--primary);
+        }
+
+        .alert-text {
+            flex: 1;
+        }
+
+        .alert-date {
+            font-size: 0.65rem;
+            color: var(--gray-500);
+        }
+
+        .alert-close {
+            background: none;
+            border: none;
+            color: var(--gray-400);
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .alert-close:hover {
+            color: var(--danger);
+            --danger: #dc2626;
+        }
+
+        .no-alerts {
+            text-align: center;
+            padding: 15px;
+            color: var(--gray-500);
+            font-size: 0.8rem;
+        }
+
+        .form-card {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .form-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 4px solid var(--primary);
+            padding-left: 15px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-glow);
+        }
+
+        .btn-save {
+            background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .list-card {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
+            padding: 25px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .list-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-btns {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: var(--gray-100);
+            border: none;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .appointments-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .rdv-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 1px solid var(--gray-200);
+            transition: all 0.3s;
+        }
+
+        .rdv-card:hover {
+            transform: translateX(5px);
+            border-color: var(--primary);
+        }
+
+        .rdv-card.passed { opacity: 0.7; background: var(--gray-50); }
+        .rdv-card.today { border-left: 4px solid var(--primary); background: var(--primary-light); }
+        .rdv-card.cancelled { background: #fef3c7; border-left: 4px solid #f59e0b; opacity: 0.8; }
+        .rdv-card.reported { border-left: 4px solid #3b82f6; background: #e0e7ff; }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .patient-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+
+        .date-badge {
+            background: var(--primary-light);
+            padding: 3px 10px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .status-badge {
+            padding: 3px 10px;
+            border-radius: 30px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-left: 8px;
+        }
+
+        .status-cancelled {
+            background: #fef3c7;
+            color: #f59e0b;
+        }
+
+        .status-reported {
+            background: #e0e7ff;
+            color: #3b82f6;
+        }
+
+        .rdv-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 10px;
+            font-size: 0.8rem;
+            color: var(--gray-600);
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .detail-item i { color: var(--primary); width: 16px; }
+
+        .rdv-notes {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            background: var(--gray-50);
+            padding: 8px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 10px;
+        }
+
+        .report-info {
+            font-size: 0.7rem;
+            color: #3b82f6;
+            margin-top: 5px;
+            padding: 5px;
+            background: #e0e7ff;
+            border-radius: var(--radius-sm);
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            border-top: 1px solid var(--gray-200);
+            padding-top: 10px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 30px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-width: 170px;
+            flex: 1 1 170px;
+            white-space: nowrap;
+        }
+
+        .action-btn.edit { color: var(--primary); background: var(--primary-light); }
+        .action-btn.report { color: #3b82f6; background: #e0e7ff; }
+        .action-btn.cancel { color: #f59e0b; background: #fef3c7; }
+        .action-btn.delete { color: #dc2626; background: #fee2e2; }
+        .action-btn.send {
+            color: #ffffff;
+            background: #2563eb;
+            font-weight: 700;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray-400);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.75rem;
+        }
+
+        @media (max-width: 700px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .list-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+.tab-btn {
+    background: var(--gray-100);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 40px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tab-btn.active {
+    background: var(--primary);
+    color: white;
+}
+.notification-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ef4444;
+    color: white;
+    font-size: 10px;
+    padding: 2px 5px;
+    border-radius: 20px;
+    display: none;  /* ← AJOUTE CETTE LIGNE */
+}
+    </style>
+    <link rel="stylesheet" href="{% static 'assets/css/responsive-guard.css' %}">
+</head>
+<body>
+
+<div class="agenda-container">
+    <header class="header">
+        <a href="{% url 'ergotherapeute' %}" class="logo">
+            <div class="logo-icon" id="logoIcon">
+                <img id="logoImg" src="{% static 'assets/img/ergo/Agenda.png' %}" alt="SmartWrist">
+                <div class="upload-overlay" onclick="event.preventDefault(); document.getElementById('logoUpload').click();">
+                    <i class="fas fa-camera"></i>
+                </div>
+                <input type="file" id="logoUpload" style="display:none;" accept="image/*" onchange="changeLogo(this)">
+            </div>
+            <div class="logo-text">
+                <h1>SmartWrist Rehab</h1>
+                <p data-i18n="brand_sub"></p>
+            </div>
+        </a>
+        <div class="header-actions">
+            <a href="{% url 'ergotherapeute' %}" class="back-btn">
+                <i class="fas fa-arrow-left"></i> <span data-i18n="back">Retour</span>
+            </a>
+            <div class="lang-switch">
+                <button class="lang-btn active" onclick="changeLanguage('fr')">FR</button>
+                <button class="lang-btn" onclick="changeLanguage('en')">EN</button>
+                <button class="lang-btn" onclick="changeLanguage('ar')">AR</button>
+            </div>
+            <div class="notification-icon" onclick="toggleAlertsPanel()">
+                <i class="far fa-bell"></i>
+                <span class="notification-badge" id="notifCount">0</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-title">
+        <h1><i class="fas fa-calendar-alt"></i> <span data-i18n="page_title">Agenda</span></h1>
+        <p data-i18n="page_subtitle">Gérez vos rendez-vous</p>
+    </div>
+
+    <!-- SECTION ALERTES -->
+<div class="alerts-section" id="alertsSection">
+    <div class="alerts-header">
+        <div class="alerts-title">
+            <i class="fas fa-bell" style="color: var(--primary);"></i>
+            <span data-i18n="alerts_title">Alertes</span>
+            <span id="alertsCount" style="background: var(--primary-light); padding: 2px 8px; border-radius: 20px; font-size: 0.7rem;">0</span>
+        </div>
+        <div style="display: flex; gap: 8px;">
+            <button class="clear-alerts" onclick="markAllAlertsRead()" style="background: var(--primary-light); color: var(--primary-dark);">📖 Tout marquer comme lu</button>
+            <button class="clear-alerts" onclick="clearAllAlerts()" data-i18n="clear_all">🗑️ Tout effacer</button>
+        </div>
+    </div>
+    <div class="alerts-list" id="alertsList">
+        <div class="no-alerts" data-i18n="no_alerts">Aucune alerte</div>
+    </div>
+</div>
+
+    <div class="form-card">
+        <div class="form-title">
+            <i class="fas fa-plus-circle"></i> <span data-i18n="new_session">Nouvelle séance</span>
+        </div>
+        <form id="rdvForm">
+            <div class="form-row">
+                <div class="form-group">
+                <label data-i18n="patient_label">Patient</label>
+                <select class="form-control" id="patientName" required>
+                    <option value="">Sélectionner un patient</option>
+                    {% for patient in patients %}
+                        <option value="{{ patient.user.prenom }} {{ patient.user.nom }}" data-patient-id="{{ patient.user.id }}">
+                            {{ patient.user.prenom }} {{ patient.user.nom }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+                <div class="form-group">
+                    <label data-i18n="date_label">Date</label>
+                    <input type="date" class="form-control" id="rdvDate" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label data-i18n="time_label">Heure</label>
+                    <input type="time" class="form-control" id="rdvTime" required>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="duration_label">Durée</label>
+                    <select class="form-control" id="rdvDuration">
+                        <option value="30">30 min</option>
+                        <option value="45">45 min</option>
+                        <option value="60">60 min</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label data-i18n="type_label">Type</label>
+                    <select class="form-control" id="rdvType">
+                        <option value="presentiel">Présentiel</option>
+                        <option value="tele">Télé-ergothérapie</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="notes_label">Notes</label>
+                    <input type="text" class="form-control" id="rdvNotes" placeholder="Objectifs, exercices...">
+                </div>
+            </div>
+            <div class="form-row">
+    <div class="form-group full">
+        <label>👨‍⚕️ Nom de l'ergothérapeute</label>
+        <input type="text" class="form-control" id="rdvTherapist" placeholder="Ex: Zineb Youbi" value="{{ request.user.prenom }} {{ request.user.nom }}">
+    </div>
+</div>
+            <button type="submit" class="btn-save"><i class="fas fa-save"></i> <span data-i18n="save_btn">Enregistrer</span></button>
+        </form>
+    </div>
+  <!-- ONGLETS -->
+<div class="tabs-section" style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: nowrap; overflow-x: auto;">    
+    <button class="tab-btn active" onclick="showTab('rdvs')">📅 Rendez-vous <span id="rdvsCount" style="background: #ef4444; color: white; padding: 2px 8px; border-radius: 20px; margin-left: 5px;">0</span></button>
+    <button class="tab-btn" onclick="showTab('demandes')">📝 Demandes patients <span id="demandesCount" style="background: #ef4444; color: white; padding: 2px 8px; border-radius: 20px; margin-left: 5px;">0</span></button>
+    <button class="tab-btn" onclick="showTab('signalements')">⚠️ Signalements <span id="signalementsCount" style="background: #ef4444; color: white; padding: 2px 8px; border-radius: 20px; margin-left: 5px;">0</span></button>
+    <button class="tab-btn" onclick="showTab('reponses')">💬 Réponses patients <span id="reponsesCount" style="background: #ef4444; color: white; padding: 2px 8px; border-radius: 20px; margin-left: 5px;">0</span></button>
+    <!-- ⬇️ AJOUTER CET ONGLET ⬇️ -->
+    <button class="tab-btn" onclick="showTab('messagesPatients')">💌 Messages patients <span id="messagesPatientsCount" style="background: #ef4444; color: white; padding: 2px 8px; border-radius: 20px; margin-left: 5px;">0</span></button>
+</div>
+
+    <!-- SECTION RENDEZ-VOUS (original) -->
+    <div id="rdvsTab" class="list-card">
+        <div class="list-header">
+            <div class="list-title"><i class="fas fa-list"></i> <span data-i18n="all_sessions">Toutes les séances</span></div>
+            <div class="filter-btns">
+                <button class="filter-btn active" data-filter="all" data-i18n="filter_all">Toutes</button>
+                <button class="filter-btn" data-filter="today" data-i18n="filter_today">Aujourd'hui</button>
+                <button class="filter-btn" data-filter="upcoming" data-i18n="filter_upcoming">À venir</button>
+                <button class="filter-btn" data-filter="passed" data-i18n="filter_passed">Passées</button>
+            </div>
+        </div>
+        <div class="appointments-list" id="appointmentsList">
+            <div class="empty-state">
+                <i class="fas fa-calendar-plus fa-2x"></i>
+                <p data-i18n="no_sessions">Aucune séance pour le moment</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION DEMANDES PATIENTS -->
+    <div id="demandesTab" style="display: none;" class="list-card">
+        <div class="list-header">
+            <div class="list-title"><i class="fas fa-envelope"></i> Demandes de rendez-vous</div>
+        </div>
+        <div id="demandesList" class="appointments-list">
+            <div class="empty-state">Aucune demande</div>
+        </div>
+    </div>
+
+    <!-- SECTION SIGNALEMENTS -->
+    <div id="signalementsTab" style="display: none;" class="list-card">
+        <div class="list-header">
+            <div class="list-title"><i class="fas fa-flag"></i> Signalements patients</div>
+        </div>
+        <div id="signalementsList" class="appointments-list">
+            <div class="empty-state">Aucun signalement</div>
+        </div>
+    </div>
+     <!-- SECTION RÉPONSES PATIENTS -->
+    <div id="reponsesTab" style="display: none;" class="list-card">
+        <div class="list-header">
+            <div class="list-title"><i class="fas fa-reply-all"></i> Réponses des patients</div>
+        </div>
+        <div id="reponsesList" class="appointments-list">
+            <div class="empty-state">Aucune réponse</div>
+        </div>
+    </div>
+    <!-- SECTION MESSAGES PATIENTS -->
+    <div id="messagesPatientsTab" style="display: none;" class="list-card">
+        <div class="list-header">
+            <div class="list-title"><i class="fas fa-envelope"></i> Messages des patients</div>
+        </div>
+        <div id="messagesPatientsList" class="appointments-list">
+            <div class="empty-state">Aucun message de patient</div>
+        </div>
+    </div>
+    <div class="footer">
+        <p>© 2026 SmartWrist Rehab · Tous droits réservés</p>
+    </div>
+</div>
+
+<script>
+    // ==================== TRADUCTIONS ====================
+    const translations = {
+    fr: {
+        brand_sub: "",
+        back: "Retour",
+        page_title: "Agenda",
+        page_subtitle: "Gérez vos rendez-vous",
+        alerts_title: "Alertes",
+        clear_all: "Tout effacer",
+        no_alerts: "Aucune alerte",
+        new_session: "Nouvelle séance",
+        patient_label: "Patient",
+        date_label: "Date",
+        time_label: "Heure",
+        duration_label: "Durée",
+        type_label: "Type",
+        notes_label: "Notes",
+        save_btn: "Enregistrer",
+        all_sessions: "Toutes les séances",
+        filter_all: "Toutes",
+        filter_today: "Aujourd'hui",
+        filter_upcoming: "À venir",
+        filter_passed: "Passées",
+        no_sessions: "Aucune séance pour le moment",
+        edit: "Modifier",
+        report: "Reprogrammer",
+        cancel: "Annuler la séance",
+        delete: "Supprimer la séance",
+        send_patient: "Envoyer au patient",
+        save_update: "Mettre à jour",
+        save_reprogram: "Enregistrer la reprogrammation",
+        select_patient: "Sélectionner un patient",
+        cancelled: "Annulée",
+        reported: "Reprogrammée",
+        alert_new: "📅 Nouveau rendez-vous avec {patient} le {date} à {time}",
+        alert_modified: "✏️ Rendez-vous modifié pour {patient} le {date} à {time}",
+        alert_cancelled: "❌ Séance annulée pour {patient}",
+        alert_today: "🔔 Séance aujourd'hui avec {patient} à {time}",
+        alert_passed: "📋 Séance passée avec {patient} le {date}",
+        report_info: "Reprogrammée depuis le {oldDate} à {oldTime}"
+    },
+    en: {
+        brand_sub: "",
+        back: "Back",
+        page_title: "Agenda",
+        page_subtitle: "Manage your appointments",
+        alerts_title: "Alerts",
+        clear_all: "Clear all",
+        no_alerts: "No alerts",
+        new_session: "New session",
+        patient_label: "Patient",
+        date_label: "Date",
+        time_label: "Time",
+        duration_label: "Duration",
+        type_label: "Type",
+        notes_label: "Notes",
+        save_btn: "Save",
+        all_sessions: "All sessions",
+        filter_all: "All",
+        filter_today: "Today",
+        filter_upcoming: "Upcoming",
+        filter_passed: "Past",
+        no_sessions: "No sessions yet",
+        edit: "Edit",
+        report: "Reschedule",
+        cancel: "Cancel session",
+        delete: "Delete session",
+        send_patient: "Send to patient",
+        save_update: "Update",
+        save_reprogram: "Save rescheduling",
+        select_patient: "Select a patient",
+        cancelled: "Cancelled",
+        reported: "Rescheduled",
+        alert_new: "📅 New appointment with {patient} on {date} at {time}",
+        alert_modified: "✏️ Appointment updated for {patient} on {date} at {time}",
+        alert_cancelled: "❌ Session cancelled for {patient}",
+        alert_today: "🔔 Session today with {patient} at {time}",
+        alert_passed: "📋 Past session with {patient} on {date}",
+        report_info: "Rescheduled from {oldDate} at {oldTime}"
+    },
+    ar: {
+        brand_sub: "",
+        back: "رجوع",
+        page_title: "التقويم",
+        page_subtitle: "إدارة مواعيدك",
+        alerts_title: "التنبيهات",
+        clear_all: "مسح الكل",
+        no_alerts: "لا توجد تنبيهات",
+        new_session: "جلسة جديدة",
+        patient_label: "المريض",
+        date_label: "التاريخ",
+        time_label: "الوقت",
+        duration_label: "المدة",
+        type_label: "النوع",
+        notes_label: "ملاحظات",
+        save_btn: "حفظ",
+        all_sessions: "جميع الجلسات",
+        filter_all: "الكل",
+        filter_today: "اليوم",
+        filter_upcoming: "القادمة",
+        filter_passed: "السابقة",
+        no_sessions: "لا توجد جلسات",
+        edit: "تعديل",
+        report: "إعادة البرمجة",
+        cancel: "إلغاء الجلسة",
+        delete: "حذف الجلسة",
+        send_patient: "إرسال إلى المريض",
+        save_update: "تحديث",
+        save_reprogram: "حفظ إعادة البرمجة",
+        select_patient: "اختر مريضاً",
+        cancelled: "ملغاة",
+        reported: "أعيدت برمجتها",
+        alert_new: "📅 موعد جديد مع {patient} بتاريخ {date} على الساعة {time}",
+        alert_modified: "✏️ تم تعديل موعد {patient} بتاريخ {date} على الساعة {time}",
+        alert_cancelled: "❌ تم إلغاء جلسة {patient}",
+        alert_today: "🔔 جلسة اليوم مع {patient} على الساعة {time}",
+        alert_passed: "📋 جلسة سابقة مع {patient} بتاريخ {date}",
+        report_info: "أعيدت البرمجة من {oldDate} على الساعة {oldTime}"
+    }
+};
+    function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+    const csrftoken = getCookie('csrftoken');
+    let currentLang = '{{ current_lang|default:"fr" }}';
+    const savedLang = localStorage.getItem('smartwrist_lang');
+    if (savedLang) {
+        currentLang = savedLang;
+    }
+    let rdvs = [];
+    let alerts = [];
+    let currentFilter = 'all';
+    let editingId = null;
+    let formMode = 'create'; // create | edit | reprogram
+
+    function changeLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('smartwrist_lang', lang);
+
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.textContent.toLowerCase() === lang) {
+            btn.classList.add('active');
+        }
+    });
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][key] !== undefined) {
+            el.textContent = translations[lang][key];
+        }
+    });
+
+    const patientSelect = document.getElementById('patientName');
+    if (patientSelect && patientSelect.options.length > 0) {
+        patientSelect.options[0].text = translations[lang].select_patient;
+    }
+
+    updateSaveButton();
+    renderAlerts();
+    renderAppointments();
+    updateNotificationBadge();
+}
+    function formatDateDisplay(dateStr) {
+        if (!dateStr) return '';
+        let d = new Date(dateStr);
+        let day = d.getDate().toString().padStart(2, '0');
+        let month = (d.getMonth() + 1).toString().padStart(2, '0');
+        let year = d.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
+
+    function getTodayStr() {
+        return new Date().toISOString().split('T')[0];
+    }
+
+    function isPassed(dateStr) { return dateStr < getTodayStr(); }
+    function isToday(dateStr) { return dateStr === getTodayStr(); }
+
+    function renderAlerts() {
+    const container = document.getElementById('alertsList');
+    const t = translations[currentLang];
+    const unreadCount = alerts.filter(a => !a.read).length;
+
+    document.getElementById('alertsCount').innerText = unreadCount;
+    document.getElementById('notifCount').innerText = unreadCount;
+
+    if (alerts.length === 0) {
+        container.innerHTML = `<div class="no-alerts">${t.no_alerts}</div>`;
+        return;
+    }
+
+    container.innerHTML = alerts.slice(0, 10).map(alert => {
+        let message = '';
+        const dateDisplay = formatDateDisplay(alert.sessionDate);
+
+        switch (alert.type) {
+            case 'new':
+                message = t.alert_new
+                    .replace('{patient}', alert.patient || '')
+                    .replace('{date}', dateDisplay || '')
+                    .replace('{time}', alert.sessionTime || '');
+                break;
+            case 'modified':
+                message = t.alert_modified
+                    .replace('{patient}', alert.patient || '')
+                    .replace('{date}', dateDisplay || '')
+                    .replace('{time}', alert.sessionTime || '');
+                break;
+            case 'cancelled':
+                message = t.alert_cancelled
+                    .replace('{patient}', alert.patient || '');
+                break;
+            case 'today':
+                message = t.alert_today
+                    .replace('{patient}', alert.patient || '')
+                    .replace('{time}', alert.sessionTime || '');
+                break;
+            case 'passed':
+                message = t.alert_passed
+                    .replace('{patient}', alert.patient || '')
+                    .replace('{date}', dateDisplay || '');
+                break;
+            default:
+                message = t.no_alerts;
+        }
+
+        const iconClass =
+            alert.type === 'new' ? 'fa-plus-circle' :
+            alert.type === 'modified' ? 'fa-pencil' :
+            alert.type === 'cancelled' ? 'fa-ban' :
+            alert.type === 'today' ? 'fa-bell' :
+            'fa-calendar-check';
+
+        return `
+            <div class="alert-item ${!alert.read ? 'new' : ''}" onclick="markAlertRead('${alert.id}')">
+                <div class="alert-icon"><i class="fas ${iconClass}"></i></div>
+                <div class="alert-text">
+                    ${escapeHtml(message)}
+                    <div class="alert-date">${alert.createdAt || ''}</div>
+                </div>
+                <button class="alert-close" onclick="event.stopPropagation(); deleteAlert('${alert.id}')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        `;
+    }).join('');
+    }
+    function markAlertRead(id) {
+        const alert = alerts.find(a => a.id == id);
+        if (alert) {
+            alert.read = true;
+            renderAlerts();
+            updateNotificationBadge();
+        }
+    }
+
+    function deleteAlert(id) {
+    alerts = alerts.filter(a => a.id != id);
+    renderAlerts();
+    updateNotificationBadge();
+    }
+    function clearAllAlerts() {
+        alerts = [];
+        renderAlerts();
+        updateNotificationBadge();
+    }
+    function updateNotificationBadge() {
+    const unreadCount = alerts.filter(a => !a.read).length;
+    const badge = document.getElementById('notifCount');
+    if (unreadCount === 0) {
+        badge.style.display = 'none';
+        badge.innerText = '0';
+    } else {
+        badge.style.display = 'inline-block';
+        badge.innerText = unreadCount;
+    }
+}
+
+    function toggleAlertsPanel() {
+    const section = document.getElementById('alertsSection');
+    section.scrollIntoView({ behavior: 'smooth' });
+    
+    // Marquer TOUTES les alertes comme lues quand on ouvre le panneau
+    alerts.forEach(alert => {
+        if (!alert.read) {
+            alert.read = true;
+        }
+    });
+    renderAlerts();
+    updateNotificationBadge();
+}
+function markAllAlertsRead() {
+    alerts.forEach(alert => {
+        alert.read = true;
+    });
+    renderAlerts();
+    updateNotificationBadge();
+}
+
+    function setActiveFilter(filterName) {
+    currentFilter = filterName;
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-filter') === filterName) {
+            btn.classList.add('active');
+        }
+    });
+}
+    function updateSaveButton() {
+        const btn = document.querySelector('.btn-save');
+        if (formMode === 'edit') {
+            btn.innerHTML = `<i class="fas fa-save"></i> ${translations[currentLang].save_update}`;
+        } else if (formMode === 'reprogram') {
+            btn.innerHTML = `<i class="fas fa-save"></i> ${translations[currentLang].save_reprogram}`;
+        } else {
+            btn.innerHTML = `<i class="fas fa-save"></i> ${translations[currentLang].save_btn}`;
+        }
+    }
+async function addOrUpdateRdv(e) {
+    e.preventDefault();
+
+    const patientSelect = document.getElementById('patientName');
+    const patientName = patientSelect.value.trim();
+    const patientId = patientSelect.options[patientSelect.selectedIndex]?.getAttribute('data-patient-id') || '';
+    const date = document.getElementById('rdvDate').value;
+    const time = document.getElementById('rdvTime').value;
+    // Force le format HH:MM sans aucune conversion
+    const timeParts = time.split(':');
+    const forcedTime = `${timeParts[0].padStart(2, '0')}:${timeParts[1].padStart(2, '0')}`;
+    const duration = document.getElementById('rdvDuration').value;
+    const type = document.getElementById('rdvType').value;
+    const notes = document.getElementById('rdvNotes').value;
+
+    if (!patientId || !date || !time) {
+        alert(
+            currentLang === 'fr' ? 'Veuillez remplir tous les champs obligatoires' :
+            currentLang === 'en' ? 'Please fill in all required fields' :
+            'يرجى ملء جميع الحقول المطلوبة'
+        );
+        return;
+    }
+
+    const therapist = document.getElementById('rdvTherapist').value;
+
+    console.log("🕐 Heure brute du formulaire:", time);
+    console.log("🕐 Heure forcée:", forcedTime);
+
+    const payload = {
+        patient_id: patientId,
+        date: date,
+        time: forcedTime,  // ← CORRIGÉ !!!
+        duration: duration,
+        type: type,
+        notes: notes,
+        therapist: therapist,
+        mode: formMode
+    };
+
+    let url = "{% url 'agenda_rdv_create' %}";
+    if (editingId) {
+        url = `/Agenda/api/rdvs/${editingId}/update/`;
+    }
+
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+        },
+        body: JSON.stringify(payload)
+    });
+
+    const result = await response.json();
+
+    if (!result.success) {
+        alert(result.error || 'Erreur');
+        return;
+    }
+
+    clearForm();
+    setActiveFilter('all');
+    await loadRdvsFromServer();
+}
+function editRdv(id) {
+    const rdv = rdvs.find(r => String(r.id) === String(id));
+    if (!rdv) return;
+
+    const patientSelect = document.getElementById('patientName');
+    for (let i = 0; i < patientSelect.options.length; i++) {
+        if (patientSelect.options[i].value === rdv.patient) {
+            patientSelect.selectedIndex = i;
+            break;
+        }
+    }
+
+    document.getElementById('rdvDate').value = rdv.date;
+    // Force l'heure sans aucune conversion
+    const timeValue = rdv.time;
+    const timeParts = timeValue.split(':');
+    const forcedTime = `${timeParts[0].padStart(2, '0')}:${timeParts[1].padStart(2, '0')}`;
+    document.getElementById('rdvTime').value = rdv.time;
+    document.getElementById('rdvDuration').value = rdv.duration;
+    document.getElementById('rdvType').value = rdv.type;
+    document.getElementById('rdvNotes').value = rdv.notes || '';
+
+    editingId = rdv.id;
+    formMode = 'edit';
+    updateSaveButton();
+
+    document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth' });
+}
+
+async function deleteRdv(id) {
+    const confirmMsg = currentLang === 'fr'
+        ? 'Supprimer définitivement cette séance ?'
+        : currentLang === 'en'
+        ? 'Permanently delete this session?'
+        : 'حذف هذه الجلسة نهائياً؟';
+
+    if (!confirm(confirmMsg)) return;
+
+    const response = await fetch(`/Agenda/api/rdvs/${id}/delete/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken
+        }
+    });
+
+    const result = await response.json();
+    if (!result.success) {
+        alert(result.error || 'Erreur');
+        return;
+    }
+
+    if (editingId == id) clearForm();
+    setActiveFilter('all');
+    await loadRdvsFromServer();
+}
+    async function cancelRdv(id) {
+    const confirmMsg = currentLang === 'fr'
+        ? 'Annuler cette séance ?'
+        : currentLang === 'en'
+        ? 'Cancel this session?'
+        : 'إلغاء هذه الجلسة؟';
+
+    if (!confirm(confirmMsg)) return;
+
+    const response = await fetch(`/Agenda/api/rdvs/${id}/cancel/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken
+        }
+    });
+
+    const result = await response.json();
+    if (!result.success) {
+        alert(result.error || 'Erreur');
+        return;
+    }
+
+    setActiveFilter('all');
+    await loadRdvsFromServer();
+}
+function reportRdv(id) {
+    const rdv = rdvs.find(r => String(r.id) === String(id));
+    if (!rdv) return;
+
+    const patientSelect = document.getElementById('patientName');
+    for (let i = 0; i < patientSelect.options.length; i++) {
+        if (patientSelect.options[i].value === rdv.patient) {
+            patientSelect.selectedIndex = i;
+            break;
+        }
+    }
+
+    document.getElementById('rdvDate').value = rdv.date;
+    // Force l'heure sans aucune conversion
+    const timeValue = rdv.time;
+    const timeParts = timeValue.split(':');
+    const forcedTime = `${timeParts[0].padStart(2, '0')}:${timeParts[1].padStart(2, '0')}`;
+    document.getElementById('rdvTime').value = rdv.time;
+    document.getElementById('rdvDuration').value = rdv.duration;
+    document.getElementById('rdvType').value = rdv.type;
+    document.getElementById('rdvNotes').value = rdv.notes || '';
+
+    editingId = rdv.id;
+    formMode = 'reprogram';
+    updateSaveButton();
+
+    document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth' });
+}
+    function clearForm() {
+    document.getElementById('patientName').selectedIndex = 0;
+    document.getElementById('rdvDate').value = '';
+    document.getElementById('rdvTime').value = '';
+    document.getElementById('rdvDuration').value = '30';
+    document.getElementById('rdvType').value = 'presentiel';
+    document.getElementById('rdvNotes').value = '';
+    editingId = null;
+    formMode = 'create';
+    updateSaveButton();
+}
+function renderAppointments() {
+    let filtered = [...rdvs];
+    const todayStr = getTodayStr();
+    const t = translations[currentLang];
+
+    if (currentFilter === 'today') filtered = filtered.filter(r => r.date === todayStr);
+    else if (currentFilter === 'upcoming') filtered = filtered.filter(r => r.date > todayStr);
+    else if (currentFilter === 'passed') filtered = filtered.filter(r => r.date < todayStr);
+
+    filtered.sort((a,b) => (a.date + a.time).localeCompare(b.date + b.time));
+
+    const container = document.getElementById('appointmentsList');
+    if (filtered.length === 0) {
+        container.innerHTML = `<div class="empty-state"><i class="fas fa-calendar-plus fa-2x"></i><p>${t.no_sessions}</p></div>`;
+        return;
+    }
+
+    container.innerHTML = filtered.map(r => {
+        let cardClass = '';
+        let statusHtml = '';
+        
+        if (r.status === 'annule') {
+            cardClass = 'cancelled';
+            statusHtml = `<span class="status-badge status-cancelled"><i class="fas fa-ban"></i> ${t.cancelled}</span>`;
+        } else if (r.status === 'reprogramme') {
+            cardClass = 'reported';
+            statusHtml = `<span class="status-badge status-reported"><i class="fas fa-calendar-alt"></i> ${t.reported}</span>`;
+        } else if (isPassed(r.date)) {
+            cardClass = 'passed';
+        } else if (isToday(r.date)) {
+            cardClass = 'today';
+        }
+        
+        let typeText = r.type === 'presentiel' ? (currentLang === 'fr' ? 'Présentiel' : (currentLang === 'en' ? 'In-person' : 'حضوري')) : (currentLang === 'fr' ? 'Télé-ergo' : (currentLang === 'en' ? 'Tele-ergo' : 'عن بعد'));
+        
+        let reportInfoHtml = '';
+        if (r.status === 'reprogramme' && r.old_date && r.old_time) {
+            const oldDate = formatDateDisplay(r.old_date);
+            reportInfoHtml = `<div class="report-info"><i class="fas fa-check-circle"></i> ${t.report_info.replace('{oldDate}', oldDate).replace('{oldTime}', r.old_time)}</div>`;
+        }
+        
+        return `
+            <div class="rdv-card ${cardClass}">
+                <div class="card-header">
+                    <div>
+                        <span class="patient-name">${escapeHtml(r.patient)}</span>
+                        ${statusHtml}
+                    </div>
+                    <div>
+                        ${r.date_creation ? `<div class="date-badge" style="background: #e0e7ff; margin-bottom: 5px;"><i class="fas fa-calendar-plus"></i> Créé le ${r.date_creation}</div>` : ''}
+                    </div>
+                </div>
+                <div class="rdv-details">
+                    <span class="detail-item"><i class="fas fa-calendar"></i> ${formatDateDisplay(r.date)}</span>
+                    <span class="detail-item"><i class="fas fa-clock"></i> ${r.time}</span>
+                    <span class="detail-item"><i class="fas fa-hourglass-half"></i> ${r.duration} min</span>
+                    <span class="detail-item"><i class="fas ${r.type === 'presentiel' ? 'fa-building' : 'fa-video'}"></i> ${typeText}</span>
+                </div>
+                ${r.notes ? `<div class="rdv-notes"><i class="fas fa-pen"></i> ${escapeHtml(r.notes)}</div>` : ''}
+                ${reportInfoHtml}
+                <div class="card-actions">
+                    ${r.status !== 'annule' ? `<button class="action-btn edit" onclick="editRdv('${r.id}')"><i class="fas fa-edit"></i> ${t.edit}</button>` : ''}
+                    ${r.status !== 'annule' ? `<button class="action-btn report" onclick="reportRdv('${r.id}')"><i class="fas fa-calendar-alt"></i> ${t.report}</button>` : ''}
+                    ${r.status !== 'annule' ? `<button class="action-btn cancel" onclick="cancelRdv('${r.id}')"><i class="fas fa-ban"></i> ${t.cancel}</button>` : ''}
+                    <button class="action-btn delete" onclick="deleteRdv('${r.id}')"><i class="fas fa-trash"></i> ${t.delete}</button>
+                    ${r.status !== 'annule' ? `
+                        <button class="action-btn send" onclick="sendToPatient('${r.id}')">
+                            <i class="fas fa-paper-plane"></i>
+                            ${r.notification_envoyee
+                                ? (currentLang === 'fr' ? 'Renvoyer au patient' : currentLang === 'en' ? 'Resend to patient' : 'إعادة الإرسال للمريض')
+                                : t.send_patient}
+                        </button>` : ''}
+                </div>
+            </div>
+        `;
+    }).join('');
+    updateRdvsCount();
+}
+function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    function changeLogo(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('logoImg').src = e.target.result;
+                localStorage.setItem('smartwrist_logo', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function loadSavedLogo() {
+        const savedLogo = localStorage.getItem('smartwrist_logo');
+        if (savedLogo) {
+            document.getElementById('logoImg').src = savedLogo;
+        }
+    }
+
+    document.getElementById('rdvForm').addEventListener('submit', addOrUpdateRdv);
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            currentFilter = this.getAttribute('data-filter');
+            renderAppointments();
+        });
+    });
+    
+    async function loadRdvsFromServer() {
+    const response = await fetch("{% url 'agenda_rdv_list' %}");
+    const data = await response.json();
+    rdvs = data.rdvs || [];
+    buildAlertsFromRdvs();
+    renderAppointments();
+    updateRdvsCount();
+}
+    async function sendToPatient(id) {
+    const rdv = rdvs.find(r => String(r.id) === String(id));
+    if (!rdv) return;
+
+    const now = new Date();
+    const hour = now.getHours();
+
+    let greeting = '';
+    let typeText = '';
+
+    if (currentLang === 'fr') {
+        greeting = hour < 18 ? 'Bonjour' : 'Bonsoir';
+        typeText = rdv.type === 'presentiel' ? 'Présentiel' : 'Télé-ergothérapie';
+    } else if (currentLang === 'en') {
+        greeting = hour < 18 ? 'Hello' : 'Good evening';
+        typeText = rdv.type === 'presentiel' ? 'In-person' : 'Tele-occupational therapy';
+    } else {
+        greeting = hour < 18 ? 'صباح الخير' : 'مساء الخير';
+        typeText = rdv.type === 'presentiel' ? 'حضوري' : 'علاج وظيفي عن بعد';
+    }
+
+    let previewMessage = '';
+
+    if (currentLang === 'fr') {
+        previewMessage =
+`${greeting} ${rdv.patient},
+
+Votre séance est programmée le ${formatDateDisplay(rdv.date)} à ${rdv.time}.
+Durée : ${rdv.duration} min
+Type : ${typeText}
+Notes de séance : ${rdv.notes || 'Aucune note'}
+
+Merci.
+SmartWrist Rehab`;
+    } else if (currentLang === 'en') {
+        previewMessage =
+`${greeting} ${rdv.patient},
+
+Your session is scheduled on ${formatDateDisplay(rdv.date)} at ${rdv.time}.
+Duration: ${rdv.duration} min
+Type: ${typeText}
+Session notes: ${rdv.notes || 'No notes'}
+
+Thank you.
+SmartWrist Rehab`;
+    } else {
+        previewMessage =
+`${greeting} ${rdv.patient}،
+
+تمت برمجة جلستك بتاريخ ${formatDateDisplay(rdv.date)} على الساعة ${rdv.time}.
+المدة: ${rdv.duration} دقيقة
+نوع الجلسة: ${typeText}
+ملاحظات الجلسة: ${rdv.notes || 'لا توجد ملاحظات'}
+
+شكراً لك.
+SmartWrist Rehab`;
+    }
+
+    const confirmSend = confirm(previewMessage + '\n\n' + (
+        currentLang === 'fr'
+            ? 'Confirmer l’envoi vers le rendez-vous du patient ?'
+            : currentLang === 'en'
+            ? 'Confirm sending to the patient appointment page?'
+            : 'هل تريد تأكيد الإرسال إلى صفحة مواعيد المريض؟'
+    ));
+
+    if (!confirmSend) return;
+
+    const response = await fetch(`/Agenda/api/rdvs/${id}/notify/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken
+        }
+    });
+
+    const result = await response.json();
+
+    if (!result.success) {
+        alert(result.error || 'Erreur');
+        return;
+    }
+
+    alert(
+        currentLang === 'fr'
+            ? `Le message suivant a été envoyé :\n\n${previewMessage}\n\nLe rendez-vous est maintenant visible dans la page RDV du patient.`
+            : currentLang === 'en'
+            ? `The following message has been sent:\n\n${previewMessage}\n\nThe appointment is now visible in the patient's appointment page.`
+            : `تم إرسال الرسالة التالية:\n\n${previewMessage}\n\nأصبح الموعد الآن ظاهراً في صفحة مواعيد المريض.`
+    );
+
+    await loadRdvsFromServer();
+}
+    function buildAlertsFromRdvs() {
+    const todayStr = getTodayStr();
+    alerts = [];
+
+    rdvs.forEach(rdv => {
+        if (rdv.status === 'annule') {
+            alerts.push({
+                id: `cancel-${rdv.id}`,
+                type: 'cancelled',
+                patient: rdv.patient,
+                sessionDate: rdv.date,
+                sessionTime: rdv.time,
+                createdAt: `${formatDateDisplay(rdv.date)} ${rdv.time}`,
+                read: false
+            });
+        } else if (rdv.status === 'reprogramme') {
+            alerts.push({
+                id: `reprog-${rdv.id}`,
+                type: 'modified',
+                patient: rdv.patient,
+                sessionDate: rdv.date,
+                sessionTime: rdv.time,
+                createdAt: `${formatDateDisplay(rdv.date)} ${rdv.time}`,
+                read: false
+            });
+        } else if (rdv.date === todayStr) {
+            alerts.push({
+                id: `today-${rdv.id}`,
+                type: 'today',
+                patient: rdv.patient,
+                sessionDate: rdv.date,
+                sessionTime: rdv.time,
+                createdAt: `${formatDateDisplay(rdv.date)} ${rdv.time}`,
+                read: false
+            });
+        } else if (rdv.date > todayStr && rdv.status === 'actif') {
+            alerts.push({
+                id: `new-${rdv.id}`,
+                type: 'new',
+                patient: rdv.patient,
+                sessionDate: rdv.date,
+                sessionTime: rdv.time,
+                createdAt: `${formatDateDisplay(rdv.date)} ${rdv.time}`,
+                read: false
+            });
+        } else if (rdv.date < todayStr) {
+            alerts.push({
+                id: `passed-${rdv.id}`,
+                type: 'passed',
+                patient: rdv.patient,
+                sessionDate: rdv.date,
+                sessionTime: rdv.time,
+                createdAt: `${formatDateDisplay(rdv.date)} ${rdv.time}`,
+                read: false
+            });
+        }
+    });
+
+    renderAlerts();
+    updateNotificationBadge();
+}
+let demandes = [];
+let signalements = [];
+
+async function loadDemandes() {
+    try {
+        console.log("🔄 Chargement des demandes...");
+        const response = await fetch('/api/ergo-demandes/');
+        console.log("📡 Réponse reçue:", response.status);
+        
+        const data = await response.json();
+        console.log("📦 Données reçues:", data);
+        
+        demandes = data.demandes || [];
+        console.log("✅ Nombre de demandes:", demandes.length);
+        
+        document.getElementById('demandesCount').innerText = demandes.filter(d => d.statut === 'en_attente').length;
+        renderDemandes();
+    } catch (error) {
+        console.error("❌ Erreur chargement demandes:", error);
+    }
+}
+async function loadSignalements() {
+    try {
+        const response = await fetch('/api/ergo-signalements/');
+        const data = await response.json();
+        signalements = data.signalements || [];
+        document.getElementById('signalementsCount').innerText = signalements.filter(s => s.statut === 'en_attente').length;
+        renderSignalements();
+    } catch (error) {
+        console.error("Erreur chargement signalements:", error);
+    }
+}
+
+function renderDemandes() {
+    const container = document.getElementById('demandesList');
+    const t = translations[currentLang];
+    
+    if (demandes.length === 0) {
+        container.innerHTML = `<div class="empty-state">Aucune demande</div>`;
+        return;
+    }
+    
+    container.innerHTML = demandes.map(d => {
+        let statusText = '';
+        let statusColor = '';
+        let statusBg = '';
+        
+        // ✅ CORRECTION : Gérer correctement les 3 statuts
+        if (d.statut === 'en_attente') {
+            statusText = '⏳ En attente';
+            statusBg = '#fef3c7';
+            statusColor = '#d97706';
+        } else if (d.statut === 'acceptee') {
+            statusText = '✅ Acceptée';
+            statusBg = '#d1fae5';
+            statusColor = '#059669';
+        } else if (d.statut === 'refusee') {
+            statusText = '❌ Refusée';
+            statusBg = '#fee2e2';
+            statusColor = '#dc2626';
+        }
+        
+        // ✅ Afficher le type correctement
+        let typeText = d.type === 'tele' ? 'Télé-ergothérapie' : 'Présentiel';
+        
+        return `
+            <div class="rdv-card" style="${d.statut === 'en_attente' ? 'border-left: 4px solid #f59e0b;' : ''}">
+                <div class="card-header">
+                    <div>
+                        <span class="patient-name">${d.patient_prenom} ${d.patient_nom}</span>
+                        <span class="status-badge" style="background: ${statusBg}; color: ${statusColor}; margin-left: 8px;">
+                            ${statusText}
+                        </span>
+                    </div>
+                    <span class="date-badge">📅 ${d.date_creation}</span>
+                </div>
+                <div class="rdv-details">
+                    <span class="detail-item"><i class="fas fa-calendar"></i> ${d.date_affichage}</span>
+                    <span class="detail-item"><i class="fas fa-clock"></i> ${d.creneau}</span>
+                    <span class="detail-item"><i class="fas ${d.type_valeur === 'presentiel' ? 'fa-building' : 'fa-video'}"></i> ${typeText}</span>
+                </div>
+                ${d.motif ? `<div class="rdv-notes"><i class="fas fa-comment"></i> ${escapeHtml(d.motif)}</div>` : ''}
+                ${d.reponse ? `<div class="rdv-notes" style="background: #e0e7ff;"><i class="fas fa-reply"></i> Réponse: ${escapeHtml(d.reponse)}</div>` : ''}
+                ${d.statut === 'en_attente' ? `
+                    <div class="card-actions">
+                        <button class="action-btn edit" onclick="repondreDemande(${d.id}, 'accepter')"><i class="fas fa-check"></i> Accepter</button>
+                        <button class="action-btn cancel" onclick="repondreDemande(${d.id}, 'refuser')"><i class="fas fa-times"></i> Refuser</button>
+                    </div>
+                ` : ''}
+                <!-- ✅ AJOUTER BOUTON SUPPRIMER (même pour les traitées) -->
+                <div class="card-actions" style="margin-top: 5px;">
+                    <button class="action-btn delete" onclick="supprimerDemande(${d.id})">
+                        <i class="fas fa-trash"></i> Supprimer
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// ✅ AJOUTER LA FONCTION SUPPRIMER DEMANDE
+async function supprimerDemande(demandeId) {
+    if (!confirm("Supprimer définitivement cette demande de rendez-vous ?")) return;
+    
+    try {
+        const response = await fetch(`/api/ergo-supprimer-demande/${demandeId}/`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRFToken': csrftoken
+            }
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            alert("Demande supprimée");
+            await loadDemandes();
+        } else {
+            alert("Erreur: " + (data.error || "Inconnue"));
+        }
+    } catch (error) {
+        console.error("Erreur:", error);
+        alert("Erreur réseau");
+    }
+}
+function renderSignalements() {
+    const container = document.getElementById('signalementsList');
+    
+    if (signalements.length === 0) {
+        container.innerHTML = `<div class="empty-state">Aucun signalement</div>`;
+        return;
+    }
+    
+    container.innerHTML = signalements.map(s => `
+        <div class="rdv-card" style="border-left: 4px solid #ef4444;">
+            <div class="card-header">
+                <div>
+                    <span class="patient-name">${s.patient_prenom} ${s.patient_nom}</span>
+                    <span class="status-badge" style="background: ${s.statut === 'en_attente' ? '#fee2e2' : '#d1fae5'}; color: ${s.statut === 'en_attente' ? '#dc2626' : '#059669'}">
+                        ${s.statut === 'en_attente' ? 'En attente' : 'Traité'}
+                    </span>
+                </div>
+                <span class="date-badge">📅 ${s.date_creation}</span>
+            </div>
+            <div class="rdv-details">
+                <span class="detail-item"><i class="fas fa-calendar"></i> ${s.rdv_date}</span>
+                <span class="detail-item"><i class="fas fa-clock"></i> ${s.rdv_time}</span>
+            </div>
+            <div class="rdv-notes"><i class="fas fa-flag"></i> <strong>${s.type_signalement}</strong><br>${s.description}</div>
+            ${s.statut === 'en_attente' ? `
+                <div class="card-actions">
+                    <button class="action-btn edit" onclick="marquerSignaleTraite(${s.id})"><i class="fas fa-check"></i> Marquer comme traité</button>
+                </div>
+            ` : ''}
+        </div>
+    `).join('');
+}
+
+async function repondreDemande(demandeId, action) {
+    const reponse = prompt(action === 'accepter' ? "Message de confirmation (optionnel) :" : "Motif du refus (optionnel) :");
+    
+    try {
+        const response = await fetch(`/api/ergo-repondre-demande/${demandeId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify({
+                action: action,
+                reponse: reponse || ''
+            })
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            await loadDemandes();  // ← Recharge la liste
+            alert(action === 'accepter' ? "✅ Demande acceptée" : "❌ Demande refusée");
+        } else {
+            alert("❌ Erreur: " + (data.error || "Inconnue"));
+        }
+    } catch (error) {
+        console.error("Erreur:", error);
+        alert("❌ Erreur réseau");
+    }
+}
+async function marquerSignaleTraite(signalementId) {
+    try {
+        const response = await fetch(`/api/ergo-signalement-traiter/${signalementId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrftoken
+            }
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            await loadSignalements();
+            alert("Signalement marqué comme traité");
+        }
+    } catch (error) {
+        console.error("Erreur:", error);
+    }
+}
+
+function showTab(tabName) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`.tab-btn[onclick="showTab('${tabName}')"]`).classList.add('active');
+    
+    document.getElementById('rdvsTab').style.display = tabName === 'rdvs' ? 'block' : 'none';
+    document.getElementById('demandesTab').style.display = tabName === 'demandes' ? 'block' : 'none';
+    document.getElementById('signalementsTab').style.display = tabName === 'signalements' ? 'block' : 'none';
+    document.getElementById('reponsesTab').style.display = tabName === 'reponses' ? 'block' : 'none';
+    document.getElementById('messagesPatientsTab').style.display = tabName === 'messagesPatients' ? 'block' : 'none';
+    
+    if (tabName === 'demandes') loadDemandes();
+    if (tabName === 'signalements') loadSignalements();
+    if (tabName === 'reponses') loadReponses();
+    if (tabName === 'messagesPatients') loadMessagesPatients();
+}
+document.addEventListener('DOMContentLoaded', async () => {
+    loadSavedLogo();
+    changeLanguage(currentLang);
+    setActiveFilter('all');
+    await loadRdvsFromServer();
+    await loadDemandes();
+    await loadSignalements();
+    await loadReponses();  
+    await loadMessagesPatients();
+    showTab('rdvs');
+});
+// ==================== RÉPONSES PATIENTS ====================
+let reponses = [];
+
+async function loadReponses() {
+    try {
+        const response = await fetch('/api/ergo-reponses-rendezvous/');
+        const data = await response.json();
+        console.log("📦 API brute :", data);
+        console.log("🔍 Type de data:", typeof data);
+        console.log("🔍 Clés de data:", Object.keys(data));
+
+        // ✅ Vérifie si data.reponses existe et est un tableau
+        let reponsesArray = [];
+        if (data && data.reponses && Array.isArray(data.reponses)) {
+            reponsesArray = data.reponses;
+        } else if (data && data.réponses && Array.isArray(data.réponses)) {
+            reponsesArray = data.réponses;
+        } else {
+            console.error("❌ La réponse API n'a pas la clé 'reponses' attendue:", data);
+        }
+        
+        reponses = reponsesArray;
+        
+        console.log("✅ Nombre de réponses chargées :", reponses.length);
+        const countSpan = document.getElementById('reponsesCount');
+        if (countSpan) {
+            countSpan.innerText = reponses.filter(r => !r.lu).length;
+        }
+        renderReponses();
+    } catch (error) {
+        console.error("❌ Erreur chargement réponses:", error);
+    }
+}
+function renderReponses() {
+    const container = document.getElementById('reponsesList');
+    
+    if (reponses.length === 0) {
+        container.innerHTML = `<div class="empty-state">📭 Aucune réponse de patient</div>`;
+        return;
+    }
+    
+    container.innerHTML = reponses.map(r => `
+        <div class="rdv-card" style="${!r.lu ? 'border-left: 4px solid #3b82f6;' : ''}">
+            <div class="card-header">
+                <div>
+                    <span class="patient-name">${r.patient_prenom} ${r.patient_nom}</span>
+                    <span class="status-badge" style="background: ${!r.lu ? '#e0e7ff' : '#f1f5f9'}; color: ${!r.lu ? '#3b82f6' : '#64748b'}">
+                        ${!r.lu ? '📩 Non lu' : '✓ Lu'}
+                    </span>
+                </div>
+                <span class="date-badge">📅 ${r.date_reponse}</span>
+            </div>
+            <div class="rdv-details">
+                <span class="detail-item"><i class="fas fa-calendar"></i> Rendez-vous: ${r.rdv_date} à ${r.rdv_time}</span>
+            </div>
+            <div class="rdv-notes" style="background: #f0fdf4;">
+                <i class="fas fa-comment-dots"></i> <strong>Réponse du patient:</strong><br>
+                ${escapeHtml(r.message)}
+            </div>
+            <div class="card-actions" style="margin-top: 10px;">
+                ${!r.lu ? `<button class="action-btn edit" onclick="marquerReponseLue(${r.id})"><i class="fas fa-check"></i> Marquer comme lu</button>` : ''}
+                <button class="action-btn send" onclick="repondreAuPatient(${r.id}, '${r.patient_prenom} ${r.patient_nom}', ${r.patient_id})">
+                    <i class="fas fa-reply"></i> Répondre au patient
+                </button>
+                <button class="action-btn delete" onclick="supprimerReponse(${r.id})">
+                    <i class="fas fa-trash"></i> Supprimer
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+async function repondreAuPatient(reponseId, patientName, patientId) {
+    console.log("🔵 repondreAuPatient appelé avec:", {reponseId, patientName, patientId});
+    
+    const message = prompt(`Répondre à ${patientName} :\n\nEntrez votre message :`);
+    console.log("🔵 Message saisi:", message);
+    
+    if (!message || message.trim() === "") {
+        alert("Veuillez écrire un message avant d'envoyer.");
+        return;
+    }
+    
+    try {
+        console.log("🔵 Envoi de la requête à /api/ergo-repondre-patient/");
+        const response = await fetch('/api/ergo-repondre-patient/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify({
+                patient_id: patientId,
+                message: message.trim(),
+                reponse_id: reponseId
+            })
+        });
+        
+        console.log("🔵 Statut de la réponse:", response.status);
+        const data = await response.json();
+        console.log("🔵 Données reçues:", data);
+        
+        if (data.success) {
+            alert("✅ Votre réponse a été envoyée au patient");
+            await loadReponses();
+        } else {
+            alert("❌ Erreur: " + (data.error || "Inconnue"));
+        }
+    } catch (error) {
+        console.error("❌ Erreur:", error);
+        alert("❌ Erreur réseau");
+    }
+}
+
+async function marquerReponseLue(reponseId) {
+    try {
+        const response = await fetch(`/api/ergo-reponse-lue/${reponseId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrftoken,
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            await loadReponses();  // Recharge la liste
+            alert("✅ Réponse marquée comme lue");
+        } else {
+            alert("❌ Erreur: " + (data.error || "Inconnue"));
+        }
+    } catch (error) {
+        console.error("Erreur:", error);
+        alert("❌ Erreur réseau");
+    }
+}
+
+// ==================== MESSAGES PATIENTS POUR ERGO ====================
+let messagesPatients = [];
+
+async function loadMessagesPatients() {
+    try {
+        console.log("🔄 Chargement des messages patients...");
+        const response = await fetch('/api/ergo-messages-patients/');
+        const data = await response.json();
+        console.log("📦 Messages patients reçus:", data);
+        
+        // ✅ Vérifie la structure de la réponse
+        if (data.messages && Array.isArray(data.messages)) {
+            messagesPatients = data.messages;
+        } else {
+            messagesPatients = [];
+            console.error("Structure inattendue:", data);
+        }
+        
+        const countSpan = document.getElementById('messagesPatientsCount');
+        if (countSpan) {
+            countSpan.innerText = messagesPatients.filter(m => !m.lu).length;
+        }
+        
+        renderMessagesPatients();
+    } catch (error) {
+        console.error("❌ Erreur chargement messages patients:", error);
+        messagesPatients = [];
+        renderMessagesPatients();
+    }
+}
+function renderMessagesPatients() {
+    const container = document.getElementById('messagesPatientsList');
+    
+    console.log("🔍 renderMessagesPatients - messagesPatients:", messagesPatients);
+    console.log("🔍 Nombre de messages:", messagesPatients.length);
+    
+    if (!messagesPatients || messagesPatients.length === 0) {
+        container.innerHTML = `<div class="empty-state">📭 Aucun message de patient</div>`;
+        return;
+    }
+    
+    container.innerHTML = messagesPatients.map(msg => {
+        // ✅ AFFICHAGE CORRIGÉ avec les bonnes clés
+        const nomComplet = `${msg.patient_prenom || ''} ${msg.patient_nom || ''}`.trim() || "Patient";
+        
+        return `
+            <div class="rdv-card" style="${!msg.lu ? 'border-left: 4px solid #3b82f6;' : ''}">
+                <div class="card-header">
+                    <div>
+                        <span class="patient-name">👤 ${escapeHtml(nomComplet)}</span>
+                        <span class="status-badge" style="background: ${!msg.lu ? '#e0e7ff' : '#f1f5f9'}; color: ${!msg.lu ? '#3b82f6' : '#64748b'}">
+                            ${!msg.lu ? '📩 Non lu' : '✓ Lu'}
+                        </span>
+                    </div>
+                    <span class="date-badge">📅 ${msg.date_envoi || ''}</span>
+                </div>
+                <div class="rdv-details">
+                    <span class="detail-item"><i class="fas fa-reply"></i> ${msg.reply_to ? 'Réponse à un message' : 'Message direct'}</span>
+                </div>
+                <div class="rdv-notes" style="background: #f0fdf4;">
+                    <i class="fas fa-comment-dots"></i> <strong>Message du patient:</strong><br>
+                    ${escapeHtml(msg.contenu || '')}
+                </div>
+                <div class="card-actions" style="margin-top: 10px;">
+                    ${!msg.lu ? `
+                        <button class="action-btn edit" onclick="marquerMessagePatientLu(${msg.id})">
+                            <i class="fas fa-check"></i> Marquer comme lu
+                        </button>
+                    ` : ''}
+                    <button class="action-btn send" onclick="repondreMessagePatient(${msg.id}, '${escapeHtml(nomComplet)}', ${msg.patient_id})">
+                        <i class="fas fa-reply"></i> Répondre
+                    </button>
+                    <button class="action-btn delete" onclick="supprimerMessage(${msg.id})">
+                        <i class="fas fa-trash"></i> Supprimer
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// ==================== GESTION DES MESSAGES ====================
+async function supprimerMessage(messageId) {
+    if (!confirm("Supprimer définitivement ce message ?")) return;
+    
+    try {
+        const response = await fetch(`/api/message/supprimer/${messageId}/`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRFToken': csrftoken
+            }
+        });
+        const data = await response.json();
+        if (data.success) {
+            await loadMessagesPatients();
+        } else {
+            alert("Erreur: " + (data.error || "Inconnue"));
+        }
+    } catch (error) {
+        console.error("Erreur:", error);
+    }
+}
+
+async function modifierMessage(messageId) {
+    const nouveauMessage = prompt("Modifier votre message :");
+    if (!nouveauMessage || nouveauMessage.trim() === "") return;
+    
+    try {
+        const response = await fetch(`/api/message/modifier/${messageId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify({ contenu: nouveauMessage.trim() })
+        });
+        const data = await response.json();
+        if (data.success) {
+            await loadMessagesPatients();
+        } else {
+            alert("Erreur: " + (data.error || "Inconnue"));
+        }
+    } catch (error) {
+        console.error("Erreur:", error);
+    }
+}
+async function marquerMessagePatientLu(messageId) {
+    try {
+        const response = await fetch(`/api/ergo-message-patient-lu/${messageId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrftoken
+            }
+        });
+        const data = await response.json();
+        if (data.success) {
+            await loadMessagesPatients();
+        }
+    } catch (error) {
+        console.error("Erreur:", error);
+    }
+}
+
+async function repondreMessagePatient(messageId, patientName, patientUserId) {
+    const message = prompt(`Répondre à ${patientName} :\n\nEntrez votre message :`);
+    if (!message || message.trim() === "") return;
+    
+    try {
+        const response = await fetch('/api/ergo-repondre-message-patient/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify({
+                patient_id: patientUserId,
+                message: message.trim(),
+                reply_to_id: messageId
+            })
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            alert("✅ Votre réponse a été envoyée au patient");
+            await loadMessagesPatients();
+        } else {
+            alert("❌ Erreur: " + (data.error || "Inconnue"));
+        }
+    } catch (error) {
+        console.error("Erreur:", error);
+        alert("❌ Erreur réseau");
+    }
+}
+function updateRdvsCount() {
+    const count = rdvs.filter(r => r.status !== 'annule').length;
+    const rdvsCountSpan = document.getElementById('rdvsCount');
+    if (rdvsCountSpan) {
+        rdvsCountSpan.innerText = count;
+    }
+}
+async function supprimerReponse(reponseId) {
+    if (!confirm("Supprimer définitivement cette réponse ?")) return;
+    
+    try {
+        const response = await fetch(`/api/ergo-supprimer-reponse/${reponseId}/`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRFToken': csrftoken
+            }
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            alert("✅ Réponse supprimée");
+            await loadReponses();
+        } else {
+            alert("❌ Erreur: " + (data.error || "Inconnue"));
+        }
+    } catch (error) {
+        console.error("Erreur:", error);
+        alert("❌ Erreur réseau");
+    }
+}
+async function repondreMessagePatient(messageId, patientName, patientUserId) {
+    const message = prompt(`Répondre à ${patientName} :\n\nEntrez votre message :`);
+    if (!message || message.trim() === "") return;
+    
+    try {
+        const response = await fetch('/api/ergo-repondre-message-patient/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify({
+                patient_id: patientUserId,
+                message: message.trim(),
+                reply_to_id: messageId
+            })
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            alert("✅ Votre réponse a été envoyée au patient");
+            await loadMessagesPatients();
+        } else {
+            alert("❌ Erreur: " + (data.error || "Inconnue"));
+        }
+    } catch (error) {
+        console.error("Erreur:", error);
+        alert("❌ Erreur réseau");
+    }
+}
+</script>
+</body>
+</html>

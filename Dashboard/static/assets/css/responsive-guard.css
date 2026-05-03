@@ -1,0 +1,309 @@
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  max-width: 100%;
+}
+
+img,
+picture,
+video,
+svg {
+  height: auto;
+}
+
+input,
+select,
+textarea,
+button {
+  max-width: 100%;
+}
+
+table {
+  max-width: 100%;
+}
+
+main,
+section,
+header,
+footer,
+nav,
+article,
+aside {
+  max-width: 100%;
+}
+
+.container,
+.container-fluid,
+.container-custom,
+.main,
+.main-container,
+.main-wrap,
+.content,
+.content-section,
+.page-content,
+.dashboard-content,
+.dashboard-container {
+  max-width: 100%;
+  min-width: 0;
+}
+
+.card,
+.metric-card,
+.chart-card,
+.exercise-card,
+.resource-card,
+.patient-card,
+.message-card,
+.appointment-card,
+.program-card {
+  min-width: 0;
+}
+
+.chart-container,
+.chart-wrap {
+  min-width: 0;
+}
+
+#services-detailed,
+#for-whom,
+.services-section {
+  overflow-anchor: none;
+}
+
+#services-detailed .service-card:hover,
+#services-detailed .frame:hover,
+#for-whom .smart-card:hover,
+#for-whom .smart-card:active {
+  transform: none !important;
+}
+
+#services-detailed .service-card:hover .card-image img {
+  transform: none !important;
+}
+
+#services-detailed .service-card.open .card-description,
+#services-detailed .service-card.is-open .card-description,
+#services-detailed .service-card .card-description.open {
+  max-height: 460px !important;
+  opacity: 1 !important;
+  margin-bottom: 15px !important;
+}
+
+#services-detailed .frame:hover .frame-hidden {
+  max-height: 0 !important;
+  opacity: 0 !important;
+  margin-top: 0 !important;
+}
+
+#services-detailed .frame.is-open .frame-hidden,
+#services-detailed .frame[data-open="true"] .frame-hidden,
+#services-detailed .frame.touch-active .frame-hidden {
+  max-height: 1000px !important;
+  opacity: 1 !important;
+  margin-top: 14px !important;
+}
+
+@media (max-width: 1200px) {
+  .table-responsive,
+  .table-container,
+  .table-wrapper,
+  .data-table-wrap,
+  .records-table,
+  .calendar-scroll,
+  .tabs-section {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .modal,
+  .modal-dialog,
+  .modal-content,
+  [role="dialog"] {
+    max-width: calc(100vw - 24px);
+  }
+}
+
+@media (max-width: 768px) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  body {
+    min-width: 0;
+  }
+
+  .row,
+  .form-row,
+  .btn-row,
+  .actions-row,
+  .topbar,
+  .header-actions,
+  .toolbar,
+  .filters,
+  .tabs,
+  .nav-tabs {
+    max-width: 100%;
+  }
+
+  .table-responsive,
+  .table-container,
+  .table-wrapper,
+  .data-table-wrap,
+  .records-table {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .modal,
+  .modal-dialog,
+  .modal-content,
+  .popup,
+  .dialog,
+  [role="dialog"] {
+    width: min(100%, calc(100vw - 18px));
+    max-width: calc(100vw - 18px);
+  }
+
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="color"]),
+  select,
+  textarea {
+    width: 100%;
+  }
+
+  #services-detailed,
+  #for-whom,
+  .services-section {
+    overflow-anchor: none;
+  }
+
+  #how-it-works {
+    overflow: hidden !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  #how-it-works .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  #how-it-works .timeline {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    width: 100% !important;
+    max-width: 360px !important;
+    margin: 12px auto 18px !important;
+  }
+
+  #how-it-works .timeline-item,
+  #how-it-works .timeline-item:nth-child(4),
+  #how-it-works .timeline-item:nth-child(5) {
+    grid-column: auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  #how-it-works .timeline-item:not(:last-child)::after {
+    display: none !important;
+  }
+
+  #how-it-works .timeline-content {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 16px 14px !important;
+    border-radius: 16px !important;
+  }
+
+  #how-it-works .timeline-content h4,
+  #how-it-works .timeline-content p,
+  #how-it-works .lead {
+    max-width: 100% !important;
+    overflow-wrap: anywhere !important;
+    word-break: normal !important;
+  }
+
+  #how-it-works .lead {
+    display: block !important;
+    width: fit-content !important;
+    max-width: calc(100vw - 32px) !important;
+    white-space: normal !important;
+  }
+
+  #for-whom {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  #for-whom > div {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  #for-whom h2 {
+    font-size: clamp(1.8rem, 8vw, 2.4rem) !important;
+    line-height: 1.15 !important;
+  }
+
+  #for-whom > div > div[style*="display: flex"] {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 16px !important;
+    width: 100% !important;
+  }
+
+  #services-detailed .frame,
+  #services-detailed .service-card,
+  #for-whom .smart-card {
+    transform: none !important;
+    transition: box-shadow 0.18s ease, border-color 0.18s ease, background-color 0.18s ease !important;
+    will-change: auto !important;
+  }
+
+  #for-whom .smart-card:active {
+    transform: none !important;
+  }
+
+  #for-whom .smart-card {
+    flex: 0 1 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    border-radius: 16px !important;
+  }
+
+  #for-whom .smart-card h3,
+  #for-whom .smart-card p,
+  #for-whom .smart-card span {
+    overflow-wrap: anywhere !important;
+    word-break: normal !important;
+  }
+
+  #for-whom .smart-card .card-content,
+  #services-detailed .frame-hidden {
+    transition: opacity 0.16s ease !important;
+  }
+
+  #services-detailed .frame[data-open="true"] .frame-hidden,
+  #services-detailed .frame.touch-active .frame-hidden {
+    margin-top: 12px !important;
+  }
+}

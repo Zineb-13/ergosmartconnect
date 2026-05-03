@@ -1,0 +1,3059 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages | SmartWrist Rehab</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary: #2E8B57;
+            --primary-light: #e8f3ed;
+            --primary-dark: #1e5e3b;
+            --primary-glow: rgba(46, 139, 87, 0.3);
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --white: #ffffff;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(46,139,87,0.15);
+            --shadow-lg: 0 8px 24px rgba(46,139,87,0.2);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-xl: 30px;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
+            padding: 15px 25px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,255,255,0.2);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo-icon {
+            width: 45px; height: 45px; border-radius: 12px; overflow: hidden;
+            position: relative; cursor: pointer;
+        }
+        .logo-icon img { width: 100%; height: 100%; object-fit: cover; }
+        .logo-icon .upload-overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: rgba(0,0,0,0.6); color: white; font-size: 10px;
+            text-align: center; padding: 2px; opacity: 0; transition: opacity 0.3s;
+        }
+        .logo-icon:hover .upload-overlay { opacity: 1; }
+        .logo-text h1 { font-size: 1.3rem; font-weight: 800; color: var(--primary-dark); margin: 0; }
+        .logo-text p { font-size: 0.7rem; color: var(--gray-500); margin: 0; }
+
+        .header-actions { display: flex; align-items: center; gap: 15px; }
+        .lang-switch { display: flex; gap: 6px; }
+        .lang-btn {
+            width: 38px; height: 38px; border-radius: 50%;
+            border: 1px solid var(--gray-300); background: white;
+            cursor: pointer; font-weight: 700; font-size: 12px;
+            transition: all 0.3s;
+        }
+        .lang-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        .back-btn {
+            background: var(--primary-light); border: none; padding: 8px 16px;
+            border-radius: 40px; cursor: pointer; display: flex;
+            align-items: center; gap: 8px; text-decoration: none;
+            color: var(--gray-700); font-size: 0.85rem; font-weight: 500;
+        }
+        .back-btn:hover { background: var(--primary); color: white; }
+
+        .notification-icon { position: relative; cursor: pointer; color: var(--gray-600); font-size: 1.2rem; }
+        .notification-badge {
+            position: absolute; top: -8px; right: -8px;
+            background: #ef4444; color: white; font-size: 10px;
+            padding: 2px 5px; border-radius: 20px;
+        }
+
+        .messages-container { max-width: 1400px; margin: 0 auto; }
+
+        .page-title { text-align: center; margin-bottom: 30px; }
+        .page-title h1 {
+            font-size: 2rem; font-weight: 800; color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2); margin-bottom: 5px;
+        }
+        .page-title p { color: rgba(255,255,255,0.9); font-size: 0.95rem; }
+
+        .messages-hero {
+            display: grid;
+            grid-template-columns: 1.15fr .85fr;
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+        .hero-panel, .hero-stats-panel {
+            background: rgba(255,255,255,0.94);
+            backdrop-filter: blur(16px);
+            border-radius: 28px;
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.35);
+            box-shadow: var(--shadow-lg);
+        }
+        .hero-panel {
+            background:
+                radial-gradient(circle at top right, rgba(46,139,87,0.16), transparent 30%),
+                linear-gradient(145deg, rgba(255,255,255,0.98), rgba(232,243,237,0.92));
+        }
+        .hero-panel h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+        .hero-panel p {
+            color: var(--gray-600);
+            line-height: 1.7;
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+        .hero-pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.88);
+            border: 1px solid rgba(148,163,184,0.12);
+            color: var(--gray-700);
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        .hero-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .hero-stat-card {
+            padding: 16px;
+            border-radius: 20px;
+            background: linear-gradient(180deg, rgba(248,250,252,0.98), rgba(241,245,249,0.94));
+            border: 1px solid rgba(148,163,184,0.12);
+        }
+        .hero-stat-card strong {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+        }
+        .hero-stat-card span {
+            display: block;
+            margin-top: 4px;
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: .04em;
+        }
+
+        /* SECTION FILTRES */
+        .filters-section {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .filters-row-1 {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .filter-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--gray-100);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+        .filter-badge i { font-size: 1rem; }
+        .filter-badge:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        .filter-badge.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px var(--primary-glow);
+        }
+
+        .filters-row-2 {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .search-box {
+            flex: 2;
+            position: relative;
+            min-width: 200px;
+        }
+        .search-box i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+        }
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 45px;
+            border: 1px solid var(--gray-200);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.3s;
+            background: white;
+        }
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-glow);
+        }
+        .patient-select {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid var(--gray-200);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            outline: none;
+            background: white;
+            cursor: pointer;
+            min-width: 180px;
+        }
+        .patient-select:focus { border-color: var(--primary); }
+
+        .filters-row-3 {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+        .date-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--gray-100);
+            padding: 5px 15px;
+            border-radius: 50px;
+        }
+        .date-group label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--gray-600);
+        }
+        .date-input {
+            padding: 8px 12px;
+            border: 1px solid var(--gray-200);
+            border-radius: 30px;
+            font-size: 0.8rem;
+            outline: none;
+            background: white;
+        }
+        .date-input:focus { border-color: var(--primary); }
+        .clear-dates {
+            background: none;
+            border: none;
+            color: var(--gray-500);
+            cursor: pointer;
+            font-size: 0.75rem;
+            padding: 8px 12px;
+            border-radius: 30px;
+            transition: all 0.2s;
+        }
+        .clear-dates:hover { background: var(--gray-200); color: var(--primary); }
+
+        /* Grille messages */
+        .messages-grid {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 25px;
+            min-height: 600px;
+        }
+
+        .conversations-list {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
+            padding: 15px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,255,255,0.3);
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .new-message-btn {
+            width: 100%;
+            background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .new-message-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-glow); }
+
+        .conversation-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            border-radius: 22px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 8px;
+            border: 1px solid transparent;
+            background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(248,250,252,0.9));
+        }
+        .conversation-item:hover {
+            background: linear-gradient(180deg, rgba(255,255,255,1), rgba(232,243,237,0.88));
+            transform: translateY(-2px);
+            border-color: rgba(46,139,87,0.14);
+            box-shadow: var(--shadow-md);
+        }
+        .conversation-item.active {
+            background: linear-gradient(145deg, rgba(232,243,237,1), rgba(255,255,255,0.96));
+            border-color: rgba(46,139,87,0.25);
+            box-shadow: var(--shadow-md);
+        }
+
+        .conversation-avatar {
+            width: 45px; height: 45px; border-radius: 12px;
+            background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 700; font-size: 1rem; flex-shrink: 0;
+        }
+        .conversation-info { flex: 1; min-width: 0; }
+        .conversation-name { font-weight: 700; font-size: 0.9rem; color: var(--gray-800); }
+        .conversation-preview {
+            font-size: 0.7rem; color: var(--gray-500);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .conversation-time { font-size: 0.65rem; color: var(--gray-400); text-align: right; }
+        .unread-badge {
+            background: var(--primary); color: white; font-size: 0.6rem;
+            padding: 2px 6px; border-radius: 20px; margin-top: 4px; display: inline-block;
+        }
+
+        /* Zone de conversation */
+        .chat-area {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,255,255,0.3);
+            display: flex;
+            flex-direction: column;
+            height: 70vh;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background:
+                radial-gradient(circle at top right, rgba(46,139,87,0.12), transparent 28%),
+                linear-gradient(145deg, rgba(255,255,255,0.98), rgba(232,243,237,0.85));
+        }
+        .chat-header-left { display: flex; align-items: center; gap: 12px; }
+        .chat-header-avatar {
+            width: 40px; height: 40px; border-radius: 10px;
+            background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 700;
+        }
+        .chat-header-info h3 { font-size: 1rem; font-weight: 700; margin: 0; }
+        .chat-header-info p { font-size: 0.7rem; color: var(--gray-500); margin: 0; }
+        .delete-conv-btn {
+            background: none; border: none; color: var(--gray-400);
+            cursor: pointer; padding: 6px; border-radius: 50%; transition: all 0.2s;
+        }
+        .delete-conv-btn:hover { color: #dc2626; background: #fee2e2; }
+
+        .messages-list {
+            flex: 1; padding: 20px; overflow-y: auto;
+            display: flex; flex-direction: column; gap: 14px;
+            background:
+                radial-gradient(circle at top left, rgba(46,139,87,0.06), transparent 24%),
+                linear-gradient(180deg, rgba(248,250,252,0.92), rgba(255,255,255,0.96));
+        }
+        .message-bubble {
+            max-width: 78%; padding: 12px 16px; border-radius: 22px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(148,163,184,0.10);
+        }
+        .message-bubble.sent {
+            align-self: flex-end;
+            background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-bottom-right-radius: 6px;
+        }
+        .message-bubble.received {
+            align-self: flex-start;
+            background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(241,245,249,0.94));
+            color: var(--gray-800);
+            border-bottom-left-radius: 6px;
+        }
+        .message-text { font-size: 0.85rem; word-wrap: break-word; }
+        .message-time { font-size: 0.6rem; margin-top: 4px; opacity: 0.7; text-align: right; }
+        .message-attachment {
+            margin-top: 8px; padding: 6px 10px; background: rgba(0,0,0,0.05);
+            border-radius: 12px; display: inline-flex; align-items: center;
+            gap: 6px; font-size: 0.7rem; cursor: pointer;
+        }
+
+        .chat-input-area {
+            padding: 15px 20px; border-top: 1px solid var(--gray-200);
+            display: flex; gap: 10px; align-items: flex-end;
+        }
+        .chat-input {
+            flex: 1; border: 1px solid var(--gray-200); border-radius: 24px;
+            padding: 10px 16px; font-size: 0.85rem; resize: none;
+            font-family: inherit; outline: none;
+        }
+        .chat-input:focus { border-color: var(--primary); }
+        .attach-btn {
+            background: var(--gray-100); border: none; width: 38px; height: 38px;
+            border-radius: 50%; cursor: pointer; transition: all 0.2s;
+        }
+        .attach-btn:hover { background: var(--primary-light); color: var(--primary); }
+        .send-btn {
+            background: var(--primary); border: none; width: 38px; height: 38px;
+            border-radius: 50%; color: white; cursor: pointer; transition: all 0.2s;
+        }
+        .send-btn:hover { background: var(--primary-dark); transform: scale(1.05); }
+
+        .empty-chat, .empty-conversations {
+            text-align: center; padding: 40px; color: var(--gray-400);
+        }
+        .footer {
+            text-align: center; margin-top: 40px; padding: 20px;
+            color: rgba(255,255,255,0.6); font-size: 0.75rem;
+        }
+
+        @media (max-width: 900px) {
+            .messages-grid { grid-template-columns: 1fr; }
+            .conversations-list { max-height: 300px; }
+            .filters-row-2 { flex-direction: column; }
+            .search-box { width: 100%; }
+            .patient-select { width: 100%; }
+            .filters-row-3 { flex-direction: column; align-items: stretch; }
+            .date-group { justify-content: space-between; }
+        }
+    .pinned-message {
+    position: relative;
+    border: 2px solid #f59e0b !important;
+}
+
+.pinned-message::before {
+    content: "📌 Épinglé";
+    display: inline-block;
+    margin-bottom: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    background: #f59e0b;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 999px;
+}
+.camera-modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+    padding:20px;
+}
+
+.camera-box{
+    width:min(100%, 520px);
+    background:white;
+    border-radius:24px;
+    box-shadow:0 12px 30px rgba(0,0,0,0.18);
+    padding:16px;
+}
+
+.camera-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:12px;
+}
+
+.camera-close{
+    border:none;
+    background:transparent;
+    color:#475569;
+    font-size:1.1rem;
+    cursor:pointer;
+}
+
+#cameraVideo{
+    width:100%;
+    max-height:420px;
+    border-radius:18px;
+    background:#000;
+    object-fit:cover;
+}
+
+.camera-actions{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    margin-top:14px;
+    flex-wrap:wrap;
+}
+
+.video-record-indicator{
+    margin-top:10px;
+    text-align:center;
+    font-size:.9rem;
+    color:#dc2626;
+    font-weight:700;
+}
+
+.dot-rec{
+    display:inline-block;
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:#dc2626;
+    margin-right:6px;
+    animation:blinkRec 1s infinite;
+}
+
+@keyframes blinkRec{
+    0%,100%{opacity:1}
+    50%{opacity:.3}
+}
+.message-subject {
+    margin-bottom: 8px;
+    padding: 7px 12px;
+    border-radius: 12px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1.4;
+    background: rgba(255,255,255,0.18);
+    border-left: 4px solid rgba(255,255,255,0.75);
+    color: inherit;
+}
+
+.message-bubble.received .message-subject {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    border-left: 4px solid var(--primary);
+}
+
+.message-bubble.sent .message-subject {
+    background: rgba(255,255,255,0.16);
+    color: white;
+    border-left: 4px solid rgba(255,255,255,0.8);
+}
+
+html[dir="rtl"] .message-subject {
+    border-left: none;
+    border-right: 4px solid var(--primary);
+}
+
+html[dir="rtl"] .message-bubble.sent .message-subject {
+    border-right: 4px solid rgba(255,255,255,0.8);
+}
+
+html[dir="rtl"] .message-bubble.received .message-subject {
+    border-right: 4px solid var(--primary);
+}
+@keyframes bellShake {
+    0% { transform: rotate(0deg); }
+    20% { transform: rotate(-15deg); }
+    40% { transform: rotate(12deg); }
+    60% { transform: rotate(-10deg); }
+    80% { transform: rotate(6deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.notification-icon.ring {
+    animation: bellShake 0.6s ease;
+}
+.pinned-messages-wrapper {
+    margin: 10px 20px 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 150px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.pinned-banner-single {
+    margin: 8px 20px 0 20px;
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr) 34px;
+    align-items: center;
+    gap: 8px;
+    width: calc(100% - 40px);
+}
+
+.pinned-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f6edd8;
+    border: 1px solid #ead9a7;
+    border-radius: 12px;
+    padding: 8px 12px;
+    cursor: pointer;
+    min-width: 0;
+    width: 100%;
+    overflow: hidden;
+}
+
+.pinned-banner-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #f59e0b;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 12px;
+}
+
+.pinned-banner-content {
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+}
+
+.pinned-banner-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #b45309;
+    line-height: 1.15;
+    margin-bottom: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pinned-banner-text {
+    font-size: 0.76rem;
+    color: #5b4a1f;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pinned-nav-btn {
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 50%;
+    background: #f1f5f9;
+    color: #475569;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+.chat-area {
+    overflow: hidden;
+}
+
+.chat-header + .pinned-banner-single {
+    flex-shrink: 0;
+}
+
+.pinned-nav-btn:hover {
+    background: #e2e8f0;
+    color: #1e293b;
+}
+/* ===== NOTIFICATIONS - VERSION CORRIGÉE ===== */
+.notification-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+
+
+.notifications-panel {
+    display: none;
+    position: fixed;
+    width: 320px;
+    max-width: calc(100vw - 24px);
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    border: 1px solid #e2e8f0;
+    z-index: 99999;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+}
+
+.notifications-panel.show {
+    display: block;
+}
+
+.notifications-panel-header {
+    padding: 12px 16px;
+    background: #2E8B57;
+    color: white;
+    font-weight: bold;
+    border-radius: 12px 12px 0 0;
+}
+
+#notificationsList {
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.notification-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #e2e8f0;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.notification-item:hover {
+    background: #f1f5f9;
+}
+
+.notification-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: #2E8B57;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.notification-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.notification-name {
+    font-weight: bold;
+    font-size: 0.85rem;
+    color: #1e293b;
+}
+
+.notification-text {
+    font-size: 0.75rem;
+    color: #64748b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.notification-time {
+    font-size: 0.65rem;
+    color: #94a3b8;
+    margin-top: 4px;
+}
+
+.notification-empty {
+    padding: 30px 20px;
+    text-align: center;
+    color: #94a3b8;
+}
+
+@media (max-width: 768px) {
+    .notifications-panel {
+        position: fixed;
+        top: 60px;
+        right: 10px;
+        left: 10px;
+        width: auto;
+    }
+}
+</style>
+    <link rel="stylesheet" href="{% static 'assets/css/responsive-guard.css' %}">
+</head>
+<body>
+<div id="toastMessage" style="
+    position:fixed;
+    bottom:25px;
+    right:25px;
+    background:#16a34a;
+    color:white;
+    padding:12px 18px;
+    border-radius:14px;
+    box-shadow:0 8px 24px rgba(0,0,0,0.15);
+    font-size:0.9rem;
+    font-weight:600;
+    opacity:0;
+    pointer-events:none;
+    transform:translateY(20px);
+    transition:all 0.3s ease;
+    z-index:5000;
+">
+    Message envoyé
+</div>
+<div class="messages-container">
+    <header class="header">
+        <a href="{% url 'ergotherapeute' %}" class="logo">
+            <div class="logo-icon" id="logoIcon">
+                <img id="logoImg" src="{% static 'assets/img/ergo/Messages.png' %}" alt="SmartWrist">
+                <div class="upload-overlay" onclick="event.preventDefault(); document.getElementById('logoUpload').click();">
+                    <i class="fas fa-camera"></i>
+                </div>
+                <input type="file" id="logoUpload" style="display:none;" accept="image/*" onchange="changeLogo(this)">
+            </div>
+            <div class="logo-text">
+                <h1>SmartWrist Rehab</h1>
+                <p id="brandSub" data-i18n="brand_sub"></p>
+            </div>
+        </a>
+        <div class="header-actions">
+            <a href="{% url 'ergotherapeute' %}" class="back-btn">
+                <i class="fas fa-arrow-left"></i> <span id="backText" data-i18n="back">Retour</span>
+            </a>
+            <div class="lang-switch">
+                <button class="lang-btn active" onclick="changeLanguage('fr')">FR</button>
+                <button class="lang-btn" onclick="changeLanguage('en')">EN</button>
+                <button class="lang-btn" onclick="changeLanguage('ar')">AR</button>
+            </div>
+     <div class="notification-wrapper">
+    <div class="notification-icon" id="notifIcon">
+        <i class="far fa-bell"></i>
+        <span class="notification-badge" id="notifCount">0</span>
+    </div>
+</div>
+    </header>
+
+    <div class="page-title">
+        <h1><i class="fas fa-envelope"></i> <span id="pageTitle" data-i18n="page_title">Messages</span></h1>
+        <p id="pageSubtitle" data-i18n="page_subtitle">Échangez avec vos patients</p>
+    </div>
+
+    <div class="messages-hero">
+        <div class="hero-panel">
+            <h2>Communication thérapeutique plus forte</h2>
+            <p>Une messagerie plus claire, plus rassurante et plus élégante pour suivre les échanges avec vos patients, repérer rapidement les messages importants et garder une lecture fluide.</p>
+            <div class="hero-pill-row">
+                <span class="hero-pill"><i class="fas fa-bolt"></i> Réponses plus visibles</span>
+                <span class="hero-pill"><i class="fas fa-comments"></i> Conversations mieux marquées</span>
+                <span class="hero-pill"><i class="fas fa-star"></i> Interface plus premium</span>
+            </div>
+        </div>
+        <div class="hero-stats-panel">
+            <div class="hero-stats-grid">
+                <div class="hero-stat-card">
+                    <strong id="heroConversationCount">0</strong>
+                    <span>Conversations</span>
+                </div>
+                <div class="hero-stat-card">
+                    <strong id="heroUnreadCount">0</strong>
+                    <span>Non lus</span>
+                </div>
+                <div class="hero-stat-card">
+                    <strong id="heroAttachmentCount">0</strong>
+                    <span>Pièces jointes</span>
+                </div>
+                <div class="hero-stat-card">
+                    <strong id="heroActiveFilter">Tous</strong>
+                    <span>Filtre actif</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION FILTRES -->
+    <div class="filters-section">
+        <div class="filters-row-1">
+            <span class="filter-badge active" data-filter="all" onclick="setFilter('all')">
+                <i class="fas fa-inbox"></i> <span data-i18n="filter_all">Tous</span>
+            </span>
+            <span class="filter-badge" data-filter="unread" onclick="setFilter('unread')">
+                <i class="fas fa-bell"></i> <span data-i18n="filter_unread">Non lus</span>
+            </span>
+            <span class="filter-badge" data-filter="attachments" onclick="setFilter('attachments')">
+                <i class="fas fa-paperclip"></i> <span data-i18n="filter_attachments">Pièces jointes</span>
+            </span>
+            <span class="filter-badge" data-filter="sent" onclick="setFilter('sent')">
+                <i class="fas fa-paper-plane"></i> <span data-i18n="filter_sent">Envoyés</span>
+            </span>
+            <span class="filter-badge" data-filter="received" onclick="setFilter('received')">
+                <i class="fas fa-download"></i> <span data-i18n="filter_received">Reçus</span>
+            </span>
+        </div>
+
+        <div class="filters-row-2">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" class="search-input" data-i18n-placeholder="search_placeholder" placeholder="Rechercher dans les messages...">
+            </div>
+            <select id="patientFilter" class="patient-select">
+                <option value="all" data-i18n="all_patients">💬 Toutes les conversations</option>
+            </select>
+        </div>
+
+        <div class="filters-row-3">
+            <div class="date-group">
+                <label><i class="fas fa-calendar-alt"></i> <span data-i18n="date_from">Du</span></label>
+                <input type="date" id="dateFrom" class="date-input">
+            </div>
+            <div class="date-group">
+                <label><i class="fas fa-calendar-alt"></i> <span data-i18n="date_to">Au</span></label>
+                <input type="date" id="dateTo" class="date-input">
+            </div>
+            <button class="clear-dates" onclick="clearDates()">
+                <i class="fas fa-times-circle"></i> <span data-i18n="clear_dates">Effacer les dates</span>
+            </button>
+        </div>
+    </div>
+        
+    <div class="messages-grid">
+        <div class="conversations-list">
+            <button class="new-message-btn" onclick="openNewMessageModal()">
+                <i class="fas fa-plus-circle"></i> <span data-i18n="new_message">Démarrer une conversation</span>
+            </button>
+            <div id="conversationsContainer">
+                <div class="empty-conversations" data-i18n="no_conversations">Aucune conversation</div>
+            </div>
+        </div>
+
+        <div class="chat-area" id="chatArea">
+            <div class="empty-chat">
+                <div>
+                    <i class="fas fa-comment-dots fa-3x"></i>
+                    <p data-i18n="select_conversation">Sélectionnez une conversation</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>© 2026 SmartWrist Rehab · Tous droits réservés</p>
+    </div>
+</div>
+<div id="cameraModal" class="camera-modal" style="display:none;">
+    <div class="camera-box">
+        <div class="camera-top">
+            <strong id="cameraTitle">Caméra</strong>
+            <button type="button" class="camera-close" onclick="closeCameraModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <video id="cameraVideo" autoplay playsinline></video>
+
+        <div id="videoRecordIndicator" class="video-record-indicator" style="display:none;">
+            <span class="dot-rec"></span> Enregistrement...
+        </div>
+
+        <div class="camera-actions">
+            <button type="button" class="attach-btn" onclick="capturePhoto()" id="capturePhotoBtn" title="Prendre une photo">
+                <i class="fas fa-camera"></i>
+            </button>
+
+            <button type="button" class="attach-btn" onclick="toggleVideoRecording()" id="recordVideoBtn" title="Enregistrer une vidéo">
+                <i class="fas fa-video"></i>
+            </button>
+
+            <button type="button" class="attach-btn" onclick="switchCamera()" id="switchCameraBtn" title="Changer caméra">
+                <i class="fas fa-sync-alt"></i>
+            </button>
+
+            <button type="button" class="attach-btn" onclick="closeCameraModal()" title="Fermer">
+                <i class="fas fa-times-circle"></i>
+            </button>
+        </div>
+    </div>
+</div>
+<audio id="notifSound" preload="auto">
+    <source src="https://actions.google.com/sounds/v1/alarms/notification_simple-02.mp3" type="audio/mpeg">
+</audio>
+<script>
+    const translations = {
+        fr: {
+            brand_sub: "",
+            back: "Retour",
+            page_title: "Messages",
+            page_subtitle: "Échangez avec vos patients",
+            filter_all: "Tous",
+            filter_unread: "Non lus",
+            filter_attachments: "Pièces jointes",
+            filter_sent: "Envoyés",
+            filter_received: "Reçus",
+            search_placeholder: "Rechercher dans les messages...",
+            all_patients: "💬 Toutes les conversations",
+            new_message: "Démarrer une conversation",
+            date_from: "Du",
+            date_to: "Au",
+            clear_dates: "Effacer les dates",
+            no_conversations: "Aucune conversation",
+            select_conversation: "Sélectionnez une conversation",
+            write_message: "Écrire un message...",
+            delete: "Supprimer",
+            delete_confirm: "Supprimer cette conversation ?",
+            select_patient: "Sélectionner un patient",
+            cancel: "Annuler",
+            no_patients: "Aucun patient enregistré",
+            no_messages: "Aucun message",
+            patient: "Patient",
+            send: "Envoyer",
+            attach: "Joindre un fichier",
+            voice_message: "Message vocal",
+            recording: "Enregistrement en cours..."
+        },
+        en: {
+            brand_sub: "",
+            back: "Back",
+            page_title: "Messages",
+            page_subtitle: "Chat with your patients",
+            filter_all: "All",
+            filter_unread: "Unread",
+            filter_attachments: "Attachments",
+            filter_sent: "Sent",
+            filter_received: "Received",
+            search_placeholder: "Search in messages...",
+            all_patients: "💬 All conversations",
+            new_message: "Start a conversation",
+            date_from: "From",
+            date_to: "To",
+            clear_dates: "Clear dates",
+            no_conversations: "No conversations",
+            select_conversation: "Select a conversation",
+            write_message: "Write a message...",
+            delete: "Delete",
+            delete_confirm: "Delete this conversation?",
+            select_patient: "Select a patient",
+            cancel: "Cancel",
+            no_patients: "No patients registered",
+            no_messages: "No messages",
+            patient: "Patient",
+            send: "Send",
+            attach: "Attach file",
+            voice_message: "Voice message",
+            recording: "Recording..."
+        },
+        ar: {
+            brand_sub: "",
+            back: "رجوع",
+            page_title: "الرسائل",
+            page_subtitle: "تواصل مع مرضاك",
+            filter_all: "الكل",
+            filter_unread: "غير مقروءة",
+            filter_attachments: "المرفقات",
+            filter_sent: "المرسلة",
+            filter_received: "المستلمة",
+            search_placeholder: "البحث في الرسائل...",
+            all_patients: "💬 جميع المحادثات",
+            new_message: "بدء محادثة",
+            date_from: "من",
+            date_to: "إلى",
+            clear_dates: "مسح التواريخ",
+            no_conversations: "لا توجد محادثات",
+            select_conversation: "اختر محادثة",
+            write_message: "اكتب رسالة...",
+            delete: "حذف",
+            delete_confirm: "حذف هذه المحادثة؟",
+            select_patient: "اختر مريضاً",
+            cancel: "إلغاء",
+            no_patients: "لا يوجد مرضى مسجلين",
+            no_messages: "لا توجد رسائل",
+            patient: "المريض",
+            send: "إرسال",
+            attach: "إرفاق ملف",
+            voice_message: "رسالة صوتية",
+            recording: "جارٍ التسجيل..."
+        }
+    };
+    let pinnedMessageIndex = 0;
+    let cameraStream = null;
+    let cameraMode = null; // "photo" ou "video"
+    let currentFacingMode = 'environment';
+    let currentCameraId = null;
+    let availableVideoDevices = [];
+    let recordedChunks = [];
+    let currentLang = 'fr';
+    let currentPatientId = null;
+    let pendingAttachment = null;
+    let conversations = [];
+    let allPatients = [];
+    let currentFilter = 'all';
+    let currentSearch = '';
+    let dateFrom = '';
+    let dateTo = '';
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let isRecording = false;
+    let pendingAttachmentType = null;
+    let replyToMessage = null;
+    let recordingInterval = null;
+    let recordingSeconds = 0;
+    let lastNotificationCount = 0;
+    let manualConversationClosed = false;
+    let shouldAutoScrollMessages = true;
+    let messagesScrollTopBeforeRender = 0;
+    let isTyping = false;
+    let isUserScrolling = false;
+    let autoRefreshInterval = null;
+
+    /* ✅ nouvelle signature pour éviter les re-render inutiles */
+    let currentConversationSignature = '';
+    function changeLanguage(lang) {
+        currentLang = lang;
+        document.documentElement.lang = lang;
+        document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.textContent.toLowerCase() === lang) btn.classList.add('active');
+        });
+
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (translations[lang] && translations[lang][key] !== undefined) {
+                el.textContent = translations[lang][key];
+            }
+        });
+
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            const key = el.getAttribute('data-i18n-placeholder');
+            if (translations[lang] && translations[lang][key] !== undefined) {
+                el.placeholder = translations[lang][key];
+            }
+        });
+
+        updateConversationSelect(conversations);
+        renderConversations();
+    }
+
+    async function loadAllPatients() {
+    try {
+        const response = await fetch('/api/patients/');
+        const data = await response.json();
+        // Les patients viennent avec l'ID du PatientProfile
+        allPatients = Array.isArray(data.patients) ? data.patients : [];
+        
+        // Pour déboguer, afficher les IDs
+        console.log("Patients chargés:", allPatients.map(p => ({id: p.id, nom: p.nom, prenom: p.prenom})));
+        
+        return allPatients;
+    } catch (error) {
+        console.error('Erreur patients:', error);
+        allPatients = [];
+        return [];
+    }
+}
+    function updateConversationSelect(conversationsList) {
+    const patientSelect = document.getElementById('patientFilter');
+    const currentValue = patientSelect.value || 'all';
+
+    patientSelect.innerHTML = `<option value="all">${translations[currentLang].all_patients}</option>`;
+
+    conversationsList.forEach(conv => {
+        patientSelect.innerHTML += `
+            <option value="${conv.id}" ${String(currentValue) === String(conv.id) ? 'selected' : ''}>
+                ${escapeHtml(conv.prenom)} ${escapeHtml(conv.nom)}
+            </option>
+        `;
+    });
+    }
+    
+    function loadConversations(patientId = null) {
+    let url = `/messages/conversations/?filter=${currentFilter}&search=${encodeURIComponent(currentSearch)}`;
+
+    if (dateFrom) {
+        url += `&date_from=${encodeURIComponent(dateFrom)}`;
+    }
+
+    if (dateTo) {
+        url += `&date_to=${encodeURIComponent(dateTo)}`;
+    }
+
+    if (patientId && patientId !== 'all') {
+        url += `&patient_id=${patientId}`;
+    }
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            conversations = data.conversations || [];
+
+            renderConversations();
+            updateNotificationBadge();
+            updateConversationSelect(conversations);
+
+            // Si l'utilisateur a fermé manuellement la conversation,
+            // on n'en réouvre aucune automatiquement
+            if (manualConversationClosed) {
+                return;
+            }
+
+            // Si une conversation est ouverte mais n'existe pas encore dans la liste,
+                // on NE la ferme PAS automatiquement.
+                // Cela permet de commencer une nouvelle conversation puis envoyer le 1er message.
+                const exists = conversations.some(c => String(c.id) === String(currentPatientId));
+
+                if (currentPatientId && !exists) {
+                    // on garde currentPatientId tel quel
+                    // on ne vide pas le chat ici
+                }
+        })
+        .catch(error => console.error('Erreur conversations:', error));
+}
+function updateMessagesHero() {
+    const unreadCount = (conversations || []).reduce((sum, conv) => sum + (parseInt(conv.non_lus || 0, 10) || 0), 0);
+    const attachmentCount = (conversations || []).reduce((sum, conv) => sum + (conv.has_attachment ? 1 : 0), 0);
+    const activeFilterMap = {
+        all: 'Tous',
+        unread: 'Non lus',
+        attachments: 'Pièces jointes',
+        sent: 'Envoyés',
+        received: 'Reçus'
+    };
+
+    const conversationEl = document.getElementById('heroConversationCount');
+    const unreadEl = document.getElementById('heroUnreadCount');
+    const attachmentEl = document.getElementById('heroAttachmentCount');
+    const filterEl = document.getElementById('heroActiveFilter');
+
+    if (conversationEl) conversationEl.textContent = String((conversations || []).length);
+    if (unreadEl) unreadEl.textContent = String(unreadCount);
+    if (attachmentEl) attachmentEl.textContent = String(attachmentCount);
+    if (filterEl) filterEl.textContent = activeFilterMap[currentFilter] || 'Tous';
+}
+function renderConversations() {
+    const container = document.getElementById('conversationsContainer');
+    const t = translations[currentLang];
+    updateMessagesHero();
+
+    if (!conversations || conversations.length === 0) {
+        container.innerHTML = `<div class="empty-conversations">${t.no_conversations}</div>`;
+        return;
+    }
+
+    container.innerHTML = conversations.map(conv => {
+        // S'assurer que la comparaison se fait en nombre
+        const isActive = currentPatientId === parseInt(conv.id);
+        
+        return `
+        <div class="conversation-item ${isActive ? 'active' : ''}" 
+             onclick="selectConversation(${conv.id})">
+            <div class="conversation-avatar">${conv.initiales || 'P'}</div>
+
+            <div class="conversation-info">
+                <div class="conversation-name">${escapeHtml(conv.prenom)} ${escapeHtml(conv.nom)}</div>
+                <div class="conversation-preview">${escapeHtml(conv.dernier_message || '')}</div>
+            </div>
+
+            <div class="conversation-time">
+                ${conv.dernier_message_date ? formatTime(conv.dernier_message_date) : ''}
+                ${conv.non_lus > 0 ? `<div class="unread-badge">${conv.non_lus}</div>` : ''}
+            </div>
+        </div>
+    `}).join('');
+}
+function selectConversation(patientId) {
+    // Convertir en nombre
+    patientId = parseInt(patientId);
+    
+    // Si on clique sur la conversation déjà ouverte => fermer
+    if (currentPatientId === patientId) {
+        currentPatientId = null;
+        manualConversationClosed = true;
+        currentConversationSignature = '';
+
+        renderConversations();
+
+        document.getElementById('chatArea').innerHTML = `
+            <div class="empty-chat">
+                <div>
+                    <i class="fas fa-comment-dots fa-3x"></i>
+                    <p>${translations[currentLang].select_conversation}</p>
+                </div>
+            </div>
+        `;
+        return;
+    }
+
+    // Mettre à jour l'ID
+    currentPatientId = patientId;
+    manualConversationClosed = false;
+    currentConversationSignature = '';
+    pinnedMessageIndex = 0;
+    
+    // Recharger la liste des conversations
+    renderConversations();
+    
+    // Charger la conversation
+    fetchConversation(patientId, true);
+}
+function fetchConversation(patientId, markRead = false) {
+    if (!patientId) return;
+    
+    // Convertir en nombre
+    patientId = parseInt(patientId);
+
+    const params = new URLSearchParams();
+    params.append("filter", currentFilter);
+
+    if (currentSearch) params.append("search", currentSearch);
+    if (dateFrom) params.append("date_from", dateFrom);
+    if (dateTo) params.append("date_to", dateTo);
+    if (markRead) params.append("mark_read", "1");
+
+    const url = `/messages/get/${patientId}/?` + params.toString();
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const messages = (data.messages || []).map(m => ({
+                ...m,
+                seen: m.seen === true || m.seen === 1 || m.seen === "1" || m.seen === "true"
+            }));
+            
+            const newSignature = buildConversationSignature(messages, data.is_online, data.last_seen);
+
+            if (!markRead && newSignature === currentConversationSignature) {
+                return;
+            }
+
+            currentConversationSignature = newSignature;
+
+            renderChat(
+                data.patient_name,
+                messages,
+                data.is_online,
+                data.last_seen
+            );
+
+            renderConversations();
+            updateNotificationBadge();
+        })
+        .catch(error => console.error('Erreur conversation:', error));
+}
+function renderAttachment(msg) {
+    if (!msg.attachment) return '';
+
+    if (msg.attachment_type === 'audio') {
+        return `
+            <div style="margin-top:8px;">
+                <audio controls style="max-width: 260px;">
+                    <source src="${msg.attachment}">
+                    Votre navigateur ne supporte pas l'audio.
+                </audio>
+            </div>
+        `;
+    }
+
+    if (msg.attachment_type === 'image') {
+        return `
+            <div style="margin-top:8px;">
+                <img src="${msg.attachment}" alt="${escapeHtml(msg.attachment_name || 'image')}"
+                     style="max-width:220px; border-radius:12px; cursor:pointer;"
+                     onclick="viewAttachment('${msg.attachment}')">
+            </div>
+        `;
+    }
+
+    if (msg.attachment_type === 'video') {
+        return `
+            <div style="margin-top:8px;">
+                <video controls style="max-width:260px; border-radius:12px;">
+                    <source src="${msg.attachment}">
+                </video>
+            </div>
+        `;
+    }
+
+    return `
+        <div class="message-attachment" onclick="viewAttachment('${msg.attachment}')">
+            <i class="fas fa-paperclip"></i>
+            ${escapeHtml(msg.attachment_name || 'Fichier joint')}
+        </div>
+    `;
+}
+
+function bindMessagesListScroll() {
+    const messagesList = document.getElementById('messagesList');
+    if (!messagesList) return;
+
+    messagesList.addEventListener('scroll', function () {
+        const distanceFromBottom =
+            messagesList.scrollHeight - messagesList.scrollTop - messagesList.clientHeight;
+
+        // si l'utilisateur est proche du bas, on autorise l'auto-scroll
+        shouldAutoScrollMessages = distanceFromBottom < 120;
+    });
+}
+function buildConversationSignature(messages, isOnline, lastSeen) {
+    const lastMessage = messages.length ? messages[messages.length - 1] : null;
+
+    return JSON.stringify({
+        count: messages.length,
+        lastId: lastMessage ? lastMessage.id : null,
+        lastText: lastMessage ? (lastMessage.text || '') : '',
+        lastTime: lastMessage ? (lastMessage.time || '') : '',
+        pinnedState: messages.map(m => `${m.id}:${m.is_pinned ? 1 : 0}`).join('|'),
+        seenState: messages.map(m => `${m.id}:${m.seen ? 1 : 0}`).join('|'),
+        isOnline: !!isOnline,
+        lastSeen: lastSeen || null
+    });
+}
+
+function renderChat(patientName, messages, isOnline = false, lastSeen = null) {
+    const t = translations[currentLang];
+
+    const oldInput = document.getElementById('messageInput');
+    const oldInputValue = oldInput ? oldInput.value : '';
+    const wasFocused = oldInput && document.activeElement === oldInput;
+
+    const patientInitials = (patientName || 'P').substring(0, 2).toUpperCase();
+    window.__lastRenderedMessages = messages;
+    window.__lastPatientName = patientName;
+    window.__lastIsOnline = isOnline;
+    window.__lastLastSeen = lastSeen;
+
+    const pinnedMessages = [...messages].filter(msg => msg.is_pinned).reverse();
+    if (pinnedMessageIndex >= pinnedMessages.length) {
+        pinnedMessageIndex = 0;
+    }
+
+    const activePinnedMessage = pinnedMessages.length ? pinnedMessages[pinnedMessageIndex] : null;
+    const chatHtml = `
+    <div class="chat-header">
+        <div class="chat-header-left">
+            <div class="chat-header-avatar">${escapeHtml(patientInitials)}</div>
+            <div class="chat-header-info">
+                <h3>${escapeHtml(patientName || '')}</h3>
+                <p>
+                    ${t.patient} · ${messages.length} message(s)
+                    <br>
+                    <span style="color:${isOnline ? '#16a34a' : '#94a3b8'}; font-weight:600;">
+                        ${isOnline ? '● En ligne' : '● Hors ligne'}
+                    </span>
+                </p>
+            </div>
+        </div>
+        <button class="delete-conv-btn" onclick="deleteConversation(${currentPatientId})" title="${t.delete}">
+            <i class="fas fa-trash-alt"></i>
+        </button>
+    </div>
+
+   ${activePinnedMessage ? `
+    <div class="pinned-banner-single">
+        <button type="button" class="pinned-nav-btn" onclick="showPrevPinnedMessage(event)" ${pinnedMessages.length <= 1 ? 'style="visibility:hidden;"' : ''}>
+            <i class="fas fa-chevron-left"></i>
+        </button>
+
+        <div class="pinned-banner" onclick="scrollToPinnedMessage(${activePinnedMessage.id})">
+            <div class="pinned-banner-icon">
+                <i class="fas fa-thumbtack"></i>
+            </div>
+            <div class="pinned-banner-content">
+                <div class="pinned-banner-title">
+                    Message épinglé ${pinnedMessages.length > 1 ? `(${pinnedMessageIndex + 1}/${pinnedMessages.length})` : ''}
+                </div>
+                <div class="pinned-banner-text">${escapeHtml(activePinnedMessage.text || '[Pièce jointe]')}</div>
+            </div>
+        </div>
+
+        <button type="button" class="pinned-nav-btn" onclick="showNextPinnedMessage(event)" ${pinnedMessages.length <= 1 ? 'style="visibility:hidden;"' : ''}>
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+` : ''}
+
+    <div class="messages-list" id="messagesList">
+    ${messages.length === 0 ? `
+        <div class="empty-chat" style="padding: 20px;">
+            <i class="fas fa-comment"></i> ${t.no_messages}
+        </div>
+    ` : (() => {
+        let lastDate = null;
+
+        return messages.map(msg => {
+            const msgDate = formatDateSeparator(msg.time);
+            let dateSeparator = '';
+
+            if (msgDate !== lastDate) {
+                lastDate = msgDate;
+
+                dateSeparator = `
+                    <div style="text-align:center; margin:10px 0;">
+                        <span style="
+                            background:#e2e8f0;
+                            padding:4px 12px;
+                            border-radius:20px;
+                            font-size:12px;
+                            color:#475569;
+                            font-weight:600;
+                        ">
+                            ${msgDate}
+                        </span>
+                    </div>
+                `;
+            }
+
+            return `
+                ${dateSeparator}
+                <div id="message-${msg.id}" class="message-bubble ${msg.sender === 'therapist' ? 'sent' : 'received'} ${msg.is_pinned ? 'pinned-message' : ''}">
+                    ${msg.reply_to ? `
+                        <div style="
+                            background: rgba(255,255,255,0.18);
+                            border-left: 4px solid ${msg.sender === 'therapist' ? '#d1fae5' : '#2E8B57'};
+                            padding: 8px 10px;
+                            border-radius: 10px;
+                            margin-bottom: 8px;
+                            font-size: 12px;
+                        ">
+                            <strong>${msg.reply_to.sender === 'therapist' ? 'Vous' : 'Patient'}</strong><br>
+                            ${escapeHtml(msg.reply_to.text || '')}
+                        </div>
+                    ` : ''}
+
+                    ${renderSubjectBadge(msg)}
+                    <div class="message-text">${escapeHtml(msg.text || '')}</div>
+                    ${renderAttachment(msg)}
+
+                    <div class="message-time">
+                        ${formatTime(msg.time)}
+                        ${msg.sender === 'therapist' ? `
+                            <span style="margin-left:6px; font-weight:700; color:${msg.seen ? '#d1fae5' : 'rgba(255,255,255,0.7)'};">
+                                ${msg.seen ? '✓✓ Vu' : '✓ Envoyé'}
+                            </span>
+                        ` : ''}
+                    </div>
+
+                   <div style="margin-top:8px; display:flex; gap:8px; justify-content:flex-end; flex-wrap:wrap;">
+
+    <button onclick="setReply(${msg.id}, \`${(msg.text || '').replace(/`/g, '\\`')}\`, '${msg.sender}')"
+        style="border:none; background:rgba(255,255,255,0.2); color:${msg.sender === 'therapist' ? 'white' : '#334155'}; padding:4px 8px; border-radius:8px; font-size:12px; cursor:pointer;">
+        <i class="fas fa-reply"></i>
+    </button>
+
+    <button onclick="copyMessage(\`${(msg.text || '').replace(/`/g, '\\`')}\`)"
+        style="border:none; background:rgba(255,255,255,0.2); color:${msg.sender === 'therapist' ? 'white' : '#334155'}; padding:4px 8px; border-radius:8px; font-size:12px; cursor:pointer;">
+        <i class="fas fa-copy"></i>
+    </button>
+
+    <button onclick="togglePinMessage(${msg.id})"
+        style="border:none; background:rgba(255,255,255,0.2); color:${msg.sender === 'therapist' ? 'white' : '#334155'}; padding:4px 8px; border-radius:8px; font-size:12px; cursor:pointer;">
+        <i class="fas fa-thumbtack"></i>
+    </button>
+
+    ${msg.sender === 'therapist' ? `
+        <button onclick="editMessage(${msg.id}, \`${(msg.text || '').replace(/`/g, '\\`')}\`)"
+            style="border:none; background:rgba(255,255,255,0.2); color:white; padding:4px 8px; border-radius:8px; font-size:12px; cursor:pointer;">
+            <i class="fas fa-pen"></i>
+        </button>
+
+        <button onclick="deleteMessage(${msg.id})"
+            style="border:none; background:rgba(255,255,255,0.2); color:white; padding:4px 8px; border-radius:8px; font-size:12px; cursor:pointer;">
+            <i class="fas fa-trash"></i>
+        </button>
+    ` : ''}
+
+</div>
+
+                </div>
+            `;
+        }).join('');
+    })()}
+</div>
+
+        <div class="chat-input-area" style="flex-direction:column; align-items:stretch;">
+            <div id="replyPreview" style="display:none; margin-bottom:8px;"></div>
+                
+                <!-- 👇 aperçu du fichier -->
+                <div id="attachmentPreview" style="display:none;"></div>
+
+                <div style="display:flex; gap:10px; align-items:flex-end;">
+                    
+                <textarea 
+                    class="chat-input" 
+                    id="messageInput" 
+                    rows="1" 
+                    placeholder="${t.write_message}"
+                    onfocus="isTyping = true"
+                    onblur="isTyping = false"
+                ></textarea>
+                    <input type="file" id="fileInput" style="display:none;" accept=".pdf,.doc,.docx,image/*,video/*,audio/*" onchange="handleFileSelect(this)">
+                    
+<!-- 📎 fichier -->
+<button class="attach-btn" onclick="document.getElementById('fileInput').click()" title="${t.attach}">
+    <i class="fas fa-paperclip"></i>
+</button>
+
+<!-- 📷 photo directe -->
+<button class="attach-btn" onclick="openCameraModal('photo')" title="Photo">
+    <i class="fas fa-camera"></i>
+</button>
+
+<!-- 🎥 vidéo directe -->
+<button class="attach-btn" onclick="openCameraModal('video')" title="Vidéo">
+    <i class="fas fa-video"></i>
+</button>
+
+                    <!-- 🎤 micro -->
+                    <button class="attach-btn" id="recordBtn" onclick="toggleRecording()" title="Vocal">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+
+                    <!-- ⛔ stop -->
+                    <button class="attach-btn" id="stopRecordBtn" onclick="stopRecording()" title="Stop vocal" style="display:none;">
+                        <i class="fas fa-stop"></i>
+                    </button>
+
+                    <!-- 📤 envoyer -->
+                    <button class="send-btn" onclick="sendMessage()" title="${t.send}">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+
+                </div>
+            </div>
+        `;
+
+document.getElementById('chatArea').innerHTML = chatHtml;
+const newInput = document.getElementById('messageInput');
+if (newInput) {
+    newInput.value = oldInputValue;
+    if (wasFocused) {
+        newInput.focus();
+        newInput.setSelectionRange(newInput.value.length, newInput.value.length);
+    }
+}
+bindMessagesListScroll();
+
+setTimeout(() => {
+    const messagesList = document.getElementById('messagesList');
+    if (!messagesList) return;
+
+    if (shouldAutoScrollMessages) {
+        messagesList.scrollTop = messagesList.scrollHeight;
+    } else {
+        messagesList.scrollTop = messagesScrollTopBeforeRender;
+    }
+}, 50);
+}
+    function handleFileSelect(input) {
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        pendingAttachment = file;
+
+        const inputArea = document.getElementById('messageInput');
+        if (inputArea && !inputArea.value.trim() && !file.type.startsWith('audio/')) {
+            inputArea.value = `[Pièce jointe : ${file.name}]`;
+        }
+
+        renderAttachmentPreview(file);
+    }
+}
+function sendMessage() {
+    const input = document.getElementById('messageInput');
+    const sendBtn = document.querySelector('.send-btn');
+
+    const patientIdToSend = currentPatientId;
+
+    if (!patientIdToSend) {
+        alert("Sélectionnez un patient avant d'envoyer un message.");
+        return;
+    }
+
+    if (!input) return;
+
+    const text = input.value.trim();
+
+    if (!text && !pendingAttachment) {
+        alert("Écrivez un message ou ajoutez un fichier.");
+        return;
+    }
+
+    if (sendBtn) sendBtn.disabled = true;
+
+    const formData = new FormData();
+    formData.append('patient_id', patientIdToSend);
+    formData.append('text', text);
+
+    if (pendingAttachment) {
+        formData.append('attachment', pendingAttachment);
+    }
+
+    // 🔑 LIRE L'ID DEPUIS L'ATTRIBUT DATA (PLUS FIABLE)
+    const preview = document.getElementById('replyPreview');
+    let replyToId = null;
+    
+    if (preview) {
+        replyToId = preview.getAttribute('data-reply-id');
+        console.log("🔍 data-reply-id lu =", replyToId);
+    }
+    
+    if (replyToId && replyToId !== 'null' && replyToId !== '') {
+        console.log("✅ Envoi avec réponse au message ID:", replyToId);
+        formData.append('reply_to_id', replyToId);
+    } else if (replyToMessage && replyToMessage.id) {
+        console.log("✅ Envoi via variable au message ID:", replyToMessage.id);
+        formData.append('reply_to_id', replyToMessage.id);
+    } else {
+        console.log("❌ Pas de réponse, envoi normal");
+    }
+
+    fetch('/messages/send/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: formData
+    })
+    .then(async response => {
+        let data;
+        try {
+            data = await response.json();
+            console.log("Données réponse:", data);
+        } catch (e) {
+            throw new Error("Réponse serveur invalide");
+        }
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.error || "Erreur lors de l'envoi");
+        }
+
+        input.value = '';
+        pendingAttachment = null;
+
+        const fileInput = document.getElementById('fileInput');
+        if (fileInput) fileInput.value = '';
+
+        clearAttachmentPreview();
+        stopRecordingUI();
+        clearReply();
+
+        showToast("Message envoyé");
+        
+        if (currentPatientId === patientIdToSend) {
+            currentConversationSignature = '';
+            fetchConversation(patientIdToSend, true);
+            loadConversations();
+        }
+    })
+    .catch(error => {
+        console.error('Erreur envoi:', error);
+        alert(error.message || "Erreur lors de l'envoi");
+    })
+    .finally(() => {
+        if (sendBtn) sendBtn.disabled = false;
+    });
+}
+function deleteConversation(patientId) {
+    const t = translations[currentLang];
+
+    if (!confirm(t.delete_confirm)) return;
+
+    fetch(`/messages/delete/${patientId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            if (currentPatientId == patientId) {
+                currentPatientId = null;
+                document.getElementById('chatArea').innerHTML = `
+                    <div class="empty-chat">
+                        <div>
+                            <i class="fas fa-comment-dots fa-3x"></i>
+                            <p>${t.select_conversation}</p>
+                        </div>
+                    </div>
+                `;
+            }
+            loadConversations();
+            showToast("Conversation supprimée", "#dc2626");
+        } else {
+            alert(data.error || "Erreur lors de la suppression de la conversation");
+        }
+    })
+    .catch(error => {
+        console.error('Erreur suppression conversation:', error);
+        alert("Erreur serveur lors de la suppression");
+    });
+}
+  function updateNotificationBadge() {
+    fetch('/messages/notifications/')
+        .then(response => response.json())
+        .then(data => {
+            const count = data.count ?? 0;
+            const badge = document.getElementById('notifCount');
+            const bell = document.getElementById('notifIcon');
+            const sound = document.getElementById('notifSound');
+
+            if (!badge) return;
+
+            badge.innerText = count;
+            badge.style.display = count > 0 ? 'inline-block' : 'none';
+
+            if (count > lastNotificationCount) {
+                if (bell) {
+                    bell.classList.remove('ring');
+                    void bell.offsetWidth;
+                    bell.classList.add('ring');
+                }
+
+                if (sound) {
+                    sound.currentTime = 0;
+                    sound.play().catch(() => {});
+                }
+
+                if (document.hidden && "Notification" in window && Notification.permission === "granted") {
+                    const firstNotif = data.notifications && data.notifications.length ? data.notifications[0] : null;
+
+                    new Notification("Nouveau message patient", {
+                        body: firstNotif
+                            ? `${firstNotif.patient_name} : ${firstNotif.text || 'Nouveau message'}`
+                            : "Vous avez reçu un nouveau message."
+                    });
+                }
+            }
+
+            lastNotificationCount = count;
+        })
+        .catch(error => console.error('Erreur notif:', error));
+}
+
+
+function formatTime(dateStr) {
+    if (!dateStr) return '';
+
+    const date = new Date(dateStr);
+
+    if (isNaN(date.getTime())) return '';
+
+    const jour = String(date.getDate()).padStart(2, '0');
+    const mois = String(date.getMonth() + 1).padStart(2, '0');
+    const annee = date.getFullYear();
+    const heures = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    return `${jour}/${mois}/${annee} ${heures}:${minutes}`;
+}
+
+    function formatDateSeparator(dateStr) {
+    if (!dateStr) return '';
+
+    const date = new Date(dateStr);
+
+    if (isNaN(date.getTime())) return '';
+
+    const jour = String(date.getDate()).padStart(2, '0');
+    const mois = String(date.getMonth() + 1).padStart(2, '0');
+    const annee = date.getFullYear();
+
+    return `${jour}/${mois}/${annee}`;
+}
+    function viewAttachment(url) {
+        window.open(url, '_blank');
+    }
+    async function openNewMessageModal() {
+        const t = translations[currentLang];
+
+        if (!allPatients || allPatients.length === 0) {
+            await loadAllPatients();
+        }
+
+        if (!allPatients || allPatients.length === 0) {
+            alert(t.no_patients);
+            return;
+        }
+
+        const modalHtml = `
+            <div class="modal-overlay" id="newMessageModal" style="
+                position:fixed;
+                top:0;left:0;right:0;bottom:0;
+                background:rgba(0,0,0,0.5);
+                backdrop-filter:blur(4px);
+                z-index:1000;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+            ">
+                <div style="
+                    background:white;
+                    border-radius:30px;
+                    width:420px;
+                    max-width:90%;
+                    padding:25px;
+                ">
+                    <h3 style="margin-bottom:20px;">${t.select_patient}</h3>
+
+                    <div id="patientsModalList" style="
+                        max-height:300px;
+                        overflow-y:auto;
+                        margin-bottom:20px;
+                    ">
+                        ${allPatients.map(p => `
+                            <button type="button"
+                                class="patient-modal-btn"
+                                data-id="${p.id}"
+                                style="
+                                    width:100%;
+                                    text-align:left;
+                                    padding:12px 14px;
+                                    border:1px solid #e2e8f0;
+                                    background:white;
+                                    margin-bottom:8px;
+                                    border-radius:12px;
+                                    cursor:pointer;
+                                    font-weight:600;
+                                ">
+                                ${escapeHtml(p.prenom)} ${escapeHtml(p.nom)}
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    <button type="button"
+                        style="
+                            width:100%;
+                            background:#f1f5f9;
+                            border:none;
+                            padding:10px;
+                            border-radius:40px;
+                            cursor:pointer;
+                        "
+                        onclick="closeModal()">
+                        ${t.cancel}
+                    </button>
+                </div>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+        document.querySelectorAll('.patient-modal-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const patientId = this.getAttribute('data-id');
+                startNewConversation(patientId);
+            });
+        });
+    }
+    
+function startNewConversation(patientId) {
+    console.log("=== startNewConversation ===");
+    console.log("patientId reçu:", patientId);
+    
+    closeModal();
+
+    patientId = parseInt(patientId);
+    console.log("patientId converti:", patientId);
+
+    manualConversationClosed = false;
+    currentPatientId = patientId;
+    currentConversationSignature = '';
+    pinnedMessageIndex = 0;
+
+    const patient = allPatients.find(p => parseInt(p.id) === patientId);
+    console.log("Patient trouvé:", patient);
+
+    if (patient) {
+        console.log("Nom du patient:", `${patient.prenom} ${patient.nom}`);
+        renderChat(`${patient.prenom} ${patient.nom}`, [], false, null);
+    } else {
+        renderChat('Patient', [], false, null);
+    }
+
+    const patientFilter = document.getElementById('patientFilter');
+    if (patientFilter) {
+        patientFilter.value = 'all';
+    }
+
+    setTimeout(() => {
+        loadConversations();
+        console.log("currentPatientId après chargement:", currentPatientId);
+    }, 100);
+}
+function closeModal() {
+        const modal = document.getElementById('newMessageModal');
+        if (modal) modal.remove();
+    }
+
+    function setFilter(filter) {
+    currentFilter = filter;
+
+    document.querySelectorAll('.filter-badge').forEach(b => b.classList.remove('active'));
+    const activeBtn = document.querySelector(`.filter-badge[data-filter="${filter}"]`);
+    if (activeBtn) activeBtn.classList.add('active');
+
+    const patientFilter = document.getElementById('patientFilter').value;
+
+    currentPatientId = null;
+
+    loadConversations(patientFilter);
+
+    document.getElementById('chatArea').innerHTML = `
+        <div class="empty-chat">
+            <div>
+                <i class="fas fa-comment-dots fa-3x"></i>
+                <p>${translations[currentLang].select_conversation}</p>
+            </div>
+        </div>
+    `;
+}
+    function applyFilters() {
+    currentSearch = document.getElementById('searchInput').value.trim();
+    dateFrom = document.getElementById('dateFrom').value;
+    dateTo = document.getElementById('dateTo').value;
+
+    const patientFilter = document.getElementById('patientFilter').value;
+
+    loadConversations(patientFilter);
+
+    if (patientFilter !== 'all') {
+        currentPatientId = parseInt(patientFilter);
+        setTimeout(() => {
+            selectConversation(currentPatientId);
+        }, 150);
+    } else {
+        currentPatientId = null;
+        document.getElementById('chatArea').innerHTML = `
+            <div class="empty-chat">
+                <div>
+                    <i class="fas fa-comment-dots fa-3x"></i>
+                    <p>${translations[currentLang].select_conversation}</p>
+                </div>
+            </div>
+        `;
+    }
+}
+
+    function clearDates() {
+        document.getElementById('dateFrom').value = '';
+        document.getElementById('dateTo').value = '';
+        dateFrom = '';
+        dateTo = '';
+        applyFilters();
+    }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m] || m));
+    }
+
+    function changeLogo(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                document.getElementById('logoImg').src = e.target.result;
+                localStorage.setItem('smartwrist_logo', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function loadSavedLogo() {
+        const savedLogo = localStorage.getItem('smartwrist_logo');
+        if (savedLogo) document.getElementById('logoImg').src = savedLogo;
+    }
+    document.getElementById('searchInput').addEventListener('input', function() {
+        document.getElementById('patientFilter').value = 'all';
+        applyFilters();
+    });
+    document.getElementById('patientFilter').addEventListener('change', applyFilters);
+    document.getElementById('dateFrom').addEventListener('change', applyFilters);
+    document.getElementById('dateTo').addEventListener('change', applyFilters);
+    document.getElementById('notifIcon').addEventListener('click', updateNotificationBadge);
+
+    document.addEventListener('keydown', function(e) {
+    const active = document.activeElement;
+
+    if (
+        e.key === 'Enter' &&
+        !e.shiftKey &&
+        active &&
+        active.id === 'messageInput'
+    ) {
+        e.preventDefault();
+        sendMessage();
+    }
+});
+
+
+function deleteMessage(messageId) {
+    if (!confirm("Supprimer ce message ?")) return;
+
+    fetch(`/messages/message/${messageId}/delete/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            if (currentPatientId) {
+                fetchConversation(currentPatientId);
+                loadConversations();
+            }
+            showToast("Message supprimé", "#dc2626");
+        } else {
+            alert(data.error || "Erreur lors de la suppression");
+        }
+    })
+    .catch(error => {
+        console.error('Erreur suppression message:', error);
+        alert("Erreur serveur lors de la suppression");
+    });
+}
+function editMessage(messageId, oldText) {
+    const newText = prompt("Modifier le message :", oldText);
+
+    if (newText === null) return;
+
+    const text = newText.trim();
+    if (!text) {
+        alert("Le message ne peut pas être vide");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("text", text);
+
+    fetch(`/messages/message/${messageId}/edit/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            if (currentPatientId) {
+                fetchConversation(currentPatientId);
+                loadConversations();
+            }
+        } else {
+            alert(data.error || "Erreur lors de la modification");
+        }
+    })
+    .catch(error => console.error('Erreur modification message:', error));
+}
+function toggleNotifications() {
+    const panel = document.getElementById('notificationsPanel');
+    const icon = document.getElementById('notifIcon');
+
+    if (!panel || !icon) return;
+
+    const isOpen = panel.classList.contains('show');
+
+    if (isOpen) {
+        panel.classList.remove('show');
+        return;
+    }
+
+    loadNotifications();
+
+    const rect = icon.getBoundingClientRect();
+    const panelWidth = 320;
+    const gap = 10;
+
+    let left = rect.right - panelWidth;
+    let top = rect.bottom + gap;
+
+    if (left < 12) left = 12;
+    if (left + panelWidth > window.innerWidth - 12) {
+        left = window.innerWidth - panelWidth - 12;
+    }
+
+    panel.style.left = `${left}px`;
+    panel.style.top = `${top}px`;
+
+    panel.classList.add('show');
+}
+
+function loadNotifications() {
+    fetch('/messages/notifications/')
+        .then(response => response.json())
+        .then(data => {
+            const count = data.count || 0;
+            const notifications = data.notifications || [];
+            
+            // Mettre à jour le badge
+            const badge = document.getElementById('notifCount');
+            if (badge) {
+                badge.innerText = count;
+                badge.style.display = count > 0 ? 'inline-block' : 'none';
+            }
+            
+            const list = document.getElementById('notificationsList');
+            if (!list) return;
+            
+            if (!notifications.length) {
+                list.innerHTML = `<div class="notification-empty">
+                    <i class="far fa-bell-slash"></i><br>
+                    Aucune notification
+                </div>`;
+                return;
+            }
+            
+            list.innerHTML = notifications.map(notif => `
+                <div class="notification-item" onclick="openNotificationConversation(${notif.patient_id})">
+                    <div class="notification-avatar">
+                        ${notif.initiales || 'P'}
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-name">${escapeHtml(notif.patient_name)}</div>
+                        <div class="notification-text">${escapeHtml(notif.text || 'Nouveau message')}</div>
+                        <div class="notification-time">${formatTime(notif.time)}</div>
+                    </div>
+                </div>
+            `).join('');
+        })
+        .catch(error => console.error('Erreur notifications:', error));
+}
+function openNotificationConversation(patientId) {
+    const panel = document.getElementById('notificationsPanel');
+    if (panel) panel.classList.remove('show');
+
+    manualConversationClosed = false;
+    currentPatientId = parseInt(patientId);
+
+    const patientFilter = document.getElementById('patientFilter');
+    if (patientFilter) {
+        patientFilter.value = String(patientId);
+    }
+
+    fetchConversation(patientId, true);
+
+    setTimeout(() => {
+        loadConversations();
+        updateNotificationBadge();
+    }, 250);
+}
+
+// Fermer le panel quand on clique ailleurs
+document.addEventListener('click', function(e) {
+    const wrapper = document.querySelector('.notification-wrapper');
+    const panel = document.getElementById('notificationsPanel');
+
+    if (wrapper && panel && !wrapper.contains(e.target)) {
+        panel.classList.remove('show');
+    }
+});
+function playNotificationSound() {
+    const sound = document.getElementById('notifSound');
+    if (sound) {
+        sound.currentTime = 0;
+        sound.play().catch(e => console.log('Audio non autorisé'));
+    }
+}
+function showAllConversations() {
+    currentPatientId = null;
+    currentFilter = 'all';
+    currentSearch = '';
+    dateFrom = '';
+    dateTo = '';
+
+    document.getElementById('searchInput').value = '';
+    document.getElementById('patientFilter').value = 'all';
+    document.getElementById('dateFrom').value = '';
+    document.getElementById('dateTo').value = '';
+
+    document.querySelectorAll('.filter-badge').forEach(b => b.classList.remove('active'));
+    const allBtn = document.querySelector('.filter-badge[data-filter="all"]');
+    if (allBtn) allBtn.classList.add('active');
+
+    loadConversations();
+
+    document.getElementById('chatArea').innerHTML = `
+        <div class="empty-chat">
+            <div>
+                <i class="fas fa-comment-dots fa-3x"></i>
+                <p>${translations[currentLang].select_conversation}</p>
+            </div>
+        </div>
+    `;
+}
+function setReply(messageId, text, sender) {
+    console.log("=== setReply ===");
+    console.log("messageId reçu:", messageId);
+    
+    const preview = document.getElementById('replyPreview');
+    if (!preview) return;
+    
+    // 🔑 STOCKER L'ID DANS L'ATTRIBUT DATA
+    preview.setAttribute('data-reply-id', messageId);
+    preview.setAttribute('data-reply-text', text || '');
+    preview.setAttribute('data-reply-sender', sender);
+    
+    replyToMessage = {
+        id: parseInt(messageId),
+        text: text || '[Pièce jointe]',
+        sender: sender
+    };
+
+    console.log("✅ data-reply-id =", preview.getAttribute('data-reply-id'));
+
+    preview.innerHTML = `
+        <div style="background:#f1f5f9; border-left:4px solid #2E8B57; padding:10px 12px; border-radius:10px; font-size:13px; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+                <strong>Réponse à ${sender === 'therapist' ? 'vous-même' : 'patient'}</strong><br>
+                ${escapeHtml(text || '')}
+            </div>
+            <button onclick="clearReply()" style="border:none; background:#fee2e2; color:#dc2626; width:28px; height:28px; border-radius:50%; cursor:pointer;">
+                ✕
+            </button>
+        </div>
+    `;
+    preview.style.display = 'block';
+}
+function clearReply() {
+    replyToMessage = null;
+    
+    const preview = document.getElementById('replyPreview');
+    if (preview) {
+        preview.removeAttribute('data-reply-id');
+        preview.removeAttribute('data-reply-text');
+        preview.removeAttribute('data-reply-sender');
+        preview.innerHTML = '';
+        preview.style.display = 'none';
+    }
+}
+
+function formatRecordingTime(totalSeconds) {
+    const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+    const seconds = String(totalSeconds % 60).padStart(2, '0');
+    return `${minutes}:${seconds}`;
+}
+
+function startRecordingTimer() {
+    recordingSeconds = 0;
+    const timer = document.getElementById('recordingTimer');
+    const status = document.getElementById('recordingStatus');
+
+    if (status) status.style.display = 'block';
+    if (timer) timer.textContent = '00:00';
+
+    recordingInterval = setInterval(() => {
+        recordingSeconds += 1;
+        const t = document.getElementById('recordingTimer');
+        if (t) t.textContent = formatRecordingTime(recordingSeconds);
+    }, 1000);
+}
+
+function stopRecordingTimer() {
+    if (recordingInterval) {
+        clearInterval(recordingInterval);
+        recordingInterval = null;
+    }
+    const status = document.getElementById('recordingStatus');
+    if (status) status.style.display = 'none';
+}
+
+async function toggleVoiceRecording() {
+    if (!currentPatientId) {
+        alert("Sélectionnez un patient d'abord.");
+        return;
+    }
+
+    if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.stop();
+        stopRecordingTimer();
+        return;
+    }
+
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        audioChunks = [];
+        mediaRecorder = new MediaRecorder(stream);
+
+        mediaRecorder.ondataavailable = function(event) {
+            if (event.data.size > 0) {
+                audioChunks.push(event.data);
+            }
+        };
+
+        mediaRecorder.onstop = function() {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+            const audioFile = new File([audioBlob], `vocal_${Date.now()}.webm`, { type: 'audio/webm' });
+            pendingAttachment = audioFile;
+
+            const inputArea = document.getElementById('messageInput');
+            if (inputArea && !inputArea.value.trim()) {
+                inputArea.value = '[Message vocal]';
+            }
+
+            stream.getTracks().forEach(track => track.stop());
+        };
+
+        mediaRecorder.start();
+        startRecordingTimer();
+    } catch (error) {
+        console.error("Microphone inaccessible :", error);
+        alert("Impossible d'accéder au microphone.");
+    }
+}
+function showToast(message, color = '#16a34a') {
+    const toast = document.getElementById('toastMessage');
+    toast.textContent = message;
+    toast.style.background = color;
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateY(0)';
+
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(20px)';
+    }, 2200);
+}
+function renderAttachmentPreview(file) {
+    const preview = document.getElementById('attachmentPreview');
+    if (!preview) return;
+
+    const isImage = file.type.startsWith('image/');
+    const isAudio = file.type.startsWith('audio/');
+    const isVideo = file.type.startsWith('video/');
+
+    const fileURL = URL.createObjectURL(file);
+
+    let content = `
+        <div style="
+            background:#f8fafc;
+            border:1px solid #e2e8f0;
+            border-radius:14px;
+            padding:10px 12px;
+            margin-bottom:10px;
+            display:flex;
+            flex-direction:column;
+            gap:8px;
+        ">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="font-size:0.85rem; font-weight:600; color:#334155;">
+                    ${escapeHtml(file.name)}
+                </div>
+                <button type="button" onclick="clearAttachmentPreview()" style="
+                    border:none;
+                    background:#fee2e2;
+                    color:#dc2626;
+                    width:28px;
+                    height:28px;
+                    border-radius:50%;
+                    cursor:pointer;
+                ">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+    `;
+
+    if (isImage) {
+        content += `<img src="${fileURL}" style="max-width:180px; border-radius:12px;">`;
+    } else if (isAudio) {
+        content += `<audio controls src="${fileURL}" style="max-width:260px;"></audio>`;
+    } else if (isVideo) {
+        content += `<video controls src="${fileURL}" style="max-width:220px; border-radius:12px;"></video>`;
+    } else {
+        content += `<div style="font-size:0.78rem; color:#64748b;">Fichier prêt à envoyer</div>`;
+    }
+
+    content += `</div>`;
+    preview.innerHTML = content;
+    preview.style.display = 'block';
+}
+
+function clearAttachmentPreview() {
+    pendingAttachment = null;
+
+    const preview = document.getElementById('attachmentPreview');
+    if (preview) {
+        preview.innerHTML = '';
+        preview.style.display = 'none';
+    }
+
+    const fileInput = document.getElementById('fileInput');
+    if (fileInput) fileInput.value = '';
+}
+async function toggleRecording() {
+    if (isRecording) return;
+    startRecording();
+}
+
+async function startRecording() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+        audioChunks = [];
+        mediaRecorder = new MediaRecorder(stream);
+        isRecording = true;
+
+        const recordBtn = document.getElementById('recordBtn');
+        const stopBtn = document.getElementById('stopRecordBtn');
+
+        if (recordBtn) {
+            recordBtn.style.background = '#dc2626';
+            recordBtn.style.color = 'white';
+        }
+        if (stopBtn) stopBtn.style.display = 'inline-flex';
+
+        mediaRecorder.ondataavailable = e => {
+            if (e.data.size > 0) {
+                audioChunks.push(e.data);
+            }
+        };
+
+        mediaRecorder.onstop = () => {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+            const audioFile = new File([audioBlob], `vocal_${Date.now()}.webm`, { type: 'audio/webm' });
+
+            pendingAttachment = audioFile;
+            renderAttachmentPreview(audioFile);
+
+            if (mediaRecorder.stream) {
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+            }
+
+            stopRecordingUI();
+        };
+
+        mediaRecorder.start();
+        showToast("Enregistrement démarré", "#dc2626");
+    } catch (error) {
+        console.error("Erreur micro :", error);
+        alert("Micro non autorisé ou indisponible");
+        stopRecordingUI();
+    }
+}
+
+function stopRecording() {
+    if (mediaRecorder && isRecording) {
+        mediaRecorder.stop();
+    }
+}
+
+function stopRecordingUI() {
+    isRecording = false;
+
+    const recordBtn = document.getElementById('recordBtn');
+    const stopBtn = document.getElementById('stopRecordBtn');
+
+    if (recordBtn) {
+        recordBtn.style.background = '';
+        recordBtn.style.color = '';
+    }
+
+    if (stopBtn) stopBtn.style.display = 'none';
+}
+function copyMessage(text) {
+    const contenu = text || '';
+
+    if (!contenu.trim()) return;
+
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(contenu)
+            .then(() => {
+                showToast("Message copié", "#2563eb");
+            })
+            .catch(() => {
+                fallbackCopyMessage(contenu);
+            });
+    } else {
+        fallbackCopyMessage(contenu);
+    }
+}
+
+function fallbackCopyMessage(contenu) {
+    const textarea = document.createElement('textarea');
+    textarea.value = contenu;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+
+    try {
+        const ok = document.execCommand('copy');
+        if (ok) {
+            showToast("Message copié", "#2563eb");
+        } else {
+            alert("Impossible de copier le message");
+        }
+    } catch (error) {
+        console.error("Erreur copie :", error);
+        alert("Impossible de copier le message");
+    }
+
+    document.body.removeChild(textarea);
+}
+
+function togglePinMessage(messageId) {
+    fetch(`/messages/message/${messageId}/pin/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showToast(data.pinned ? "Message épinglé" : "Message désépinglé", "#f59e0b");
+
+            if (currentPatientId) {
+                currentConversationSignature = '';
+                fetchConversation(currentPatientId, false);
+                loadConversations();
+            }
+        } else {
+            alert(data.error || "Erreur lors de l'épinglage");
+        }
+    })
+    .catch(error => {
+        console.error('Erreur épinglage :', error);
+        alert("Erreur serveur");
+    });
+}
+function pingOnlineStatus() {
+    fetch('/messages/update-last-seen/', {
+        method: 'POST',
+        headers: { 'X-CSRFToken': getCookie('csrftoken') }
+    }).catch(error => console.error('Erreur last_seen:', error));
+}
+async function openCameraModal(mode) {
+    cameraMode = mode;
+    recordedChunks = [];
+
+    const modal = document.getElementById('cameraModal');
+    const title = document.getElementById('cameraTitle');
+    const captureBtn = document.getElementById('capturePhotoBtn');
+    const recordBtn = document.getElementById('recordVideoBtn');
+    const indicator = document.getElementById('videoRecordIndicator');
+    const switchBtn = document.getElementById('switchCameraBtn');
+
+    if (!modal) return;
+
+    title.textContent = mode === 'photo' ? 'Prendre une photo' : 'Enregistrer une vidéo';
+    captureBtn.style.display = mode === 'photo' ? 'inline-flex' : 'none';
+    recordBtn.style.display = mode === 'video' ? 'inline-flex' : 'none';
+    indicator.style.display = 'none';
+
+    if (switchBtn) {
+        switchBtn.style.display = 'inline-flex';
+    }
+
+    currentFacingMode = 'environment';
+
+    try {
+        await startCameraStream(mode);
+        modal.style.display = 'flex';
+    } catch (error) {
+        console.error('Erreur caméra :', error);
+        alert("Impossible d'accéder correctement à la caméra.");
+    }
+}
+
+async function startCameraStream(mode) {
+    const video = document.getElementById('cameraVideo');
+    if (!video) return;
+
+    if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+        cameraStream = null;
+    }
+
+    try {
+        cameraStream = await navigator.mediaDevices.getUserMedia({
+            video: {
+                facingMode: { ideal: currentFacingMode },
+                width: { ideal: 1280 },
+                height: { ideal: 720 }
+            },
+            audio: mode === 'video'
+        });
+    } catch (error) {
+        console.warn('Échec facingMode, fallback devices :', error);
+
+        const tempStream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: false
+        });
+        tempStream.getTracks().forEach(track => track.stop());
+
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        availableVideoDevices = devices.filter(device => device.kind === 'videoinput');
+
+        if (!availableVideoDevices.length) {
+            throw new Error('Aucune caméra détectée');
+        }
+
+        let selectedDevice = null;
+
+        if (currentFacingMode === 'environment') {
+            selectedDevice = availableVideoDevices.find(device => {
+                const label = (device.label || '').toLowerCase();
+                return (
+                    label.includes('back') ||
+                    label.includes('rear') ||
+                    label.includes('environment') ||
+                    label.includes('arrière')
+                );
+            });
+        }
+
+        if (currentFacingMode === 'user') {
+            selectedDevice = availableVideoDevices.find(device => {
+                const label = (device.label || '').toLowerCase();
+                return (
+                    label.includes('front') ||
+                    label.includes('user') ||
+                    label.includes('avant')
+                );
+            });
+        }
+
+        if (!selectedDevice) {
+            selectedDevice = availableVideoDevices[0];
+        }
+
+        currentCameraId = selectedDevice.deviceId;
+
+        cameraStream = await navigator.mediaDevices.getUserMedia({
+            video: {
+                deviceId: currentCameraId ? { exact: currentCameraId } : undefined,
+                width: { ideal: 1280 },
+                height: { ideal: 720 }
+            },
+            audio: mode === 'video'
+        });
+    }
+
+    video.srcObject = cameraStream;
+    video.setAttribute('playsinline', true);
+
+    video.onloadedmetadata = () => {
+        video.play().catch(err => {
+            console.error('Erreur lecture vidéo :', err);
+        });
+    };
+}
+
+async function switchCamera() {
+    try {
+        if (!cameraMode) return;
+
+        currentFacingMode = currentFacingMode === 'environment' ? 'user' : 'environment';
+        await startCameraStream(cameraMode);
+    } catch (error) {
+        console.error('Erreur changement caméra :', error);
+        alert("Impossible de changer de caméra.");
+    }
+}
+
+function closeCameraModal() {
+    const modal = document.getElementById('cameraModal');
+    const video = document.getElementById('cameraVideo');
+    const indicator = document.getElementById('videoRecordIndicator');
+    const recordBtn = document.getElementById('recordVideoBtn');
+
+    if (mediaRecorder && mediaRecorder.state !== 'inactive' && isRecording === false) {
+        try {
+            mediaRecorder.stop();
+        } catch (e) {}
+    }
+
+    if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+        cameraStream = null;
+    }
+
+    if (video) {
+        video.srcObject = null;
+    }
+
+    if (indicator) {
+        indicator.style.display = 'none';
+    }
+
+    if (recordBtn) {
+        recordBtn.innerHTML = '<i class="fas fa-video"></i>';
+    }
+
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+function capturePhoto() {
+    const video = document.getElementById('cameraVideo');
+    if (!video) return;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth || 1280;
+    canvas.height = video.videoHeight || 720;
+
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    canvas.toBlob(function(blob) {
+        if (!blob) return;
+
+        const file = new File([blob], `photo_${Date.now()}.png`, { type: 'image/png' });
+
+        pendingAttachment = file;
+        renderAttachmentPreview(file);
+        closeCameraModal();
+    }, 'image/png');
+}
+
+function toggleVideoRecording() {
+    const indicator = document.getElementById('videoRecordIndicator');
+    const recordBtn = document.getElementById('recordVideoBtn');
+
+    if (!cameraStream) return;
+
+    if (!mediaRecorder || mediaRecorder.state === 'inactive' || isRecording === true) {
+        recordedChunks = [];
+
+        try {
+            mediaRecorder = new MediaRecorder(cameraStream, { mimeType: 'video/webm' });
+        } catch (e) {
+            mediaRecorder = new MediaRecorder(cameraStream);
+        }
+
+        mediaRecorder.ondataavailable = function(event) {
+            if (event.data && event.data.size > 0) {
+                recordedChunks.push(event.data);
+            }
+        };
+
+        mediaRecorder.onstop = function() {
+            const videoBlob = new Blob(recordedChunks, { type: 'video/webm' });
+            const file = new File([videoBlob], `video_${Date.now()}.webm`, { type: 'video/webm' });
+
+            pendingAttachment = file;
+            renderAttachmentPreview(file);
+            closeCameraModal();
+        };
+
+        mediaRecorder.start();
+        if (indicator) indicator.style.display = 'block';
+        if (recordBtn) recordBtn.innerHTML = '<i class="fas fa-stop-circle"></i>';
+
+    } else {
+        mediaRecorder.stop();
+        if (indicator) indicator.style.display = 'none';
+        if (recordBtn) recordBtn.innerHTML = '<i class="fas fa-video"></i>';
+    }
+}
+document.addEventListener('DOMContentLoaded', async function () {
+    try {
+        loadSavedLogo();
+        await loadAllPatients();
+        loadConversations();
+        updateNotificationBadge();
+        
+        // 🔔 AJOUTER CET ÉCOUTEUR POUR LA CLOCHE
+        const notifIcon = document.getElementById('notifIcon');
+        if (notifIcon) {
+            // Supprimer l'ancien onclick et ajouter addEventListener
+            notifIcon.removeAttribute('onclick');
+            notifIcon.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleNotifications();
+            });
+            console.log("✅ Cloche prête");
+        }
+        
+        // Fermer le panel quand on clique ailleurs
+        document.addEventListener('click', function(e) {
+            const wrapper = document.querySelector('.notification-wrapper');
+            const panel = document.getElementById('notificationsPanel');
+            if (wrapper && panel && !wrapper.contains(e.target)) {
+                panel.classList.remove('show');
+            }
+        });
+        
+        if ("Notification" in window && Notification.permission === "default") {
+            Notification.requestPermission();
+        }
+        pingOnlineStatus();
+
+        autoRefreshInterval = setInterval(() => {
+            updateNotificationBadge();
+            const patientFilter = document.getElementById('patientFilter')?.value || 'all';
+            loadConversations(patientFilter);
+            if (currentPatientId && !isTyping) {
+                fetchConversation(currentPatientId, false);
+            }
+        }, 1200);
+    } catch (error) {
+        console.error('Erreur initialisation :', error);
+    }
+});
+function renderSubjectBadge(msg) {
+    if (!msg || !msg.subject) return '';
+
+    const subject = (msg.subject || '').trim().toLowerCase();
+
+    if (!subject || subject === 'message' || subject === 'message patient') {
+        return '';
+    }
+
+    return `
+        <div class="message-subject">
+            <i class="fas fa-bookmark" style="margin-right:6px;"></i>
+            Sujet : ${escapeHtml(msg.subject)}
+        </div>
+    `;
+}
+function scrollToPinnedMessage(messageId) {
+    const messageElement = document.getElementById(`message-${messageId}`);
+    const messagesList = document.getElementById('messagesList');
+
+    if (!messageElement || !messagesList) return;
+
+    messageElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+    });
+
+    messageElement.style.boxShadow = '0 0 0 3px rgba(245, 158, 11, 0.35)';
+    messageElement.style.transition = 'box-shadow 0.3s ease';
+
+    setTimeout(() => {
+        messageElement.style.boxShadow = '';
+    }, 1800);
+}
+function showNextPinnedMessage(event) {
+    event.stopPropagation();
+
+    const messages = window.__lastRenderedMessages || [];
+    const pinnedMessages = [...messages].filter(msg => msg.is_pinned).reverse();
+
+    if (!pinnedMessages.length) return;
+
+    pinnedMessageIndex = (pinnedMessageIndex + 1) % pinnedMessages.length;
+
+    renderChat(
+        window.__lastPatientName || '',
+        messages,
+        window.__lastIsOnline || false,
+        window.__lastLastSeen || null
+    );
+}
+
+function showPrevPinnedMessage(event) {
+    event.stopPropagation();
+
+    const messages = window.__lastRenderedMessages || [];
+    const pinnedMessages = [...messages].filter(msg => msg.is_pinned).reverse();
+
+    if (!pinnedMessages.length) return;
+
+    pinnedMessageIndex = (pinnedMessageIndex - 1 + pinnedMessages.length) % pinnedMessages.length;
+
+    renderChat(
+        window.__lastPatientName || '',
+        messages,
+        window.__lastIsOnline || false,
+        window.__lastLastSeen || null
+    );
+}
+</script>
+<div id="notificationsPanel" class="notifications-panel">
+    <div class="notifications-panel-header">
+        <i class="fas fa-bell"></i> Notifications
+    </div>
+    <div id="notificationsList">
+        <div class="notification-empty">
+            <i class="far fa-bell-slash"></i><br>
+            Aucune notification
+        </div>
+    </div>
+</div>
+</body>
+</html>

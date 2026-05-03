@@ -1,0 +1,3612 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartWrist Rehab · YOUBI Zineb</title>
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* TOUT TON CSS RESTE IDENTIQUE - JE GARDE EXACTEMENT LE MÊME */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2E8B57;
+            --primary-light: #e8f3ed;
+            --primary-dark: #1e5e3b;
+            --primary-glow: rgba(46, 139, 87, 0.3);
+            --accent-1: #4361ee;
+            --accent-2: #e67e22;
+            --accent-3: #9b59b6;
+            --gradient-1: linear-gradient(145deg, #2E8B57, #1e5e3b);
+            --gradient-2: linear-gradient(145deg, #4361ee, #3a56d4);
+            --gradient-3: linear-gradient(145deg, #e67e22, #d35400);
+            --gradient-4: linear-gradient(145deg, #9b59b6, #8e44ad);
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --white: #ffffff;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(46,139,87,0.15);
+            --shadow-lg: 0 8px 24px rgba(46,139,87,0.2);
+            --shadow-glow: 0 0 20px var(--primary-glow);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-xl: 30px;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px var(--primary-glow); }
+            50% { box-shadow: 0 0 20px var(--primary-glow), 0 0 30px var(--primary-glow); }
+            100% { box-shadow: 0 0 5px var(--primary-glow); }
+        }
+
+        @keyframes slideInLeft {
+            from { transform: translateX(-30px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(30px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--gray-800);
+            line-height: 1.5;
+            min-height: 100vh;
+            transition: background 0.3s ease;
+        }
+
+        body.night-mode {
+            background: linear-gradient(135deg, #1a2639 0%, #2d3748 100%);
+        }
+
+        [dir="rtl"] {
+            text-align: right;
+        }
+        
+        [dir="rtl"] .menu-item i {
+            margin-left: 8px;
+            margin-right: 0;
+        }
+        
+        [dir="rtl"] .personal-message i:first-child {
+            transform: scaleX(-1);
+        }
+        
+        [dir="rtl"] .header-right {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .meta-item {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .kpi-card {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .exercise-item {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .message-item {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .bilan-card {
+            flex-direction: row-reverse;
+        }
+
+        .container-custom {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 20px 25px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
+            padding: 18px 30px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,255,255,0.2);
+            flex-wrap: wrap;
+            gap: 20px;
+            animation: slideInLeft 0.5s ease-out;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-1);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+            font-weight: 700;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .logo-text h1 {
+            color: var(--primary-dark);
+            font-size: 26px;
+            font-weight: 800;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .logo-text p {
+            color: var(--gray-500);
+            font-size: 13px;
+            margin: 0;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .lang-switch {
+            display: flex;
+            gap: 8px;
+        }
+
+        .lang-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 1px solid var(--gray-300);
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--gray-600);
+            transition: all 0.3s;
+        }
+
+        .lang-btn:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            transform: scale(1.1);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .lang-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .notification-icon {
+            position: relative;
+            cursor: pointer;
+            color: var(--gray-600);
+            font-size: 22px;
+            transition: all 0.3s;
+        }
+
+        .notification-icon:hover {
+            transform: scale(1.1);
+            color: var(--primary);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            font-size: 11px;
+            padding: 3px 6px;
+            border-radius: 20px;
+            border: 2px solid white;
+            animation: pulse 2s infinite;
+        }
+
+        [dir="rtl"] .notification-badge {
+            right: auto;
+            left: -8px;
+        }
+
+        .logout-btn-header {
+            background: #ef4444;
+            color: white;
+            border: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+
+        .logout-btn-header:hover {
+            background: #dc2626;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+        }
+
+        .menu {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 60px;
+            padding: 8px 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,255,255,0.2);
+            animation: slideInRight 0.5s ease-out;
+        }
+
+        .menu-item {
+            padding: 10px 14px;
+            border-radius: 40px;
+            cursor: pointer;
+            color: var(--gray-700);
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap;
+            background: transparent;
+            border: none;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .menu-item i {
+            margin-right: 6px;
+            font-size: 14px;
+            transition: transform 0.3s;
+        }
+
+        [dir="rtl"] .menu-item i {
+            margin-left: 6px;
+            margin-right: 0;
+        }
+
+        .menu-item:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .menu-item:hover i {
+            transform: rotate(360deg);
+        }
+
+        .menu-item.active {
+            background: var(--gradient-1);
+            color: white;
+        }
+
+        .welcome-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
+            padding: 30px 35px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,255,255,0.2);
+            flex-wrap: wrap;
+            gap: 25px;
+            animation: slideInLeft 0.5s ease-out;
+        }
+
+        .founder-badge {
+            background: linear-gradient(145deg, var(--primary-light), white);
+            color: var(--primary-dark);
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 15px;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 25px var(--primary-glow);
+            animation: glow 2s infinite;
+        }
+
+        .founder-badge i {
+            color: #FFD700;
+            margin-right: 8px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        [dir="rtl"] .founder-badge i {
+            margin-right: 0;
+            margin-left: 8px;
+        }
+
+        .greeting-title {
+            font-size: 38px;
+            font-weight: 800;
+            color: var(--gray-800);
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            letter-spacing: -0.5px;
+        }
+
+        .greeting-subtitle {
+            color: var(--gray-500);
+            font-size: 16px;
+            margin-bottom: 18px;
+        }
+
+        .header-meta {
+            display: flex;
+            gap: 18px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gray-600);
+            font-size: 14px;
+            background: rgba(255,255,255,0.8);
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: 1px solid rgba(46,139,87,0.2);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s;
+        }
+
+        .meta-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+            border-color: var(--primary);
+        }
+
+        .meta-item i {
+            color: var(--primary);
+            font-size: 16px;
+        }
+
+        .location-select {
+            border: none;
+            background: transparent;
+            font-weight: 600;
+            color: var(--gray-700);
+            padding: 0 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* Indicateur de mode (Présentiel/Télé) */
+        .mode-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: 10px;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .mode-indicator.presentiel {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .mode-indicator.tele {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .personal-message {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255,255,255,0.8);
+            padding: 12px 25px;
+            border-radius: 60px;
+            width: fit-content;
+            border: 1px solid rgba(46,139,87,0.2);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s;
+        }
+
+        .personal-message:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-glow);
+            border-color: var(--primary);
+        }
+
+        .personal-message i {
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        .message-display {
+            font-size: 16px;
+            color: var(--gray-600);
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        .message-display::before {
+            content: '«';
+            color: var(--primary);
+            font-size: 18px;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .message-display::after {
+            content: '»';
+            color: var(--primary);
+            font-size: 18px;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        .profile-photo {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 4px solid var(--primary);
+            overflow: hidden;
+            box-shadow: 0 0 30px var(--primary-glow);
+            transition: all 0.3s;
+        }
+
+        .profile-photo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px var(--primary-glow);
+        }
+
+        .profile-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-upload {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: var(--gradient-1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .photo-upload:hover {
+            transform: scale(1.1) rotate(360deg);
+            background: var(--primary-dark);
+        }
+
+        [dir="rtl"] .photo-upload {
+            right: auto;
+            left: 5px;
+        }
+
+        input, select, textarea {
+            background: white;
+            border: 1px solid var(--gray-300);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 14px;
+            color: var(--gray-800);
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-glow);
+        }
+
+        input::placeholder {
+            color: var(--gray-400);
+            font-style: italic;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .kpi-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s;
+            animation: slideInRight 0.5s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .kpi-card:nth-child(1) { animation-delay: 0.1s; }
+        .kpi-card:nth-child(2) { animation-delay: 0.2s; }
+        .kpi-card:nth-child(3) { animation-delay: 0.3s; }
+        .kpi-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-glow);
+            border-color: var(--primary);
+            animation: glow 2s infinite;
+        }
+
+        .kpi-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 26px;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+
+        .kpi-card:hover .kpi-icon {
+            transform: rotate(360deg);
+        }
+
+        .kpi-content {
+            flex: 1;
+        }
+
+        .kpi-label {
+            font-size: 13px;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .kpi-input {
+            font-size: 28px;
+            font-weight: 800;
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            padding: 5px 10px;
+            width: 110px;
+            background: white;
+            color: var(--gray-800);
+        }
+
+        .kpi-trend {
+            font-size: 12px;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #10b981;
+        }
+
+        .trend-input {
+            width: 55px;
+            border: 1px solid var(--gray-200);
+            border-radius: 15px;
+            padding: 3px 6px;
+            font-size: 11px;
+            background: white;
+        }
+
+        .search-bar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 60px;
+            padding: 12px 25px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s;
+        }
+
+        .search-bar:hover {
+            box-shadow: var(--shadow-glow);
+            border-color: var(--primary);
+        }
+
+        .search-bar i {
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        .search-bar input {
+            border: none;
+            background: transparent;
+            flex: 1;
+            font-size: 15px;
+            color: var(--gray-700);
+        }
+
+        .search-bar input:focus {
+            outline: none;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 8px 22px;
+            border-radius: 50px;
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+        }
+
+        .filter-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .exercises-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s;
+        }
+
+        .exercises-card:hover {
+            box-shadow: var(--shadow-glow);
+            border-color: var(--primary);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .card-header h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gray-800);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0;
+        }
+
+        .card-header h3 i {
+            color: var(--primary);
+            font-size: 22px;
+        }
+
+        .badge-time {
+            background: rgba(46, 139, 87, 0.1);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary);
+            border: 1px solid rgba(46, 139, 87, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .time-input {
+            width: 65px;
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+            text-align: center;
+            border-radius: 20px;
+            padding: 3px 6px;
+        }
+
+        .exercise-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .exercise-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 18px;
+            border: 1px solid var(--gray-200);
+            transition: all 0.3s;
+            flex-wrap: wrap;
+        }
+
+        .exercise-item:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+            animation: glow 2s infinite;
+        }
+
+        .exercise-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 16px;
+            background: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s;
+        }
+
+        .exercise-item:hover .exercise-icon {
+            transform: rotate(360deg);
+        }
+
+        .exercise-info {
+            flex: 1;
+        }
+
+        .exercise-name {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--gray-800);
+        }
+
+        .exercise-meta {
+            font-size: 12px;
+            color: var(--gray-500);
+            display: flex;
+            gap: 12px;
+        }
+
+        .exercise-progress {
+            width: 130px;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 8px;
+            background: var(--gray-200);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-1);
+            border-radius: 10px;
+            transition: width 0.3s;
+        }
+
+        .exercise-status {
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-warning { background: #fef3c7; color: #d97706; }
+        .status-danger { background: #fee2e2; color: #ef4444; }
+        .status-success { background: #d1fae5; color: #059669; }
+
+        .patients-recents {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .patients-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .patient-card {
+            display: flex;
+            flex-direction: column;
+            padding: 18px;
+            background: white;
+            border-radius: 18px;
+            border: 1px solid var(--gray-200);
+            transition: all 0.3s;
+        }
+
+        .patient-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .patient-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .patient-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: var(--gradient-1);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .patient-avatar input {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: none;
+            color: white;
+            font-weight: 700;
+            text-align: center;
+            padding: 0;
+        }
+
+        .patient-name {
+            flex: 1;
+        }
+
+        .patient-name input {
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid var(--gray-300);
+            border-radius: 0;
+            padding: 5px 0;
+            font-weight: 600;
+            background: transparent;
+        }
+
+        .patient-details {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .patient-details input {
+            flex: 1;
+            padding: 5px 8px;
+            font-size: 12px;
+        }
+
+        .patient-progress {
+            margin-bottom: 10px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--gray-500);
+            margin-bottom: 4px;
+        }
+
+        .progress-value {
+            width: 45px;
+            padding: 2px;
+            text-align: right;
+            font-size: 11px;
+        }
+
+        .patient-meta {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .patient-meta input {
+            flex: 1;
+            padding: 5px;
+            font-size: 11px;
+        }
+
+        .stats-circles-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .stat-circle-card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
+            padding: 18px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s;
+        }
+
+        .stat-circle-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .circle-progress {
+            position: relative;
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 12px;
+        }
+
+        .circle-progress svg {
+            width: 90px;
+            height: 90px;
+            transform: rotate(-90deg);
+        }
+
+        .circle-bg {
+            stroke: var(--gray-200);
+            stroke-width: 7;
+            fill: none;
+        }
+
+        .circle-fill {
+            stroke: var(--primary);
+            stroke-width: 7;
+            fill: none;
+            stroke-dasharray: 251;
+            stroke-dashoffset: 251;
+            transition: stroke-dashoffset 0.5s;
+        }
+
+        .circle-value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+
+        .circle-value input {
+            width: 45px;
+            border: none;
+            background: transparent;
+            text-align: center;
+            font-weight: 700;
+            font-size: 18px;
+            padding: 0;
+        }
+
+        .circle-label {
+            font-size: 12px;
+            color: var(--gray-600);
+        }
+
+        .circle-label input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            text-align: center;
+            font-size: 12px;
+            color: var(--gray-600);
+        }
+
+        .ia-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .ia-resume {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin: 18px 0;
+            padding: 18px;
+            background: rgba(46, 139, 87, 0.1);
+            border-radius: 16px;
+        }
+
+        .ia-resume-item {
+            text-align: center;
+        }
+
+        .ia-resume-label {
+            display: block;
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-bottom: 6px;
+        }
+
+        .ia-resume-value input {
+            width: 90px;
+            text-align: center;
+            background: white;
+            border: 1px solid var(--primary);
+            border-radius: 20px;
+            padding: 5px 10px;
+            font-weight: 600;
+        }
+
+        .ia-block {
+            margin: 25px 0;
+        }
+
+        .ia-block h4 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ia-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border: 1px solid var(--gray-200);
+            transition: all 0.3s;
+        }
+
+        .ia-item:hover {
+            border-color: var(--primary);
+            transform: translateX(5px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .ia-item input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        .ia-item select {
+            width: 110px;
+            padding: 8px;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 13px;
+            background: white;
+        }
+
+        .ia-pred-item {
+            padding: 12px 18px;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border-left: 4px solid;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .ia-pred-item:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .ia-pred-item input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            padding: 0;
+            font-size: 14px;
+        }
+
+        .ia-pred-item.success { border-color: #10b981; background: #f0fdf4; }
+        .ia-pred-item.warning { border-color: #f59e0b; background: #fffbeb; }
+        .ia-pred-item.info { border-color: #3b82f6; background: #eff6ff; }
+
+        .ia-objectifs {
+            background: linear-gradient(145deg, #fef3c7, #fff);
+            border-radius: 16px;
+            padding: 18px;
+            border: 1px solid #FFD700;
+        }
+
+        .objectif-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .objectif-row input {
+            width: 65px;
+            text-align: center;
+            border: 1px solid var(--primary);
+            border-radius: 15px;
+            padding: 5px;
+            font-size: 13px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--gray-200);
+            border-radius: 10px;
+            margin-bottom: 18px;
+            overflow: hidden;
+        }
+
+        .progress-fill-ia {
+            height: 100%;
+            background: var(--gradient-1);
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .messages-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .message-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 10px;
+            border: 1px solid var(--gray-200);
+            flex-wrap: wrap;
+            transition: all 0.3s;
+        }
+
+        .message-item:hover {
+            border-color: var(--primary);
+            transform: translateX(5px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .message-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .message-avatar input {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: none;
+            color: var(--primary);
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .message-content {
+            flex: 1;
+        }
+
+        .message-content input {
+            width: 100%;
+            padding: 6px 8px;
+            margin-bottom: 3px;
+            border: 1px solid var(--gray-200);
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .message-time {
+            width: 70px;
+        }
+
+        .message-time input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid var(--gray-200);
+            border-radius: 6px;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .message-reply {
+            background: var(--primary-light);
+            color: var(--primary);
+            border: none;
+            padding: 7px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .message-reply:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .bilans-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .bilans-tabs-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin: 20px 0 0;
+        }
+
+        .bilans-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            background: transparent;
+            border-radius: 40px 40px 0 0;
+            position: relative;
+            z-index: 5;
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .bilans-tab {
+            padding: 14px 25px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--gray-700);
+            background: rgba(255, 255, 255, 0.5);
+            border: 2px solid var(--primary-light);
+            border-bottom: none;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            position: relative;
+            outline: none;
+            flex: 1;
+            text-align: center;
+        }
+
+        .bilans-tab:first-child {
+            border-radius: 30px 0 0 0;
+            border-right: 1px solid var(--primary-light);
+        }
+
+        .bilans-tab:last-child {
+            border-radius: 0 30px 0 0;
+            border-left: 1px solid var(--primary-light);
+        }
+
+        .bilans-tab:not(:first-child):not(:last-child) {
+            border-left: none;
+            border-right: none;
+        }
+
+        .bilans-tab:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: -1px;
+            top: 25%;
+            height: 50%;
+            width: 1px;
+            background: var(--primary-light);
+        }
+
+        .bilans-tab:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+            transform: translateY(-2px);
+            z-index: 10;
+        }
+
+        .bilans-tab.active {
+            background: var(--gradient-1);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 -5px 15px var(--primary-glow);
+            z-index: 15;
+            font-weight: 800;
+        }
+
+        .bilans-connector {
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, 
+                transparent 0%,
+                var(--primary) 20%,
+                var(--primary) 80%,
+                transparent 100%);
+            margin-top: -2px;
+            position: relative;
+            z-index: 1;
+            border-radius: 0 0 10px 10px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .bilans-category {
+            display: none;
+            border: 2px solid var(--primary-light);
+            border-top: none;
+            border-radius: 0 0 25px 25px;
+            padding: 25px;
+            background: white;
+            margin-top: -2px;
+            box-shadow: 0 15px 30px rgba(46, 139, 87, 0.1);
+        }
+
+        .bilans-category.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bilans-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .bilan-card {
+            background: white;
+            padding: 15px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid var(--gray-200);
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .bilan-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(46, 139, 87, 0.15);
+        }
+
+        .bilan-card span {
+            font-size: 26px;
+            transition: transform 0.3s;
+        }
+
+        .bilan-card:hover span {
+            transform: rotate(360deg);
+        }
+
+        .bilan-info {
+            flex: 1;
+        }
+
+        .bilan-info h5 {
+            font-size: 15px;
+            font-weight: 700;
+            margin: 0 0 3px 0;
+            color: var(--gray-800);
+        }
+
+        .bilan-info p {
+            font-size: 11px;
+            color: var(--gray-500);
+            margin: 0;
+        }
+
+        .bilan-status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 11px;
+            border: 1px solid var(--primary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .bilan-status:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .history-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .ia-section,
+        .history-card,
+        .footer-coran {
+            display: none !important;
+        }
+
+        .history-item {
+            display: flex;
+            gap: 18px;
+            padding: 12px;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            border: 1px solid var(--gray-200);
+            font-size: 13px;
+            transition: all 0.3s;
+        }
+
+        .history-item:hover {
+            border-color: var(--primary);
+            transform: translateX(5px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .history-time {
+            width: 80px;
+        }
+
+        .history-time input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid var(--gray-200);
+            border-radius: 6px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .history-text {
+            flex: 1;
+        }
+
+        .history-text input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid var(--gray-200);
+            border-radius: 6px;
+        }
+
+        .zen-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-xl);
+            padding: 20px 25px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .zen-btn {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 50px;
+            padding: 10px 22px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .zen-btn:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .timer-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .timer-input {
+            width: 80px;
+            padding: 8px;
+            border: 2px solid var(--primary);
+            border-radius: 30px;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .timer-input:focus {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .timer-display {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary);
+            font-family: monospace;
+        }
+
+        .footer {
+            margin-top: 30px;
+            padding: 25px 0;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .footer-coran {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .sourate-select {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid #FFD700;
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .sourate-select:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #FFD700;
+        }
+
+        .sourate-select option {
+            background: var(--primary-dark);
+        }
+
+        .coran-btn {
+            background: var(--gradient-1);
+            color: white;
+            border: 2px solid #FFD700;
+            border-radius: 50px;
+            padding: 8px 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .coran-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #FFD700;
+        }
+
+        .coran-btn.playing {
+            background: #ef4444;
+            animation: pulse 2s infinite;
+        }
+
+        .footer-copyright {
+            font-size: 13px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        @media (max-width: 1200px) {
+            .patients-grid { grid-template-columns: repeat(2, 1fr); }
+            .stats-circles-grid { grid-template-columns: repeat(3, 1fr); }
+            .bilans-grid { grid-template-columns: repeat(2, 1fr); }
+            .menu { flex-wrap: wrap; }
+        }
+        @media (max-width: 992px) {
+            .patients-grid { grid-template-columns: 1fr; }
+            .stats-circles-grid { grid-template-columns: repeat(2, 1fr); }
+            .ia-resume { grid-template-columns: 1fr; }
+            .menu-item { padding: 8px 12px; font-size: 13px; }
+        }
+        @media (max-width: 768px) {
+            .container-custom { padding: 15px; }
+            .header { flex-direction: column; text-align: center; }
+            .header-right { justify-content: center; }
+            .menu { flex-wrap: wrap; }
+            .menu-item { padding: 6px 10px; font-size: 12px; }
+            .kpi-grid { grid-template-columns: 1fr; }
+            .stats-circles-grid { grid-template-columns: 1fr; }
+            .bilans-grid { grid-template-columns: 1fr; }
+            .bilans-tab { padding: 10px 15px; font-size: 13px; }
+            .footer-coran { flex-direction: column; }
+        }
+        /* ===== AJOUTS INNOVATION / LUMIÈRE / ANIMATIONS SANS CASSER LE CODE ===== */
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(circle at 12% 18%, rgba(255,255,255,0.18), transparent 22%),
+        radial-gradient(circle at 88% 22%, rgba(46,139,87,0.16), transparent 18%),
+        radial-gradient(circle at 50% 100%, rgba(255,215,0,0.10), transparent 25%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.container-custom {
+    position: relative;
+    z-index: 1;
+}
+
+/* Apparition douce générale */
+.header,
+.menu,
+.welcome-header,
+.search-bar,
+.filter-buttons,
+.kpi-card,
+.exercises-card,
+.patients-recents,
+.stat-circle-card,
+.ia-section,
+.bilans-section,
+.history-card,
+.zen-section,
+.footer {
+    animation: softReveal 0.8s ease both;
+}
+
+@keyframes softReveal {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Verre moderne plus lumineux */
+.header,
+.menu,
+.welcome-header,
+.search-bar,
+.exercises-card,
+.patients-recents,
+.ia-section,
+.messages-card,
+.bilans-section,
+.history-card,
+.zen-section {
+    box-shadow:
+        0 12px 30px rgba(0,0,0,0.10),
+        0 0 0 1px rgba(255,255,255,0.25) inset,
+        0 0 20px rgba(46,139,87,0.06);
+}
+
+/* Effet lumineux doux sur les grands blocs */
+.header:hover,
+.welcome-header:hover,
+.exercises-card:hover,
+.patients-recents:hover,
+.ia-section:hover,
+.bilans-section:hover,
+.history-card:hover,
+.zen-section:hover {
+    box-shadow:
+        0 16px 40px rgba(0,0,0,0.12),
+        0 0 0 1px rgba(255,255,255,0.35) inset,
+        0 0 28px rgba(46,139,87,0.12);
+}
+
+/* Logo plus premium */
+.logo-icon {
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+        0 10px 25px rgba(46,139,87,0.35),
+        0 0 20px rgba(46,139,87,0.25);
+}
+
+.logo-icon::after {
+    content: "";
+    position: absolute;
+    top: -30%;
+    left: -60%;
+    width: 40%;
+    height: 160%;
+    background: rgba(255,255,255,0.35);
+    transform: rotate(25deg);
+    animation: shineSweep 4s linear infinite;
+}
+
+@keyframes shineSweep {
+    0% { left: -60%; }
+    100% { left: 130%; }
+}
+
+/* Boutons langue plus lumineux */
+.lang-btn {
+    box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+}
+
+.lang-btn.active {
+    box-shadow:
+        0 0 0 3px rgba(46,139,87,0.10),
+        0 0 18px rgba(46,139,87,0.25);
+}
+
+/* Icône notification plus vivante */
+.notification-icon {
+    animation: floatingBell 3s ease-in-out infinite;
+}
+
+@keyframes floatingBell {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-2px); }
+}
+
+/* Menu plus moderne */
+.menu {
+    position: relative;
+    overflow: hidden;
+}
+
+.menu::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.20), transparent);
+    transform: translateX(-100%);
+    animation: menuLight 6s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes menuLight {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.menu-item.active {
+    box-shadow:
+        0 10px 24px rgba(46,139,87,0.25),
+        0 0 18px rgba(46,139,87,0.18);
+}
+
+.menu-item:hover {
+    box-shadow: 0 8px 18px rgba(46,139,87,0.12);
+}
+
+/* Badge fondatrice plus noble */
+.founder-badge {
+    position: relative;
+    overflow: hidden;
+}
+
+.founder-badge::after {
+    content: "";
+    position: absolute;
+    top: -20%;
+    left: -50%;
+    width: 35%;
+    height: 160%;
+    background: rgba(255,255,255,0.35);
+    transform: rotate(25deg);
+    animation: founderShine 5s linear infinite;
+}
+
+@keyframes founderShine {
+    0% { left: -50%; }
+    100% { left: 130%; }
+}
+
+/* Photo plus brillante */
+.profile-photo {
+    box-shadow:
+        0 0 0 5px rgba(255,255,255,0.35),
+        0 0 30px rgba(46,139,87,0.22),
+        0 16px 35px rgba(0,0,0,0.15);
+}
+
+.profile-photo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top right, transparent 55%, rgba(255,255,255,0.18));
+    pointer-events: none;
+}
+
+/* Barre de recherche plus élégante */
+.search-bar {
+    position: relative;
+}
+
+.search-bar::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 60px;
+    border: 1px solid rgba(46,139,87,0.18);
+    pointer-events: none;
+}
+
+/* KPI cartes plus dynamiques */
+.kpi-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.kpi-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.18), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.8s ease;
+}
+
+.kpi-card:hover::before {
+    transform: translateX(100%);
+}
+
+.kpi-card:hover {
+    box-shadow:
+        0 16px 30px rgba(0,0,0,0.10),
+        0 0 24px rgba(46,139,87,0.12);
+}
+
+/* Icônes KPI plus flashy */
+.kpi-icon {
+    position: relative;
+    box-shadow:
+        0 10px 20px rgba(0,0,0,0.18),
+        0 0 18px rgba(255,255,255,0.10) inset;
+}
+
+/* Cartes patients / exercices / messages / bilans */
+.exercise-item,
+.patient-card,
+.message-item,
+.bilan-card,
+.history-item,
+.ia-item,
+.ia-pred-item,
+.stat-circle-card {
+    box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+}
+
+.exercise-item:hover,
+.patient-card:hover,
+.message-item:hover,
+.bilan-card:hover,
+.history-item:hover,
+.ia-item:hover,
+.ia-pred-item:hover,
+.stat-circle-card:hover {
+    box-shadow:
+        0 14px 28px rgba(0,0,0,0.09),
+        0 0 20px rgba(46,139,87,0.08);
+}
+
+/* Cercles statistiques plus vivants */
+.stat-circle-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-circle-card::before {
+    content: "";
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    top: -60px;
+    right: -60px;
+    background: radial-gradient(circle, rgba(46,139,87,0.10), transparent 70%);
+    pointer-events: none;
+}
+
+/* Section IA plus moderne */
+.ia-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.ia-section::before {
+    content: "";
+    position: absolute;
+    top: -80px;
+    right: -80px;
+    width: 220px;
+    height: 220px;
+    background: radial-gradient(circle, rgba(67,97,238,0.10), transparent 70%);
+    pointer-events: none;
+}
+
+.ia-section::after {
+    content: "";
+    position: absolute;
+    bottom: -80px;
+    left: -80px;
+    width: 220px;
+    height: 220px;
+    background: radial-gradient(circle, rgba(46,139,87,0.10), transparent 70%);
+    pointer-events: none;
+}
+
+/* Onglets bilans plus premium */
+.bilans-tab.active {
+    box-shadow:
+        0 -4px 18px rgba(46,139,87,0.20),
+        0 0 20px rgba(46,139,87,0.12);
+}
+
+/* Boutons zen et coran */
+.zen-btn,
+.coran-btn,
+.message-reply,
+.logout-btn-header {
+    position: relative;
+    overflow: hidden;
+}
+
+.zen-btn::before,
+.coran-btn::before,
+.message-reply::before,
+.logout-btn-header::before {
+    content: "";
+    position: absolute;
+    top: -20%;
+    left: -60%;
+    width: 35%;
+    height: 160%;
+    background: rgba(255,255,255,0.25);
+    transform: rotate(25deg);
+    transition: left 0.7s ease;
+}
+
+.zen-btn:hover::before,
+.coran-btn:hover::before,
+.message-reply:hover::before,
+.logout-btn-header:hover::before {
+    left: 130%;
+}
+
+/* Timer plus visible */
+.timer-display {
+    text-shadow: 0 0 12px rgba(46,139,87,0.18);
+}
+
+/* Footer plus beau */
+.footer {
+    position: relative;
+}
+
+.footer::before {
+    content: "";
+    display: block;
+    width: 160px;
+    height: 2px;
+    margin: 0 auto 18px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);
+    border-radius: 999px;
+}
+
+/* Scrollbar élégante */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.08);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #2E8B57, #1e5e3b);
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #38a169, #1e5e3b);
+}
+
+.filter-buttons,
+.stats-circles-grid,
+.kpi-card:nth-child(4) {
+    display: none !important;
+}
+
+.patients-recents .patient-progress {
+    display: none !important;
+}
+    </style>
+    <link rel="stylesheet" href="{% static 'assets/css/responsive-guard.css' %}">
+</head>
+<body>
+    <div class="container-custom">
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">SW</div>
+                <div class="logo-text">
+                    <h1>SmartWrist Rehab</h1>
+                    <p id="etudiante-text">Étudiante en 3ᵉ année d'ergothérapie</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="lang-switch">
+                    <button class="lang-btn active" onclick="changeLanguage('fr')">FR</button>
+                    <button class="lang-btn" onclick="changeLanguage('en')">EN</button>
+                    <button class="lang-btn" onclick="changeLanguage('ar')">AR</button>
+                </div>
+                <div class="notification-icon" onclick="showNotifications()">
+                    <i class="far fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+                <button class="logout-btn-header" onclick="logoutUser()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </header>
+
+        <form id="logoutForm" method="post" action="{% url 'logout' %}" style="display:none;">
+            {% csrf_token %}
+        </form>
+        {{ dashboard_data|json_script:"ergo-dashboard-data" }}
+
+        <!-- MENU -->
+        <nav class="menu">
+            <span class="menu-item active" onclick="showSection('dashboard', this)"><i class="fas fa-chart-pie"></i> <span id="menu-tableau-bord">Tableau de bord</span></span>
+            <a class="menu-item" href="{% url 'patients' %}" style="text-decoration:none;"><i class="fas fa-users"></i> <span id="menu-patients">Patients</span></a>
+            <a class="menu-item" href="{% url 'Dossiers' %}" style="text-decoration:none;"><i class="fas fa-folder-open"></i> <span id="menu-dossiers">Dossiers</span></a>
+            <a class="menu-item" href="{% url 'Programmes' %}" style="text-decoration:none;"><i class="fas fa-calendar-alt"></i> <span id="menu-programmes">Programmes</span></a>
+            <a class="menu-item" href="{% url 'IA' %}" style="text-decoration:none;"><i class="fas fa-robot"></i> <span id="menu-ia">IA</span></a>
+            <a class="menu-item" href="{% url 'Agenda' %}" style="text-decoration:none;"><i class="fas fa-calendar-check"></i> <span id="menu-agenda">Agenda</span></a>
+            <a class="menu-item" href="{% url 'Messages' %}" style="text-decoration:none;"><i class="fas fa-envelope"></i> <span id="menu-messages">Messages</span></a>
+            <a class="menu-item" href="{% url 'Ressources' %}" style="text-decoration:none;"><i class="fas fa-book"></i> <span id="menu-ressources">Ressources</span></a>
+<a class="menu-item" href="{% url 'messages_view' %}" style="text-decoration: none;"><i class="fas fa-address-card"></i> <span id="menu-contact">Contact</span></a>
+<span id="menu-historique" style="display:none;"></span>
+<span id="time-unit" style="display:none;"></span>
+        </nav>
+
+        <main id="dashboard-section" class="content-section">
+            <div class="welcome-header">
+                <div class="header-left">
+                    <div class="founder-badge">
+                        <i class="fas fa-crown"></i> <span id="founder-text">YOUBI Zineb · Fondatrice</span>
+                    </div>
+                    <h1 class="greeting-title" id="greeting-message"><span id="greeting-word">Bonjour</span>, <span id="user-name">YOUBI Zineb</span></h1>
+                    <p class="greeting-subtitle" id="greeting-subtitle">Étudiante en 3ᵉ année d'ergothérapie</p>
+                    
+                    <div class="header-meta">
+                        <div class="meta-item">
+                            <i class="far fa-calendar-alt"></i>
+                            <span id="current-date">13 mars 2026</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="far fa-clock"></i>
+                            <span id="current-time">14:30</span>
+                        </div>
+                        <div class="meta-item" id="mode-meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <select class="location-select" id="locationSelect">
+                                <option value="presentiel" id="option-presentiel">Présentiel</option>
+                                <option value="tele" id="option-tele">Télé-ergothérapie</option>
+                            </select>
+                            <span class="mode-indicator presentiel" id="modeIndicator">📌 Présentiel</span>
+                        </div>
+                    </div>
+
+                    <div class="personal-message">
+                        <i class="fas fa-quote-left"></i>
+                        <span class="message-display" id="daily-message">Chaque geste retrouvé est une victoire</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="profile-photo">
+                        <img src="{% static 'assets/img/ergo/ergotherapeute.png' %}" alt="YOUBI Zineb">
+                        <div class="photo-upload">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-input" placeholder="Rechercher un patient, un bilan, un exercice...">
+            </div>
+
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="tous" id="filter-tous">Tous</button>
+                <button class="filter-btn" data-filter="actifs" id="filter-actifs">Actifs</button>
+                <button class="filter-btn" data-filter="nouveaux" id="filter-nouveaux">Nouveaux</button>
+                <button class="filter-btn" data-filter="alertes" id="filter-alertes">Alertes</button>
+                <button class="filter-btn" data-filter="reevaluer" id="filter-reevaluer">À réévaluer</button>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="background: var(--gradient-1);"><i class="fas fa-users"></i></div>
+                    <div class="kpi-content">
+                        <div class="kpi-label" id="kpi-patients-actifs">Patients actifs</div>
+                        <input type="number" class="kpi-input" placeholder="0">
+                        <div class="kpi-trend">
+                            <i class="fas fa-arrow-up"></i>
+                            <input type="number" class="trend-input" placeholder="0"> <span id="trend-sem" class="trend-unit">/sem</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="background: var(--gradient-2);"><i class="fas fa-calendar-check"></i></div>
+                    <div class="kpi-content">
+                        <div class="kpi-label" id="kpi-rdv">RDV aujourd'hui</div>
+                        <input type="number" class="kpi-input" placeholder="0">
+                        <div class="kpi-trend">
+                            <i class="fas fa-clock"></i>
+                            <input type="number" class="trend-input" placeholder="0"> <span id="trend-h" class="trend-unit">/h</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="background: var(--gradient-3);"><i class="fas fa-envelope"></i></div>
+                    <div class="kpi-content">
+                        <div class="kpi-label" id="kpi-messages">Nouveaux messages</div>
+                        <input type="number" class="kpi-input" placeholder="0">
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon" style="background: var(--gradient-4);"><i class="fas fa-robot"></i></div>
+                    <div class="kpi-content">
+                        <div class="kpi-label" id="kpi-alertes">Alertes IA</div>
+                        <input type="number" class="kpi-input" placeholder="0">
+                        <div class="kpi-trend">
+                            <input type="number" class="trend-input" placeholder="0"> <span id="trend-urgentes" class="trend-unit">urgentes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercises-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-chart-line"></i> <span id="exercices-titre">Résultats récents</span></h3>
+                    <button type="button" class="filter-btn" onclick="afficherTousLesPatientsDashboard()">Afficher tout</button>
+                </div>
+                <div class="exercise-list">
+                    <div class="exercise-item">
+                        <div class="exercise-icon"><i class="fas fa-hand-peace"></i></div>
+                        <div class="exercise-info">
+                            <input type="text" class="exercise-name exercise-name-field" id="exercise-name-placeholder" placeholder="Nom exercice">
+                            <div class="exercise-meta">
+                                <input type="number" class="series-field" placeholder="séries" style="width:55px;" id="series-placeholder"> ·
+                                <input type="number" class="rep-field" placeholder="rép" style="width:55px;" id="rep-placeholder"> ·
+                                <input type="number" class="min-field" placeholder="min" style="width:55px;" id="min-placeholder">
+                            </div>
+                        </div>
+                        <div class="exercise-progress">
+                            <div class="progress-bar-bg"><div class="progress-fill" style="width:0%"></div></div>
+                        </div>
+                        <input type="text" class="exercise-status" placeholder="0%" style="width:55px;">
+                    </div>
+                    <div class="exercise-item">
+                        <div class="exercise-icon"><i class="fas fa-rotate"></i></div>
+                        <div class="exercise-info">
+                            <input type="text" class="exercise-name exercise-name-field" placeholder="Nom exercice">
+                            <div class="exercise-meta">
+                                <input type="number" class="series-field" placeholder="séries" style="width:55px;"> ·
+                                <input type="number" class="rep-field" placeholder="rép" style="width:55px;"> ·
+                                <input type="number" class="min-field" placeholder="min" style="width:55px;">
+                            </div>
+                        </div>
+                        <div class="exercise-progress">
+                            <div class="progress-bar-bg"><div class="progress-fill" style="width:0%"></div></div>
+                        </div>
+                        <input type="text" class="exercise-status" placeholder="0%" style="width:55px;">
+                    </div>
+                    <div class="exercise-item">
+                        <div class="exercise-icon"><i class="fas fa-hand"></i></div>
+                        <div class="exercise-info">
+                            <input type="text" class="exercise-name exercise-name-field" placeholder="Nom exercice">
+                            <div class="exercise-meta">
+                                <input type="number" class="series-field" placeholder="séries" style="width:55px;"> ·
+                                <input type="number" class="rep-field" placeholder="rép" style="width:55px;"> ·
+                                <input type="number" class="min-field" placeholder="min" style="width:55px;">
+                            </div>
+                        </div>
+                        <div class="exercise-progress">
+                            <div class="progress-bar-bg"><div class="progress-fill" style="width:0%"></div></div>
+                        </div>
+                        <input type="text" class="exercise-status" placeholder="0%" style="width:55px;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="patients-recents">
+                <div class="card-header">
+                    <h3><i class="fas fa-users"></i> <span id="patients-titre">Patients récents</span></h3>
+                </div>
+                <div class="patients-grid">
+                    <div class="patient-card">
+                        <div class="patient-header">
+                            <div class="patient-avatar"><input type="text" maxlength="2" placeholder="ML"></div>
+                            <div class="patient-name"><input type="text" class="patient-name-field" placeholder="Nom Prénom"></div>
+                        </div>
+                        <div class="patient-details">
+                            <input type="text" id="age-placeholder" class="patient-age-field" placeholder="Âge">
+                            <input type="text" id="fracture-placeholder" class="patient-fracture-field" placeholder="Fracture">
+                        </div>
+                        <div class="patient-progress">
+                            <div class="progress-header">
+                                <span id="progression-text" class="patient-progress-text">Progression</span>
+                                <input type="number" class="progress-value" placeholder="0" min="0" max="100">%
+                            </div>
+                            <div class="progress-bar-bg"><div class="progress-fill" style="width:0%"></div></div>
+                        </div>
+                        <div class="patient-meta">
+                            <input type="text" id="dernier-rdv-placeholder" class="patient-last-rdv-field" placeholder="Dernier RDV">
+                            <input type="text" id="prochain-rdv-placeholder" class="patient-next-rdv-field" placeholder="Prochain RDV">
+                        </div>
+                    </div>
+                    <div class="patient-card">
+                        <div class="patient-header">
+                            <div class="patient-avatar"><input type="text" maxlength="2" placeholder="JD"></div>
+                            <div class="patient-name"><input type="text" class="patient-name-field" placeholder="Nom Prénom"></div>
+                        </div>
+                        <div class="patient-details">
+                            <input type="text" class="patient-age-field" placeholder="Âge">
+                            <input type="text" class="patient-fracture-field" placeholder="Fracture">
+                        </div>
+                        <div class="patient-progress">
+                            <div class="progress-header">
+                                <span class="patient-progress-text">Progression</span>
+                                <input type="number" class="progress-value" placeholder="0" min="0" max="100">%
+                            </div>
+                            <div class="progress-bar-bg"><div class="progress-fill" style="width:0%"></div></div>
+                        </div>
+                        <div class="patient-meta">
+                            <input type="text" class="patient-last-rdv-field" placeholder="Dernier RDV">
+                            <input type="text" class="patient-next-rdv-field" placeholder="Prochain RDV">
+                        </div>
+                    </div>
+                    <div class="patient-card">
+                        <div class="patient-header">
+                            <div class="patient-avatar"><input type="text" maxlength="2" placeholder="OT"></div>
+                            <div class="patient-name"><input type="text" class="patient-name-field" placeholder="Nom Prénom"></div>
+                        </div>
+                        <div class="patient-details">
+                            <input type="text" class="patient-age-field" placeholder="Âge">
+                            <input type="text" class="patient-fracture-field" placeholder="Fracture">
+                        </div>
+                        <div class="patient-progress">
+                            <div class="progress-header">
+                                <span class="patient-progress-text">Progression</span>
+                                <input type="number" class="progress-value" placeholder="0" min="0" max="100">%
+                            </div>
+                            <div class="progress-bar-bg"><div class="progress-fill" style="width:0%"></div></div>
+                        </div>
+                        <div class="patient-meta">
+                            <input type="text" class="patient-last-rdv-field" placeholder="Dernier RDV">
+                            <input type="text" class="patient-next-rdv-field" placeholder="Prochain RDV">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-circles-grid">
+                <div class="stat-circle-card">
+                    <div class="circle-progress" id="circle1">
+                        <svg viewBox="0 0 100 100">
+                            <circle class="circle-bg" cx="50" cy="50" r="40" stroke="#e2e8f0" stroke-width="7" fill="none"/>
+                            <circle class="circle-fill" id="circleFill1" cx="50" cy="50" r="40" stroke="#2E8B57" stroke-width="7" fill="none" stroke-dasharray="251" stroke-dashoffset="251"/>
+                        </svg>
+                        <span class="circle-value"><input type="text" placeholder="0%"></span>
+                    </div>
+                    <div class="circle-label"><input type="text" id="circle1-placeholder" placeholder="Titre"></div>
+                </div>
+                <div class="stat-circle-card">
+                    <div class="circle-progress" id="circle2">
+                        <svg viewBox="0 0 100 100">
+                            <circle class="circle-bg" cx="50" cy="50" r="40" stroke="#e2e8f0" stroke-width="7" fill="none"/>
+                            <circle class="circle-fill" id="circleFill2" cx="50" cy="50" r="40" stroke="#4361ee" stroke-width="7" fill="none" stroke-dasharray="251" stroke-dashoffset="251"/>
+                        </svg>
+                        <span class="circle-value"><input type="text" placeholder="0%"></span>
+                    </div>
+                    <div class="circle-label"><input type="text" id="circle2-placeholder" placeholder="Titre"></div>
+                </div>
+                <div class="stat-circle-card">
+                    <div class="circle-progress" id="circle3">
+                        <svg viewBox="0 0 100 100">
+                            <circle class="circle-bg" cx="50" cy="50" r="40" stroke="#e2e8f0" stroke-width="7" fill="none"/>
+                            <circle class="circle-fill" id="circleFill3" cx="50" cy="50" r="40" stroke="#e67e22" stroke-width="7" fill="none" stroke-dasharray="251" stroke-dashoffset="251"/>
+                        </svg>
+                        <span class="circle-value"><input type="text" placeholder="0%"></span>
+                    </div>
+                    <div class="circle-label"><input type="text" id="circle3-placeholder" placeholder="Titre"></div>
+                </div>
+                <div class="stat-circle-card">
+                    <div class="circle-progress" id="circle4">
+                        <svg viewBox="0 0 100 100">
+                            <circle class="circle-bg" cx="50" cy="50" r="40" stroke="#e2e8f0" stroke-width="7" fill="none"/>
+                            <circle class="circle-fill" id="circleFill4" cx="50" cy="50" r="40" stroke="#9b59b6" stroke-width="7" fill="none" stroke-dasharray="251" stroke-dashoffset="251"/>
+                        </svg>
+                        <span class="circle-value"><input type="text" placeholder="0%"></span>
+                    </div>
+                    <div class="circle-label"><input type="text" id="circle4-placeholder" placeholder="Titre"></div>
+                </div>
+                <div class="stat-circle-card">
+                    <div class="circle-progress" id="circle5">
+                        <svg viewBox="0 0 100 100">
+                            <circle class="circle-bg" cx="50" cy="50" r="40" stroke="#e2e8f0" stroke-width="7" fill="none"/>
+                            <circle class="circle-fill" id="circleFill5" cx="50" cy="50" r="40" stroke="#FFD700" stroke-width="7" fill="none" stroke-dasharray="251" stroke-dashoffset="251"/>
+                        </svg>
+                        <span class="circle-value"><input type="text" placeholder="0%"></span>
+                    </div>
+                    <div class="circle-label"><input type="text" id="circle5-placeholder" placeholder="Titre"></div>
+                </div>
+            </div>
+
+            <div class="ia-section">
+                <div class="card-header">
+                    <h3><i class="fas fa-robot"></i> <span id="ia-title">INTELLIGENCE ARTIFICIELLE</span></h3>
+                </div>
+                
+                <div class="ia-resume">
+                    <div class="ia-resume-item">
+                        <span class="ia-resume-label" id="ia-patients-analyses">Patients analysés</span>
+                        <span class="ia-resume-value"><input type="text" placeholder="__/__"></span>
+                    </div>
+                    <div class="ia-resume-item">
+                        <span class="ia-resume-label" id="ia-pertinence">Pertinence IA</span>
+                        <span class="ia-resume-value"><input type="text" placeholder="__%"></span>
+                    </div>
+                    <div class="ia-resume-item">
+                        <span class="ia-resume-label" id="ia-alertes-actives">Alertes actives</span>
+                        <span class="ia-resume-value"><input type="text" placeholder="__"></span>
+                    </div>
+                </div>
+
+                <div class="ia-block">
+                    <h4><i class="fas fa-lightbulb"></i> <span id="ia-suggestions">Suggestions personnalisées</span></h4>
+                    <div class="ia-item">
+                        <input type="text" class="suggestion-field" placeholder="Patient : Suggestion">
+                        <select class="action-select">
+                            <option value="">Action</option>
+                            <option value="appliquer">Appliquer</option>
+                            <option value="voir">Voir</option>
+                            <option value="notifier">Notifier</option>
+                        </select>
+                    </div>
+                    <div class="ia-item">
+                        <input type="text" class="suggestion-field" placeholder="Patient : Suggestion">
+                        <select class="action-select">
+                            <option value="">Action</option>
+                            <option value="appliquer">Appliquer</option>
+                            <option value="voir">Voir</option>
+                            <option value="notifier">Notifier</option>
+                        </select>
+                    </div>
+                    <div class="ia-item">
+                        <input type="text" class="suggestion-field" placeholder="Patient : Suggestion">
+                        <select class="action-select">
+                            <option value="">Action</option>
+                            <option value="appliquer">Appliquer</option>
+                            <option value="voir">Voir</option>
+                            <option value="notifier">Notifier</option>
+                        </select>
+                    </div>
+                    <div class="ia-item">
+                        <input type="text" class="suggestion-field" placeholder="Patient : Suggestion">
+                        <select class="action-select">
+                            <option value="">Action</option>
+                            <option value="appliquer">Appliquer</option>
+                            <option value="voir">Voir</option>
+                            <option value="notifier">Notifier</option>
+                        </select>
+                    </div>
+                    <div class="ia-item">
+                        <input type="text" class="suggestion-field" placeholder="Patient : Suggestion">
+                        <select class="action-select">
+                            <option value="">Action</option>
+                            <option value="appliquer">Appliquer</option>
+                            <option value="voir">Voir</option>
+                            <option value="notifier">Notifier</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="ia-block">
+                    <h4><i class="fas fa-chart-line"></i> <span id="ia-predictions">Prédictions (7 jours)</span></h4>
+                    <div class="ia-pred-item success"><input type="text" class="prediction-positive" placeholder="Prédiction positive..."></div>
+                    <div class="ia-pred-item warning"><input type="text" class="prediction-warning" placeholder="Prédiction attention..."></div>
+                    <div class="ia-pred-item info"><input type="text" class="prediction-info" placeholder="Prédiction information..."></div>
+                </div>
+
+                <div class="ia-objectifs">
+                    <h4><i class="fas fa-bullseye"></i> <span id="ia-objectifs">Objectifs IA</span></h4>
+                    
+                    <div class="objectif-row">
+                        <span id="ia-observance">Observance</span>
+                        <span><input type="number" placeholder="0">% / <input type="number" placeholder="0">%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill-ia" style="width:0%"></div>
+                    </div>
+                    
+                    <div class="objectif-row">
+                        <span id="ia-progression">Progression</span>
+                        <span>+<input type="number" placeholder="0">% / +<input type="number" placeholder="0">%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill-ia" style="width:0%"></div>
+                    </div>
+                    
+                    <div class="objectif-row">
+                        <span id="ia-satisfaction">Satisfaction</span>
+                        <span><input type="number" placeholder="0">% / <input type="number" placeholder="0">%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill-ia" style="width:0%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="bilans-section">
+                <div class="card-header">
+                    <h3><i class="fas fa-clipboard-list"></i> <span id="bilans-titre">Bilans & évaluations</span></h3>
+                </div>
+                
+                <div class="bilans-tabs-container">
+                    <div class="bilans-tabs">
+                        <button class="bilans-tab active" data-target="cliniques" id="bilans-cliniques">Cliniques</button>
+                        <button class="bilans-tab" data-target="modeles" id="bilans-modeles">Modèles conceptuels</button>
+                        <button class="bilans-tab" data-target="prwe" id="bilans-prwe">PRWE</button>
+                    </div>
+                    <div class="bilans-connector"></div>
+                </div>
+
+                <div id="cliniques" class="bilans-category active"></div>
+                <div id="modeles" class="bilans-category"></div>
+                <div id="prwe" class="bilans-category"></div>
+            </div>
+
+            <div class="history-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-history"></i> <span id="historique-titre">Historique</span></h3>
+                </div>
+                <div class="history-item">
+                    <div class="history-time"><input type="text" id="heure-hist-placeholder" class="history-time-field" placeholder="Heure"></div>
+                    <div class="history-text"><input type="text" id="action-placeholder" class="history-action-field" placeholder="Action"></div>
+                </div>
+                <div class="history-item">
+                    <div class="history-time"><input type="text" class="history-time-field" placeholder="Heure"></div>
+                    <div class="history-text"><input type="text" class="history-action-field" placeholder="Action"></div>
+                </div>
+                <div class="history-item">
+                    <div class="history-time"><input type="text" class="history-time-field" placeholder="Heure"></div>
+                    <div class="history-text"><input type="text" class="history-action-field" placeholder="Action"></div>
+                </div>
+            </div>
+
+            <div class="zen-section">
+                <div class="zen-buttons">
+                    <button class="zen-btn" onclick="toggleNightMode()" id="nightModeBtn"><i class="fas fa-moon"></i> <span id="night-mode-text">Mode nuit</span></button>
+                </div>
+                <div class="timer-controls">
+                    <input type="number" class="timer-input" id="timerMinutes" value="25" min="1" max="60">
+                    <button class="zen-btn" onclick="startFocusTimer()" id="focusBtn"><i class="fas fa-play"></i> <span id="start-text">Démarrer</span></button>
+                    <button class="zen-btn" onclick="pauseFocusTimer()" id="pauseBtn" style="display:none;"><i class="fas fa-pause"></i> <span id="pause-text">Pause</span></button>
+                    <button class="zen-btn" onclick="resetFocusTimer()" id="resetBtn"><i class="fas fa-redo-alt"></i> <span id="reset-text">Recommencer</span></button>
+                    <span class="timer-display" id="timerDisplay">25:00</span>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-coran">
+                <select id="sourateSelect" class="sourate-select">
+                    <option value="fatiha">Sourate Al-Fatiha</option>
+                    <option value="ikhlas">Sourate Al-Ikhlas</option>
+                    <option value="falaq">Sourate Al-Falaq</option>
+                    <option value="nas">Sourate An-Nas</option>
+                    <option value="yasin">Sourate Yassin</option>
+                    <option value="rahman">Sourate Ar-Rahman</option>
+                </select>
+                <button class="coran-btn" id="quranBtn" onclick="toggleQuran()">
+                    <i class="fas fa-play"></i> <span id="coran-text">Coran</span>
+                </button>
+            </div>
+            <div class="footer-copyright">
+                © 2026 SmartWrist Rehab · Tous droits réservés
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // ==================== VARIABLES GLOBALES ====================
+        let audio = null;
+        let isPlaying = false;
+        let currentSourate = 'fatiha';
+        let timerInterval = null;
+        let timerSeconds = 1500;
+        let currentLang = "{{ current_lang|default:'fr'|escapejs }}";
+        const ergoDashboardData = JSON.parse(document.getElementById('ergo-dashboard-data')?.textContent || '{}');
+
+        const sourates = {
+            'fatiha': "{% static 'audio/fatiha.mp3' %}",
+            'ikhlas': "{% static 'audio/ikhlas.mp3' %}",
+            'falaq': "{% static 'audio/falaq.mp3' %}",
+            'nas': "{% static 'audio/nas.mp3' %}",
+            'yasin': "{% static 'audio/yasin.mp3' %}",
+            'rahman': "{% static 'audio/rahman.mp3' %}"
+        };
+
+        // ==================== TRADUCTIONS COMPLÈTES ====================
+        const translations = {
+            fr: {
+                etudiante: "Étudiante en 3ᵉ année d'ergothérapie",
+                fondatrice: "Fondatrice",
+                bonjour: "Bonjour",
+                bonsoir: "Bonsoir",
+                youbi_zineb: "YOUBI Zineb",
+                tableau_bord: "Tableau de bord",
+                patients: "Patients",
+                dossiers: "Dossiers",
+                programmes: "Programmes",
+                ia: "IA",
+                agenda: "Agenda",
+                messages: "Messages",
+                ressources: "Ressources",
+                contact: "Contact",
+                historique: "Historique",
+                rechercher: "Rechercher un patient, un bilan, un exercice...",
+                tous: "Tous",
+                actifs: "Actifs",
+                nouveaux: "Nouveaux",
+                alertes: "Alertes",
+                a_reevaluer: "À réévaluer",
+                patients_actifs: "Patients actifs",
+                rdv_aujourd_hui: "RDV aujourd'hui",
+                progression: "Progression",
+                alertes_ia: "Alertes IA",
+                sem: "sem",
+                h: "h",
+                urgentes: "urgentes",
+                exercices_jour: "Résultats récents",
+                nom_exercice: "Nom exercice",
+                min: "min",
+                series: "séries",
+                rep: "rép",
+                patients_recents: "Patients récents",
+                nom_prenom: "Nom Prénom",
+                age: "Âge",
+                fracture: "Fracture",
+                dernier_rdv: "Dernier RDV",
+                prochain_rdv: "Prochain RDV",
+                compliance: "Compliance",
+                presence: "Présence",
+                satisfaction: "Satisfaction",
+                objectifs: "Objectifs",
+                titre: "Titre",
+                ia_title: "INTELLIGENCE ARTIFICIELLE",
+                patients_analyses: "Patients analysés",
+                pertinence_ia: "Pertinence IA",
+                alertes_actives: "Alertes actives",
+                suggestions: "Suggestions personnalisées",
+                predictions: "Prédictions (7 jours)",
+                objectifs_ia: "Objectifs IA",
+                observance: "Observance",
+                action_word: "Action",
+                appliquer: "Appliquer",
+                voir: "Voir",
+                notifier: "Notifier",
+                suggestion_placeholder: "Patient : Suggestion",
+                prediction_positive: "Prédiction positive...",
+                prediction_warning: "Prédiction attention...",
+                prediction_info: "Prédiction information...",
+                bilans_title: "Bilans & évaluations",
+                cliniques: "Cliniques",
+                modeles: "Modèles conceptuels",
+                prwe: "PRWE",
+                prwe_full: "Patient-Rated Wrist Evaluation",
+                anamnese: "Anamnèse",
+                musculaire: "Musculaire",
+                articulaire: "Articulaire",
+                douleur: "Douleur",
+                trophique: "Trophique",
+                sensitif: "Sensitif",
+                prehension: "Préhension",
+                dexterite: "Dextérité",
+                endurance: "Endurance",
+                copm: "COPM",
+                prwe_douleur: "PRWE Douleur",
+                prwe_fonction: "PRWE Fonction",
+                prwe_total: "PRWE Total",
+                a_faire: "À faire",
+                en_cours: "En cours",
+                termine: "Terminé",
+                heure: "Heure",
+                action: "Action",
+                mode_nuit: "Mode nuit",
+                mode_jour: "Mode jour",
+                demarrer: "Démarrer",
+                pause: "Pause",
+                reprendre: "Reprendre",
+                recommencer: "Recommencer",
+                coran: "Coran",
+                arreter: "Arrêter",
+                presentiel: "Présentiel",
+                tele: "Télé-ergothérapie",
+                notifications_title: "Notifications",
+                notifications_message: "Vous avez 3 notifications.",
+                section_label: "Section",
+                section_implement: "à implémenter",
+                sourate_fatiha: "Sourate Al-Fatiha",
+                sourate_ikhlas: "Sourate Al-Ikhlas",
+                sourate_falaq: "Sourate Al-Falaq",
+                sourate_nas: "Sourate An-Nas",
+                sourate_yasin: "Sourate Yassin",
+                sourate_rahman: "Sourate Ar-Rahman",
+                citation1: "Chaque geste retrouvé est une victoire",
+                citation2: "La main qui guérit aujourd'hui construira demain",
+                citation3: "L'autonomie n'a pas de prix",
+                citation4: "Derrière chaque progrès, votre regard bienveillant",
+                citation5: "La rééducation est un chemin, vous êtes le guide",
+                citation6: "Ce qui semble impossible aujourd'hui deviendra habituel demain",
+                citation7: "La patience est la force de celui qui accompagne",
+                citation8: "Redonner le mouvement, c'est redonner la vie",
+                citation9: "Vous construisez de l'espoir",
+                citation10: "L'ergothérapie rend possible l'impossible"
+            },
+            en: {
+                etudiante: "3rd year occupational therapy student",
+                fondatrice: "Founder",
+                bonjour: "Good morning",
+                bonsoir: "Good evening",
+                youbi_zineb: "YOUBI Zineb",
+                tableau_bord: "Dashboard",
+                patients: "Patients",
+                dossiers: "Files",
+                programmes: "Programs",
+                ia: "AI",
+                agenda: "Schedule",
+                messages: "Messages",
+                ressources: "Resources",
+                contact: "Contact",
+                historique: "History",
+                rechercher: "Search for a patient, an assessment, an exercise...",
+                tous: "All",
+                actifs: "Active",
+                nouveaux: "New",
+                alertes: "Alerts",
+                a_reevaluer: "To reassess",
+                patients_actifs: "Active patients",
+                rdv_aujourd_hui: "Today's appointments",
+                progression: "Progression",
+                alertes_ia: "AI Alerts",
+                sem: "week",
+                h: "h",
+                urgentes: "urgent",
+                exercices_jour: "Recent results",
+                nom_exercice: "Exercise name",
+                min: "min",
+                series: "sets",
+                rep: "reps",
+                patients_recents: "Recent patients",
+                nom_prenom: "Full name",
+                age: "Age",
+                fracture: "Fracture",
+                dernier_rdv: "Last appointment",
+                prochain_rdv: "Next appointment",
+                compliance: "Compliance",
+                presence: "Attendance",
+                satisfaction: "Satisfaction",
+                objectifs: "Goals",
+                titre: "Title",
+                ia_title: "ARTIFICIAL INTELLIGENCE",
+                patients_analyses: "Analyzed patients",
+                pertinence_ia: "AI relevance",
+                alertes_actives: "Active alerts",
+                suggestions: "Personalized suggestions",
+                predictions: "Predictions (7 days)",
+                objectifs_ia: "AI Goals",
+                observance: "Adherence",
+                action_word: "Action",
+                appliquer: "Apply",
+                voir: "View",
+                notifier: "Notify",
+                suggestion_placeholder: "Patient : Suggestion",
+                prediction_positive: "Positive prediction...",
+                prediction_warning: "Warning prediction...",
+                prediction_info: "Information prediction...",
+                bilans_title: "Assessments & evaluations",
+                cliniques: "Clinical",
+                modeles: "Conceptual models",
+                prwe: "PRWE",
+                prwe_full: "Patient-Rated Wrist Evaluation",
+                anamnese: "Anamnesis",
+                musculaire: "Muscular",
+                articulaire: "Articular",
+                douleur: "Pain",
+                trophique: "Trophic",
+                sensitif: "Sensory",
+                prehension: "Grip",
+                dexterite: "Dexterity",
+                endurance: "Endurance",
+                copm: "COPM",
+                prwe_douleur: "PRWE Pain",
+                prwe_fonction: "PRWE Function",
+                prwe_total: "PRWE Total",
+                a_faire: "To do",
+                en_cours: "In progress",
+                termine: "Completed",
+                heure: "Time",
+                action: "Action",
+                mode_nuit: "Night mode",
+                mode_jour: "Day mode",
+                demarrer: "Start",
+                pause: "Pause",
+                reprendre: "Resume",
+                recommencer: "Restart",
+                coran: "Quran",
+                arreter: "Stop",
+                presentiel: "In-person",
+                tele: "Tele-occupational therapy",
+                notifications_title: "Notifications",
+                notifications_message: "You have 3 notifications.",
+                section_label: "Section",
+                section_implement: "to implement",
+                sourate_fatiha: "Surah Al-Fatiha",
+                sourate_ikhlas: "Surah Al-Ikhlas",
+                sourate_falaq: "Surah Al-Falaq",
+                sourate_nas: "Surah An-Nas",
+                sourate_yasin: "Surah Yassin",
+                sourate_rahman: "Surah Ar-Rahman",
+                citation1: "Every regained gesture is a victory",
+                citation2: "The hand that heals today will build tomorrow",
+                citation3: "Autonomy has no price",
+                citation4: "Behind every progress, your caring gaze",
+                citation5: "Rehabilitation is a path, you are the guide",
+                citation6: "What seems impossible today will become routine tomorrow",
+                citation7: "Patience is the strength of those who accompany",
+                citation8: "Restoring movement is restoring life",
+                citation9: "You build hope",
+                citation10: "Occupational therapy makes the impossible possible"
+            },
+            ar: {
+                etudiante: "طالبة في السنة الثالثة للعلاج الوظيفي",
+                fondatrice: "مؤسسة",
+                bonjour: "صباح الخير",
+                bonsoir: "مساء الخير",
+                youbi_zineb: "يوبي زينب",
+                tableau_bord: "لوحة القيادة",
+                patients: "المرضى",
+                dossiers: "الملفات",
+                programmes: "البرامج",
+                ia: "الذكاء الاصطناعي",
+                agenda: "جدول المواعيد",
+                messages: "الرسائل",
+                ressources: "الموارد",
+                contact: "اتصال",
+                historique: "السجل",
+                rechercher: "بحث عن مريض، تقييم، تمرين...",
+                tous: "الكل",
+                actifs: "نشط",
+                nouveaux: "جديد",
+                alertes: "تنبيهات",
+                a_reevaluer: "إعادة تقييم",
+                patients_actifs: "المرضى النشطاء",
+                rdv_aujourd_hui: "مواعيد اليوم",
+                progression: "التقدم",
+                alertes_ia: "تنبيهات الذكاء",
+                sem: "أسبوع",
+                h: "ساعة",
+                urgentes: "عاجلة",
+                exercices_jour: "النتائج الحديثة",
+                nom_exercice: "اسم التمرين",
+                min: "دقيقة",
+                series: "مجموعات",
+                rep: "تكرار",
+                patients_recents: "آخر المرضى",
+                nom_prenom: "الاسم الكامل",
+                age: "العمر",
+                fracture: "كسر",
+                dernier_rdv: "آخر موعد",
+                prochain_rdv: "الموعد القادم",
+                compliance: "امتثال",
+                presence: "حضور",
+                satisfaction: "رضا",
+                objectifs: "أهداف",
+                titre: "عنوان",
+                ia_title: "الذكاء الاصطناعي",
+                patients_analyses: "المرضى المحللون",
+                pertinence_ia: "ملاءمة الذكاء",
+                alertes_actives: "تنبيهات نشطة",
+                suggestions: "اقتراحات مخصصة",
+                predictions: "توقعات (7 أيام)",
+                objectifs_ia: "أهداف الذكاء",
+                observance: "الالتزام",
+                action_word: "إجراء",
+                appliquer: "تطبيق",
+                voir: "عرض",
+                notifier: "إشعار",
+                suggestion_placeholder: "المريض : اقتراح",
+                prediction_positive: "توقع إيجابي...",
+                prediction_warning: "توقع يحتاج الانتباه...",
+                prediction_info: "توقع معلوماتي...",
+                bilans_title: "التقييمات",
+                cliniques: "سريرية",
+                modeles: "نماذج مفاهيمية",
+                prwe: "PRWE",
+                prwe_full: "تقييم المعصم من قبل المريض",
+                anamnese: "تاريخ المرض",
+                musculaire: "العضلات",
+                articulaire: "المفاصل",
+                douleur: "ألم",
+                trophique: "تغذوي",
+                sensitif: "حسي",
+                prehension: "قبض",
+                dexterite: "براعة",
+                endurance: "تحمل",
+                copm: "COPM",
+                prwe_douleur: "PRWE الألم",
+                prwe_fonction: "PRWE الوظيفة",
+                prwe_total: "PRWE المجموع",
+                a_faire: "للقيام",
+                en_cours: "قيد التنفيذ",
+                termine: "منتهي",
+                heure: "الوقت",
+                action: "الإجراء",
+                mode_nuit: "الوضع الليلي",
+                mode_jour: "الوضع النهاري",
+                demarrer: "بدء",
+                pause: "إيقاف مؤقت",
+                reprendre: "استئناف",
+                recommencer: "إعادة",
+                coran: "القرآن",
+                arreter: "إيقاف",
+                presentiel: "حضوري",
+                tele: "العلاج عن بعد",
+                notifications_title: "الإشعارات",
+                notifications_message: "لديك 3 إشعارات.",
+                section_label: "القسم",
+                section_implement: "قيد التنفيذ",
+                sourate_fatiha: "سورة الفاتحة",
+                sourate_ikhlas: "سورة الإخلاص",
+                sourate_falaq: "سورة الفلق",
+                sourate_nas: "سورة الناس",
+                sourate_yasin: "سورة يس",
+                sourate_rahman: "سورة الرحمن",
+                citation1: "كل حركة تستعيدها هي انتصار",
+                citation2: "اليد التي تشفي اليوم ستبني الغد",
+                citation3: "الاستقلالية ليس لها ثمن",
+                citation4: "وراء كل تقدم، نظرتك الحنونة",
+                citation5: "إعادة التأهيل طريق، وأنت المرشد",
+                citation6: "ما يبدو مستحيلاً اليوم سيصبح عاديًا غدًا",
+                citation7: "الصبر قوة من يرافق",
+                citation8: "استعادة الحركة هي استعادة الحياة",
+                citation9: "أنت تبني الأمل",
+                citation10: "العلاج الوظيفي يجعل المستحيل ممكنًا"
+            }
+        };
+
+        // ==================== FONCTIONS ====================
+        function currentT() {
+            return translations[currentLang];
+        }
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if (btn.textContent.toLowerCase() === lang) btn.classList.add('active');
+            });
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            updateTranslations(lang);
+            updateGreeting();
+            updateDailyMessage();
+            refreshActiveBilan();
+            updateQuranTexts();
+        }
+
+        function updateTranslations(lang) {
+            const t = translations[lang];
+            
+            document.getElementById('etudiante-text').textContent = t.etudiante;
+            document.getElementById('menu-tableau-bord').textContent = t.tableau_bord;
+            document.getElementById('menu-patients').textContent = t.patients;
+            document.getElementById('menu-dossiers').textContent = t.dossiers;
+            document.getElementById('menu-programmes').textContent = t.programmes;
+            document.getElementById('menu-ia').textContent = t.ia;
+            document.getElementById('menu-agenda').textContent = t.agenda;
+            document.getElementById('menu-messages').textContent = t.messages;
+            document.getElementById('menu-ressources').textContent = t.ressources;
+            document.getElementById('menu-contact').textContent = t.contact;
+            document.getElementById('menu-historique').textContent = t.historique;
+            document.getElementById('founder-text').textContent = `${t.youbi_zineb} · ${t.fondatrice}`;
+            document.getElementById('user-name').textContent = lang === 'ar' ? t.youbi_zineb : 'YOUBI Zineb';
+            document.getElementById('greeting-subtitle').textContent = t.etudiante;
+            document.getElementById('search-input').placeholder = t.rechercher;
+            document.getElementById('filter-tous').textContent = t.tous;
+            document.getElementById('filter-actifs').textContent = t.actifs;
+            document.getElementById('filter-nouveaux').textContent = t.nouveaux;
+            document.getElementById('filter-alertes').textContent = t.alertes;
+            document.getElementById('filter-reevaluer').textContent = t.a_reevaluer;
+            document.getElementById('kpi-patients-actifs').textContent = t.patients_actifs;
+            document.getElementById('kpi-rdv').textContent = t.rdv_aujourd_hui;
+            document.getElementById('kpi-messages').textContent = t.messages || 'Nouveaux messages';
+            document.getElementById('kpi-alertes').textContent = t.alertes_ia;
+            document.getElementById('trend-sem').textContent = '/' + t.sem;
+            document.getElementById('trend-h').textContent = '/' + t.h;
+            document.getElementById('trend-urgentes').textContent = t.urgentes;
+            document.getElementById('exercices-titre').textContent = t.exercices_jour;
+            document.getElementById('time-unit').textContent = t.min;
+            document.querySelectorAll('.exercise-name-field').forEach(el => el.placeholder = t.nom_exercice);
+            document.querySelectorAll('.series-field').forEach(el => el.placeholder = t.series);
+            document.querySelectorAll('.rep-field').forEach(el => el.placeholder = t.rep);
+            document.querySelectorAll('.min-field').forEach(el => el.placeholder = t.min);
+            document.getElementById('patients-titre').textContent = t.patients_recents;
+            document.querySelectorAll('.patient-name-field').forEach(el => el.placeholder = t.nom_prenom);
+            document.querySelectorAll('.patient-age-field').forEach(el => el.placeholder = t.age);
+            document.querySelectorAll('.patient-fracture-field').forEach(el => el.placeholder = t.fracture);
+            document.querySelectorAll('.patient-progress-text').forEach(el => el.textContent = t.progression);
+            document.querySelectorAll('.patient-last-rdv-field').forEach(el => el.placeholder = t.dernier_rdv);
+            document.querySelectorAll('.patient-next-rdv-field').forEach(el => el.placeholder = t.prochain_rdv);
+            document.getElementById('circle1-placeholder').placeholder = t.compliance;
+            document.getElementById('circle2-placeholder').placeholder = t.presence;
+            document.getElementById('circle3-placeholder').placeholder = t.progression;
+            document.getElementById('circle4-placeholder').placeholder = t.satisfaction;
+            document.getElementById('circle5-placeholder').placeholder = t.objectifs;
+            document.getElementById('ia-title').textContent = t.ia_title;
+            document.getElementById('ia-patients-analyses').textContent = t.patients_analyses;
+            document.getElementById('ia-pertinence').textContent = t.pertinence_ia;
+            document.getElementById('ia-alertes-actives').textContent = t.alertes_actives;
+            document.getElementById('ia-suggestions').textContent = t.suggestions;
+            document.getElementById('ia-predictions').textContent = t.predictions;
+            document.getElementById('ia-objectifs').textContent = t.objectifs_ia;
+            document.getElementById('ia-observance').textContent = t.observance;
+            document.getElementById('ia-progression').textContent = t.progression;
+            document.getElementById('ia-satisfaction').textContent = t.satisfaction;
+            document.querySelectorAll('.suggestion-field').forEach(el => el.placeholder = t.suggestion_placeholder);
+            document.querySelectorAll('.prediction-positive').forEach(el => el.placeholder = t.prediction_positive);
+            document.querySelectorAll('.prediction-warning').forEach(el => el.placeholder = t.prediction_warning);
+            document.querySelectorAll('.prediction-info').forEach(el => el.placeholder = t.prediction_info);
+            document.querySelectorAll('.action-select').forEach(select => {
+                if (select.options[0]) select.options[0].textContent = t.action_word;
+                if (select.options[1]) select.options[1].textContent = t.appliquer;
+                if (select.options[2]) select.options[2].textContent = t.voir;
+                if (select.options[3]) select.options[3].textContent = t.notifier;
+            });
+            document.getElementById('bilans-titre').textContent = t.bilans_title;
+            document.getElementById('bilans-cliniques').textContent = t.cliniques;
+            document.getElementById('bilans-modeles').textContent = t.modeles;
+            document.getElementById('bilans-prwe').textContent = t.prwe;
+            document.getElementById('historique-titre').textContent = t.historique;
+            document.querySelectorAll('.history-time-field').forEach(el => el.placeholder = t.heure);
+            document.querySelectorAll('.history-action-field').forEach(el => el.placeholder = t.action);
+            const nightText = document.body.classList.contains('night-mode') ? t.mode_jour : t.mode_nuit;
+            document.getElementById('night-mode-text').textContent = nightText;
+            document.getElementById('pause-text').textContent = t.pause;
+            document.getElementById('reset-text').textContent = t.recommencer;
+            const startEl = document.getElementById('start-text');
+            if (startEl) {
+                const currentText = startEl.textContent.trim();
+                if (currentText === translations.fr.reprendre || currentText === translations.en.reprendre || currentText === translations.ar.reprendre) {
+                    startEl.textContent = t.reprendre;
+                } else {
+                    startEl.textContent = t.demarrer;
+                }
+            }
+            document.getElementById('option-presentiel').textContent = t.presentiel;
+            document.getElementById('option-tele').textContent = t.tele;
+            updateQuranTexts();
+        }
+
+        // ==================== DATE, HEURE ET MODE PRÉSENTIEL/TÉLÉ ====================
+        function updateGreeting() {
+            const now = new Date();
+            const hour = now.getHours();
+            const day = now.getDay();
+            const t = currentT();
+            
+            const greeting = hour >= 18 || hour < 6 ? t.bonsoir : t.bonjour;
+            document.getElementById('greeting-word').textContent = greeting;
+            
+            document.getElementById('current-date').textContent = now.toLocaleDateString(
+                currentLang === 'ar' ? 'ar-MA' : (currentLang === 'en' ? 'en-US' : 'fr-FR'),
+                { year: 'numeric', month: 'long', day: 'numeric' }
+            );
+            
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('current-time').textContent = `${hours}:${minutes}`;
+            
+            // Mise à jour automatique du mode Présentiel/Télé-ergothérapie
+            updateLocationMode(now);
+        }
+        
+        function updateLocationMode(now) {
+            const day = now.getDay();
+            const hour = now.getHours();
+            const locationSelect = document.getElementById('locationSelect');
+            const modeIndicator = document.getElementById('modeIndicator');
+            
+            if (!locationSelect || !modeIndicator) return;
+            
+            let mode = '';
+            // Week-end (vendredi et samedi) → Télé-ergothérapie
+            if (day === 5 || day === 6) {
+                mode = 'tele';
+            } else {
+                mode = (hour >= 9 && hour <= 17) ? 'presentiel' : 'tele';
+            }
+            
+            locationSelect.value = mode;
+            updateModeIndicator(mode);
+        }
+        
+        function updateModeIndicator(mode) {
+            const modeIndicator = document.getElementById('modeIndicator');
+            if (!modeIndicator) return;
+            
+            const t = currentT();
+            
+            if (mode === 'presentiel') {
+                modeIndicator.textContent = `📌 ${t.presentiel}`;
+                modeIndicator.className = 'mode-indicator presentiel';
+            } else {
+                modeIndicator.textContent = `📱 ${t.tele}`;
+                modeIndicator.className = 'mode-indicator tele';
+            }
+        }
+        
+        // Écouter les changements manuels du select
+        document.addEventListener('DOMContentLoaded', function() {
+            const locationSelect = document.getElementById('locationSelect');
+            if (locationSelect) {
+                locationSelect.addEventListener('change', function() {
+                    updateModeIndicator(this.value);
+                });
+            }
+        });
+        
+        // ==================== MESSAGE QUOTIDIEN ====================
+        function updateDailyMessage() {
+            const t = currentT();
+            const citationKeys = ['citation1', 'citation2', 'citation3', 'citation4', 'citation5', 'citation6', 'citation7', 'citation8', 'citation9', 'citation10'];
+            const randomKey = citationKeys[Math.floor(Math.random() * citationKeys.length)];
+            const messageElement = document.getElementById('daily-message');
+            if (messageElement) {
+                messageElement.textContent = t[randomKey];
+            }
+        }
+        
+        // ==================== BILANS ====================
+        function fillBilanCategory(category) {
+            const t = currentT();
+            
+            if (category === 'cliniques') {
+                return `
+                    <div class="bilans-grid">
+                        <div class="bilan-card"><span>📝</span><div class="bilan-info"><h5>${t.anamnese}</h5><p>${t.anamnese}</p></div><select class="bilan-status"><option>${t.a_faire}</option><option>${t.en_cours}</option><option>${t.termine}</option></select></div>
+                        <div class="bilan-card"><span>💪</span><div class="bilan-info"><h5>${t.musculaire}</h5><p>${t.musculaire}</p></div><select class="bilan-status"><option>${t.a_faire}</option><option>${t.en_cours}</option><option>${t.termine}</option></select></div>
+                        <div class="bilan-card"><span>📏</span><div class="bilan-info"><h5>${t.articulaire}</h5><p>${t.articulaire}</p></div><select class="bilan-status"><option>${t.a_faire}</option><option>${t.en_cours}</option><option>${t.termine}</option></select></div>
+                        <div class="bilan-card"><span>😖</span><div class="bilan-info"><h5>${t.douleur}</h5><p>${t.douleur}</p></div><select class="bilan-status"><option>${t.a_faire}</option><option>${t.en_cours}</option><option>${t.termine}</option></select></div>
+                        <div class="bilan-card"><span>💧</span><div class="bilan-info"><h5>${t.trophique}</h5><p>${t.trophique}</p></div><select class="bilan-status"><option>${t.a_faire}</option><option>${t.en_cours}</option><option>${t.termine}</option></select></div>
+                        <div class="bilan-card"><span>✋</span><div class="bilan-info"><h5>${t.sensitif}</h5><p>${t.sensitif}</p></div><select class="bilan-status"><option>${t.a_faire}</option><option>${t.en_cours}</option><option>${t.termine}</option></select></div>
+                        <div class="bilan-card"><span>🖐️</span><div class="bilan-info"><h5>${t.prehension}</h5><p>${t.prehension}</p></div><select class="bilan-status"><option>${t.a_faire}</option><option>${t.en_cours}</option><option>${t.termine}</option></select></div>
+                        <div class="bilan-card"><span>🧩</span><div class="bilan-info"><h5>${t.dexterite}</h5><p>${t.dexterite}</p></div><select class="bilan-status"><option>${t.a_faire}</option><option>${t.en_cours}</option><option>${t.termine}</option></select></div>
+                        <div class="bilan-card"><span>⏱️</span><div class="bilan-info"><h5>${t.endurance}</h5><p>${t.endurance}</p></div><select class="bilan-status"><option>${t.a_faire}</option><option>${t.en_cours}</option><option>${t.termine}</option></select></div>
+                    </div>
+                `;
+            } else if (category === 'modeles') {
+                return `
+                    <div class="bilans-grid">
+                        <div class="bilan-card"><span>📈</span><div class="bilan-info"><h5>${t.copm}</h5><p>${t.copm}</p></div><select class="bilan-status"><option>${t.a_faire}</option><option>${t.en_cours}</option><option>${t.termine}</option></select></div>
+                    </div>
+                `;
+            } else if (category === 'prwe') {
+                return `
+                    <div class="bilans-grid">
+                        <div class="bilan-card"><span>😣</span><div class="bilan-info"><h5>${t.prwe_douleur}</h5><p>${t.prwe_full}</p></div><select class="bilan-status"><option>${t.a_faire}</option><option>${t.en_cours}</option><option>${t.termine}</option></select></div>
+                        <div class="bilan-card"><span>🤲</span><div class="bilan-info"><h5>${t.prwe_fonction}</h5><p>${t.prwe_full}</p></div><select class="bilan-status"><option>${t.a_faire}</option><option>${t.en_cours}</option><option>${t.termine}</option></select></div>
+                        <div class="bilan-card"><span>📊</span><div class="bilan-info"><h5>${t.prwe_total}</h5><p>${t.prwe_full}</p></div><select class="bilan-status"><option>${t.a_faire}</option><option>${t.en_cours}</option><option>${t.termine}</option></select></div>
+                    </div>
+                `;
+            }
+            return '';
+        }
+        
+        function showBilanCategory(category, element) {
+            document.querySelectorAll('.bilans-tab').forEach(tab => tab.classList.remove('active'));
+            element.classList.add('active');
+            
+            const container = document.getElementById(category);
+            document.querySelectorAll('.bilans-category').forEach(cat => cat.classList.remove('active'));
+            
+            container.innerHTML = fillBilanCategory(category);
+            const bilans = (ergoDashboardData && ergoDashboardData.bilans) || {};
+            const statut = (bilans.total || 0) === 0
+                ? currentT().a_faire
+                : ((bilans.enCours || 0) > 0 ? currentT().en_cours : currentT().termine);
+            container.querySelectorAll('.bilan-status').forEach(select => {
+                Array.from(select.options).forEach(option => {
+                    if (option.textContent === statut) select.value = option.value || option.textContent;
+                });
+            });
+            container.classList.add('active');
+        }
+        
+        function refreshActiveBilan() {
+            const activeTab = document.querySelector('.bilans-tab.active');
+            if (activeTab) {
+                const target = activeTab.getAttribute('data-target');
+                showBilanCategory(target, activeTab);
+            }
+        }
+        
+        // ==================== QURAN ====================
+        function updateQuranTexts() {
+            const t = currentT();
+            const select = document.getElementById('sourateSelect');
+            if (select) {
+                const labels = {
+                    fatiha: t.sourate_fatiha,
+                    ikhlas: t.sourate_ikhlas,
+                    falaq: t.sourate_falaq,
+                    nas: t.sourate_nas,
+                    yasin: t.sourate_yasin,
+                    rahman: t.sourate_rahman
+                };
+                Array.from(select.options).forEach(option => {
+                    if (labels[option.value]) option.textContent = labels[option.value];
+                });
+            }
+            const btn = document.getElementById('quranBtn');
+            if (btn) {
+                if (isPlaying) {
+                    btn.innerHTML = `<i class="fas fa-stop"></i> <span id="coran-text">${t.arreter}</span>`;
+                    btn.classList.add('playing');
+                } else {
+                    btn.innerHTML = `<i class="fas fa-play"></i> <span id="coran-text">${t.coran}</span>`;
+                    btn.classList.remove('playing');
+                }
+            }
+        }
+        
+        function toggleQuran() {
+            const select = document.getElementById('sourateSelect');
+            const t = currentT();
+            if (!select) return;
+            currentSourate = select.value;
+            
+            if (isPlaying) {
+                if (audio) {
+                    audio.pause();
+                    audio.currentTime = 0;
+                }
+                isPlaying = false;
+                updateQuranTexts();
+            } else {
+                const url = sourates[currentSourate];
+                if (!url) {
+                    alert('Fichier audio non trouvé');
+                    return;
+                }
+                audio = new Audio(url);
+                audio.play().catch(error => {
+                    console.error('Erreur de lecture:', error);
+                    alert('❌ Fichier audio introuvable');
+                    isPlaying = false;
+                    updateQuranTexts();
+                });
+                audio.onended = function() {
+                    isPlaying = false;
+                    updateQuranTexts();
+                };
+                isPlaying = true;
+                updateQuranTexts();
+            }
+        }
+        
+        // ==================== TIMER ====================
+        function startFocusTimer() {
+            const minutes = parseInt(document.getElementById('timerMinutes').value) || 25;
+            timerSeconds = minutes * 60;
+            const t = currentT();
+            
+            document.getElementById('focusBtn').style.display = 'none';
+            document.getElementById('pauseBtn').style.display = 'inline-flex';
+            document.getElementById('resetBtn').style.display = 'inline-flex';
+            updateTimerDisplay();
+            
+            if (timerInterval) clearInterval(timerInterval);
+            
+            timerInterval = setInterval(() => {
+                if (timerSeconds > 0) {
+                    timerSeconds--;
+                    updateTimerDisplay();
+                } else {
+                    clearInterval(timerInterval);
+                    alert(currentLang === 'fr' ? '✅ Temps terminé !' : (currentLang === 'en' ? '✅ Time is up!' : '✅ انتهى الوقت!'));
+                    resetFocusTimer();
+                }
+            }, 1000);
+        }
+        
+        function pauseFocusTimer() {
+            clearInterval(timerInterval);
+            const t = currentT();
+            document.getElementById('pauseBtn').style.display = 'none';
+            document.getElementById('focusBtn').style.display = 'inline-flex';
+            document.getElementById('focusBtn').innerHTML = `<i class="fas fa-play"></i> <span id="start-text">${t.reprendre}</span>`;
+        }
+        
+        function resetFocusTimer() {
+            clearInterval(timerInterval);
+            const minutes = parseInt(document.getElementById('timerMinutes').value) || 25;
+            timerSeconds = minutes * 60;
+            const t = currentT();
+            updateTimerDisplay();
+            document.getElementById('focusBtn').style.display = 'inline-flex';
+            document.getElementById('pauseBtn').style.display = 'none';
+            document.getElementById('resetBtn').style.display = 'inline-flex';
+            document.getElementById('focusBtn').innerHTML = `<i class="fas fa-play"></i> <span id="start-text">${t.demarrer}</span>`;
+        }
+        
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timerSeconds / 60);
+            const seconds = timerSeconds % 60;
+            document.getElementById('timerDisplay').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // ==================== AUTRES FONCTIONS ====================
+        function showSection(section, el) {
+            document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+            if (el) el.classList.add('active');
+            if (section !== 'dashboard') {
+                const t = currentT();
+                alert(`${t.section_label} ${section} ${t.section_implement}`);
+            }
+        }
+
+        function setInputValue(selector, value, index = 0) {
+            const el = document.querySelectorAll(selector)[index];
+            if (el) el.value = value ?? '';
+        }
+
+        function populateErgoDashboard() {
+            const data = ergoDashboardData || {};
+            const kpis = data.kpis || {};
+            const badge = document.querySelector('.notification-badge');
+            if (badge) badge.textContent = data.notificationsCount || 0;
+
+            setInputValue('.kpi-card:nth-child(1) .kpi-input', kpis.patientsActifs || 0);
+            setInputValue('.kpi-card:nth-child(1) .trend-input', kpis.patientsTrend || 0);
+            setInputValue('.kpi-card:nth-child(2) .kpi-input', kpis.rdvToday || 0);
+            setInputValue('.kpi-card:nth-child(2) .trend-input', kpis.rdvPerHour || 0);
+            setInputValue('.kpi-card:nth-child(3) .kpi-input', kpis.nouveauxMessages || 0);
+
+            const exercises = data.exercicesDuJour || [];
+            const exerciseList = document.querySelector('.exercise-list');
+            if (exerciseList) {
+                exerciseList.innerHTML = exercises.length ? exercises.map(ex => `
+                    <div class="exercise-item">
+                        <div class="exercise-icon"><i class="fas fa-hand-paper"></i></div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">${ex.name || '-'}</div>
+                            <div class="exercise-meta">${ex.patient || '-'} · ${ex.series || 0} séries · ${ex.reps || 0} rép. ${ex.minutes ? '· ' + ex.minutes : ''}</div>
+                        </div>
+                        <div class="exercise-progress"><div class="progress-bar-bg"><div class="progress-fill" style="width:${ex.progress || 0}%"></div></div></div>
+                        <div class="exercise-status">${ex.status || '0%'}</div>
+                    </div>
+                `).join('') : `<div class="exercise-item"><div class="exercise-info"><div class="exercise-name">Aucun exercice prévu aujourd'hui</div></div></div>`;
+            }
+
+            if (exerciseList) {
+                exerciseList.querySelectorAll('.exercise-item').forEach((item, index) => {
+                    const target = exercises[index]?.resultUrl || exercises[index]?.patientUrl;
+                    if (target) {
+                        item.style.cursor = 'pointer';
+                        item.addEventListener('click', () => { window.location.href = target; });
+                    }
+                });
+            }
+
+            const patients = data.patientsRecents || [];
+            const patientGrid = document.querySelector('.patients-grid');
+            if (patientGrid) {
+                patientGrid.innerHTML = patients.length ? patients.map(p => `
+                    <div class="patient-card">
+                        <div class="patient-header">
+                            <div class="patient-avatar">${p.initials || 'P'}</div>
+                            <div class="patient-name">${p.name || '-'}</div>
+                        </div>
+                        <div class="patient-details"><span>${p.age || '-'}</span><span>${p.fracture || '-'}</span></div>
+                        <div class="patient-meta"><span>Dernier RDV: ${p.lastRdv || '-'}</span><span>Prochain: ${p.nextRdv || '-'}</span></div>
+                    </div>
+                `).join('') : `<div class="patient-card"><div class="patient-name">Aucun patient récent</div></div>`;
+            }
+
+            const ia = data.ia || {};
+            setInputValue('.ia-resume-item:nth-child(1) input', ia.patientsAnalyses || '0/0');
+            setInputValue('.ia-resume-item:nth-child(2) input', ia.pertinence || '0%');
+            setInputValue('.ia-resume-item:nth-child(3) input', ia.alertes || 0);
+            document.querySelectorAll('.suggestion-field').forEach((el, i) => el.value = (ia.suggestions || [])[i] || '');
+            document.querySelectorAll('.ia-pred-item input').forEach((el, i) => el.value = (ia.predictions || [])[i] || '');
+            const objectifs = [
+                [ia.observance || 0, ia.observanceTarget || 80],
+                [ia.progression || 0, ia.progressionTarget || 75],
+                [ia.satisfaction || 0, ia.satisfactionTarget || 85],
+            ];
+            document.querySelectorAll('.ia-objectifs .objectif-row').forEach((row, i) => {
+                const inputs = row.querySelectorAll('input');
+                if (inputs[0]) inputs[0].value = objectifs[i][0];
+                if (inputs[1]) inputs[1].value = objectifs[i][1];
+            });
+            document.querySelectorAll('.progress-fill-ia').forEach((bar, i) => bar.style.width = `${Math.min(objectifs[i][0], 100)}%`);
+        }
+        
+        function toggleNightMode() {
+            document.body.classList.toggle('night-mode');
+            const t = currentT();
+            const btn = document.getElementById('nightModeBtn');
+            if (document.body.classList.contains('night-mode')) {
+                document.body.style.background = 'linear-gradient(135deg, #1a2639 0%, #2d3748 100%)';
+                btn.innerHTML = `<i class="fas fa-sun"></i> <span id="night-mode-text">${t.mode_jour}</span>`;
+            } else {
+                document.body.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                btn.innerHTML = `<i class="fas fa-moon"></i> <span id="night-mode-text">${t.mode_nuit}</span>`;
+            }
+        }
+        
+        function showNotifications() {
+            const t = currentT();
+            const data = ergoDashboardData || {};
+            const ia = data.ia || {};
+            alert(`📬 ${t.notifications_title}\n${data.notificationsCount || 0} notification(s)\n${ia.alertes || 0} alerte(s) active(s)`);
+        }
+        
+        function showNotifications() {
+            fetch('/api/ergo-notifications/')
+                .then(response => response.json())
+                .then(data => {
+                    const notifications = (data.notifications || []).slice(0, 12);
+                    const overlay = document.createElement('div');
+                    overlay.setAttribute('data-notifications-root', 'true');
+                    overlay.style.cssText = 'position:fixed; inset:0; z-index:9999; background:rgba(15,23,42,.45); display:flex; align-items:flex-start; justify-content:flex-end; padding:80px 24px;';
+                    overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
+                    overlay.innerHTML = `
+                        <div style="width:min(460px, 96vw); max-height:75vh; overflow:auto; background:white; border-radius:18px; box-shadow:0 24px 70px rgba(15,23,42,.25); padding:18px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:14px;">
+                                <h3 style="margin:0; color:#1e293b;">Notifications récentes</h3>
+                                <button type="button" onclick="this.closest('[data-notifications-root]').remove()" style="border:0; background:#f1f5f9; border-radius:999px; width:34px; height:34px; cursor:pointer;">×</button>
+                            </div>
+                            ${notifications.length ? notifications.map(n => `
+                                <div onclick="window.location.href='${n.target_url || `/Programmes/?patient_id=${n.patient_id || ''}&tab=results&resultat_id=${n.resultat_id || ''}`}'" style="padding:12px; border:1px solid #e2e8f0; border-radius:12px; margin-bottom:10px; cursor:pointer;">
+                                    <strong>${n.patient_prenom || ''} ${n.patient_nom || ''}</strong>
+                                    <div style="font-size:13px; color:#64748b; margin-top:4px;">${n.exercice_nom || n.text || 'Notification'} ${n.date ? '· ' + n.date : ''} ${n.heure ? ' ' + n.heure : ''}</div>
+                                </div>
+                            `).join('') : '<p style="color:#64748b;">Aucune notification récente.</p>'}
+                        </div>
+                    `;
+                    document.body.appendChild(overlay);
+                })
+                .catch(() => alert('Impossible de charger les notifications.'));
+        }
+
+        function afficherTousLesPatientsDashboard() {
+            const patients = (ergoDashboardData && ergoDashboardData.patientsList) || [];
+            const overlay = document.createElement('div');
+            overlay.setAttribute('data-patients-root', 'true');
+            overlay.style.cssText = 'position:fixed; inset:0; z-index:9999; background:rgba(15,23,42,.45); display:flex; align-items:center; justify-content:center; padding:24px;';
+            overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
+            overlay.innerHTML = `
+                <div style="width:min(560px,96vw); max-height:78vh; overflow:auto; background:white; border-radius:18px; padding:20px; box-shadow:0 24px 70px rgba(15,23,42,.25);">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+                        <h3 style="margin:0;">Patients</h3>
+                        <button type="button" onclick="this.closest('[data-patients-root]').remove()" style="border:0; background:#f1f5f9; border-radius:999px; width:34px; height:34px; cursor:pointer;">×</button>
+                    </div>
+                    ${patients.length ? patients.map(p => `
+                        <div onclick="window.location.href='${p.url}'" style="display:flex; justify-content:space-between; gap:12px; padding:12px; border:1px solid #e2e8f0; border-radius:12px; margin-bottom:10px; cursor:pointer;">
+                            <strong>${p.name || '-'}</strong>
+                            <span style="color:#64748b; font-size:13px;">Dernier résultat: ${p.latestResult || '-'}</span>
+                        </div>
+                    `).join('') : '<p>Aucun patient.</p>'}
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+
+        updateLocationMode = function(now) {
+            const locationSelect = document.getElementById('locationSelect');
+            const modeIndicator = document.getElementById('modeIndicator');
+            if (!locationSelect || !modeIndicator) return;
+            const day = now.getDay();
+            const minutesOfDay = now.getHours() * 60 + now.getMinutes();
+            const mode = (day >= 0 && day <= 4 && minutesOfDay >= 510 && minutesOfDay <= 1020) ? 'presentiel' : 'tele';
+            locationSelect.value = mode;
+            updateModeIndicator(mode);
+        };
+
+        function logoutUser() {
+            document.getElementById("logoutForm").submit();
+        }
+        
+        // ==================== INITIALISATION ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTranslations(currentLang);
+            populateErgoDashboard();
+            updateGreeting();
+            updateDailyMessage();
+            resetFocusTimer();
+            updateQuranTexts();
+            refreshActiveBilan();
+            
+            setInterval(updateGreeting, 1000);
+            setInterval(updateDailyMessage, 60000);
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            document.querySelectorAll('.bilans-tab').forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('data-target');
+                    showBilanCategory(target, this);
+                });
+            });
+            
+            const locationSelect = document.getElementById('locationSelect');
+            if (locationSelect) {
+                locationSelect.addEventListener('change', function() {
+                    updateModeIndicator(this.value);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

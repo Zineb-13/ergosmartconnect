@@ -1,0 +1,115 @@
+Table de patient ------------------:
+Nom *
+Prénom *
+Date de naissance *
+Sexe
+Femme
+Homme
+Téléphone *
+Email *
+Adresse (facultatif)
+Nom à afficher (optionnel)
+Langue préférée
+Type de fracture *
+pouteau colles
+scaphoide 
+articulaire
+autre je ne sais pas
+—
+Date de la fracture *
+
+Côté atteint *
+Droit
+Gauche
+Les deux
+C'est ma main dominante
+Traitement reçu *
+Plâtre
+Intervention chirurgicale
+Orthèse / attelle
+Autre
+Douleur actuelle (0–10) *
+Au repos
+À l'effort
+Raideur / gonflement *
+léger
+modéré
+important
+je ne sais pas
+Limitations actuelles (activités difficiles) (optionnel)
+Habillage
+Toilette
+Cuisine
+Port de charge
+Téléphone
+Clavier / souris
+Conduite
+Autre
+Autres problèmes de santé (optionnel)
+Diabète
+Hypertension
+Ostéoporose
+Arthrite
+Autre
+Médicaments actuels (optionnel)
+Allergies (optionnel)
+
+Profession / statut *
+employé(e) de bureau
+travailleur manuelle 
+étudient(e)
+retraité(e)
+sans emploi
+autre
+Impact sur le travail *
+Arret complet
+travail adapté/légér
+télétravail possible
+pas d'Impactnon applicable
+—
+Activités importantes avant la fracture (optionnel)
+Sport
+Cuisine
+Bricolage/Jardinage
+Écriture/Dessin
+Informatique
+Musique
+Artisanat
+Autre
+Objectif principal de rééducation *
+
+—Retrouver l'autonomie (toilette, habillage, soins personnels)
+Améliorer la prise / préhension (tenir un verre, ouvrir un bocal)
+Diminuer la douleur et reprendre les gestes sans appréhension
+Récupérer la mobilité (flexion/extension, pronation/supination)
+Récupérer la force (porter, pousser, tirer)
+Améliorer la motricité fine (écriture, boutonner, smartphone)
+Reprendre le travail / gestes professionnels
+Reprendre les loisirs (sport, musique, bricolage)
+Autre
+
+
+Comment avez-vous entendu parler de nous ? (optionnel)
+Recommandation médecin
+Recommandation ergothérapeute
+Recherche internet
+Réseaux sociaux
+Bouche-à-oreille
+Autre
+
+Consentements
+J'accepte les Conditions Générales d'Utilisation *
+Je consens au traitement de mes données de santé (confidentialité) *
+J'accepte que des données anonymisées aident à améliorer l'IA (optionnel)
+Je souhaite recevoir des rappels et conseils (email/SMS) (optionnel)
+
+Table de contact -------------:
+le Nom /email/Sujet/mot de passe 
+Table users--------------:
+id/email/nom d'utilisateur/mot de passe/ le role(ergothérapeute, patient)/le Nom/ prénom
+Table de RDV------------:
+Table du msg------------:
+Table dossier patient ----------:
+table recommendations Ergothérapeute ---------:
+table recommendations IA---------------:
+Table de ressources

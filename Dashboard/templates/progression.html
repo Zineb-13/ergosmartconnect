@@ -1,0 +1,1306 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma progression | SmartWrist Rehab</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2E8B57;
+            --primary-dark: #1f6a43;
+            --primary-soft: rgba(46, 139, 87, 0.10);
+            --bg-1: #f7fbf8;
+            --bg-2: #edf7f0;
+            --card: rgba(255,255,255,0.94);
+            --text-1: #14261c;
+            --text-2: #425466;
+            --text-3: #7b8a97;
+            --border: 1px solid rgba(46, 139, 87, 0.14);
+            --shadow-sm: 0 6px 20px rgba(15, 23, 42, 0.06);
+            --shadow-md: 0 16px 34px rgba(15, 23, 42, 0.08);
+            --radius-md: 20px;
+            --radius-lg: 28px;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(46,139,87,0.10), transparent 30%),
+                linear-gradient(145deg, var(--bg-1), var(--bg-2));
+            color: var(--text-1);
+            min-height: 100vh;
+        }
+
+        body[dir="rtl"] {
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body.dark-mode {
+            --primary: #43b36f;
+            --primary-dark: #2f8c57;
+            --primary-soft: rgba(67, 179, 111, 0.14);
+            --bg-1: #0b1220;
+            --bg-2: #111b2e;
+            --card: rgba(15, 23, 42, 0.90);
+            --text-1: #f8fafc;
+            --text-2: #cbd5e1;
+            --text-3: #94a3b8;
+            --border: 1px solid rgba(148, 163, 184, 0.16);
+            --shadow-sm: 0 8px 24px rgba(0,0,0,0.28);
+            --shadow-md: 0 16px 38px rgba(0,0,0,0.36);
+            background:
+                radial-gradient(circle at top left, rgba(67,179,111,0.10), transparent 30%),
+                linear-gradient(145deg, var(--bg-1), var(--bg-2));
+        }
+
+        .container {
+            width: min(1120px, calc(100% - 24px));
+            margin: 18px auto 30px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            background: var(--card);
+            border: var(--border);
+            border-radius: 24px;
+            padding: 14px 18px;
+            box-shadow: var(--shadow-sm);
+            backdrop-filter: blur(10px);
+            margin-bottom: 18px;
+            position: sticky;
+            top: 10px;
+            z-index: 20;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: var(--primary-soft);
+            white-space: nowrap;
+            transition: 0.2s ease;
+        }
+
+        .back-link:hover {
+            transform: translateY(-1px);
+        }
+
+        .title-wrap h1 {
+            font-size: 1.35rem;
+            font-weight: 800;
+        }
+
+        .title-wrap p {
+            font-size: 0.92rem;
+            color: var(--text-3);
+            margin-top: 4px;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .lang-switch {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--primary-soft);
+            border-radius: 999px;
+            padding: 4px;
+        }
+
+        .lang-btn {
+            border: none;
+            background: transparent;
+            color: var(--text-2);
+            font-weight: 700;
+            font-size: 0.82rem;
+            padding: 7px 12px;
+            border-radius: 999px;
+            cursor: pointer;
+        }
+
+        .lang-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .icon-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            border: var(--border);
+            background: var(--card);
+            color: var(--text-2);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            font-size: 1rem;
+        }
+
+        .hero {
+            background: var(--card);
+            border: var(--border);
+            box-shadow: var(--shadow-md);
+            border-radius: var(--radius-lg);
+            padding: 22px;
+            margin-bottom: 18px;
+        }
+
+        .hero h2 {
+            font-size: 1.45rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: var(--text-2);
+            line-height: 1.6;
+            font-size: 0.98rem;
+        }
+
+        .hero-score {
+            margin-top: 16px;
+            display: inline-flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 14px 18px;
+            border-radius: 18px;
+            background: var(--primary-soft);
+        }
+
+        .hero-score small {
+            color: var(--text-3);
+            font-weight: 600;
+        }
+
+        .hero-score strong {
+            font-size: 1.9rem;
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        #heroText,
+        .hero-score,
+        #chart4Card,
+        #metricsSection {
+            display: none !important;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .summary-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-top: 8px;
+        }
+
+        .day-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .day-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 16px;
+            background: var(--primary-soft);
+        }
+
+        .day-values {
+            color: var(--text-2);
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .section {
+            margin-bottom: 18px;
+        }
+
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .section-head h3 {
+            font-size: 1.05rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-head p {
+            font-size: 0.88rem;
+            color: var(--text-3);
+        }
+
+        .card {
+            background: var(--card);
+            border: var(--border);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            padding: 18px;
+            backdrop-filter: blur(10px);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        .metric-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::after {
+            content: "";
+            position: absolute;
+            right: -30px;
+            bottom: -30px;
+            width: 82px;
+            height: 82px;
+            border-radius: 50%;
+            background: var(--primary-soft);
+        }
+
+        .metric-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 16px;
+            background: var(--primary-soft);
+            color: var(--primary);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .metric-label {
+            font-size: 0.92rem;
+            color: var(--text-3);
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+
+        .metric-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin: 5px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .metric-trend {
+            font-size: 0.83rem;
+            font-weight: 700;
+            color: var(--success);
+            position: relative;
+            z-index: 1;
+        }
+
+        .metric-trend.down {
+            color: var(--danger);
+        }
+
+        .progress-line {
+            margin-top: 12px;
+            height: 9px;
+            background: rgba(148,163,184,0.18);
+            border-radius: 999px;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--primary), #65c78e);
+            width: 0;
+            transition: width 0.7s ease;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .chart-card {
+            min-height: 290px;
+        }
+
+        .chart-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .chart-title h4 {
+            font-size: 0.98rem;
+            font-weight: 800;
+        }
+
+        .chart-title span {
+            font-size: 0.8rem;
+            color: var(--text-3);
+        }
+
+        .chart-wrap {
+            height: 220px;
+        }
+
+        .feeling-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 14px;
+        }
+
+        .scale-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-2);
+        }
+
+        .scale-row,
+        .mood-row {
+            display: flex;
+            gap: 7px;
+            flex-wrap: wrap;
+        }
+
+        .scale-dot,
+        .mood-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: var(--border);
+            background: transparent;
+            color: var(--text-2);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .scale-dot.active,
+        .mood-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: transparent;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 14px;
+            padding: 11px 16px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-soft {
+            background: var(--primary-soft);
+            color: var(--primary-dark);
+        }
+
+        .footer-note {
+            text-align: center;
+            color: var(--text-3);
+            font-size: 0.84rem;
+            padding-top: 4px;
+        }
+
+        @media (max-width: 980px) {
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .charts-grid,
+            .feeling-grid,
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .container {
+                width: min(100% - 16px, 100%);
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .topbar-left,
+            .topbar-right {
+                justify-content: space-between;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .title-wrap h1 {
+                font-size: 1.15rem;
+            }
+
+            .hero h2 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'assets/css/responsive-guard.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header class="topbar">
+            <div class="topbar-left">
+                <a href="{% url 'patient_dashboard' %}" class="back-link">
+                    <i class="bi bi-arrow-left"></i>
+                    <span id="backText">Retour</span>
+                </a>
+
+                <div class="title-wrap">
+                    <h1 id="pageTitle">Ma progression</h1>
+                    <p id="pageSubtitle">Une page simple pour suivre votre évolution.</p>
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <div class="lang-switch">
+                    <button type="button" class="lang-btn active" onclick="changeLanguage('fr', this)">FR</button>
+                    <button type="button" class="lang-btn" onclick="changeLanguage('en', this)">EN</button>
+                    <button type="button" class="lang-btn" onclick="changeLanguage('ar', this)">AR</button>
+                </div>
+
+                <button type="button" class="icon-btn" onclick="toggleDarkMode()" aria-label="Mode sombre">
+                    <i class="bi bi-moon-stars" id="themeIcon"></i>
+                </button>
+            </div>
+        </header>
+
+        <section class="hero">
+            <h2 id="heroTitle">Suivez votre progression simplement</h2>
+            <p id="heroText">
+                Cette page montre uniquement les éléments utiles pour vous : douleur, mobilité, force,
+                dextérité et autres mesures selon votre situation.
+            </p>
+
+            <div class="hero-score">
+                <small id="scoreLabel">Progression globale</small>
+                <strong id="globalScore">--%</strong>
+            </div>
+        </section>
+
+        <section class="summary-grid">
+            <div class="card">
+                <div class="metric-label">Douleur</div>
+                <div class="summary-value" id="summaryPain">--/10</div>
+            </div>
+            <div class="card">
+                <div class="metric-label">Évolution satisfaction</div>
+                <div class="summary-value" id="summarySatisfaction">--%</div>
+            </div>
+            <div class="card">
+                <div class="metric-label">Humeur</div>
+                <div class="summary-value" id="summaryMood">--%</div>
+            </div>
+            <div class="card">
+                <div class="metric-label">Récompense</div>
+                <div class="summary-value" id="summaryReward">0/0</div>
+                <div class="metric-trend" id="summaryPoints">0 points</div>
+            </div>
+        </section>
+
+        <section class="section" id="metricsSection">
+            <div class="section-head">
+                <div>
+                    <h3><i class="bi bi-grid-1x2-fill"></i> <span id="metricsTitle">Mes indicateurs</span></h3>
+                    <p id="metricsSub">Vue rapide et claire.</p>
+                </div>
+            </div>
+            <div class="metrics-grid" id="metricsGrid"></div>
+        </section>
+
+        <section class="section">
+            <div class="section-head">
+                <div>
+                    <h3><i class="bi bi-graph-up-arrow"></i> <span id="chartsTitle">Mon évolution</span></h3>
+                    <p id="chartsSub">Graphiques simples.</p>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="card chart-card">
+                    <div class="chart-title">
+                        <h4 id="chart1Title">Évolution de la douleur</h4>
+                        <span id="chartHint1">Dernières semaines</span>
+                    </div>
+                    <div class="chart-wrap">
+                        <canvas id="chart1"></canvas>
+                    </div>
+                </div>
+
+                <div class="card chart-card">
+                    <div class="chart-title">
+                        <h4 id="chart2Title">Évolution satisfaction</h4>
+                        <span id="chartHint2">Dernières semaines</span>
+                    </div>
+                    <div class="chart-wrap">
+                        <canvas id="chart2"></canvas>
+                    </div>
+                </div>
+
+                <div class="card chart-card">
+                    <div class="chart-title">
+                        <h4 id="chart3Title">Évolution de l'humeur</h4>
+                        <span id="chartHint3">Dernières semaines</span>
+                    </div>
+                    <div class="chart-wrap">
+                        <canvas id="chart3"></canvas>
+                    </div>
+                </div>
+
+                <div class="card chart-card" id="chart4Card">
+                    <div class="chart-title">
+                        <h4 id="chart4Title">Évolution de la dextérité</h4>
+                        <span id="chartHint4">Dernières semaines</span>
+                    </div>
+                    <div class="chart-wrap">
+                        <canvas id="chart4"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-head">
+                <div>
+                    <h3><i class="bi bi-calendar-check"></i> <span>Mes ressentis par jour</span></h3>
+                    <p>Historique de vos auto-évaluations.</p>
+                </div>
+            </div>
+            <div class="card day-list" id="feelingsDaysList"></div>
+        </section>
+
+        <section class="section">
+            <div class="section-head">
+                <div>
+                    <h3><i class="bi bi-emoji-smile"></i> <span id="feelingTitle">Mon ressenti du jour</span></h3>
+                    <p id="feelingSub">Simple et rapide.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="feeling-grid">
+                    <div class="scale-group">
+                        <label id="painLabel">Douleur (0 à 10)</label>
+                        <div class="scale-row" id="painScale"></div>
+                    </div>
+
+                    <div class="scale-group">
+                        <label id="fatigueLabel">Fatigue (1 à 5)</label>
+                        <div class="scale-row" id="fatigueScale"></div>
+                    </div>
+
+                    <div class="scale-group">
+                        <label id="moodLabel">Humeur</label>
+                        <div class="mood-row" id="moodRow">
+                            <button type="button" class="mood-btn" onclick="selectMood('happy', this)">😊</button>
+                            <button type="button" class="mood-btn" onclick="selectMood('neutral', this)">😐</button>
+                            <button type="button" class="mood-btn" onclick="selectMood('sad', this)">☹️</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-row">
+                    <button type="button" class="btn btn-primary" onclick="saveFeeling()" id="saveFeelingBtn">Enregistrer</button>
+                    <button type="button" class="btn btn-soft" onclick="loadDemoData()" id="demoBtn">Exemple</button>
+                    <button type="button" class="btn btn-soft" onclick="resetAll()" id="resetBtn">Réinitialiser</button>
+                </div>
+            </div>
+        </section>
+
+        <div class="footer-note" id="footerText">© 2026 SmartWrist Rehab · Tous droits réservés</div>
+    </div>
+
+    {{ progression_page_data|json_script:"progression-page-data" }}
+
+    <script>
+        const translations = {
+            fr: {
+                backText: 'Retour',
+                pageTitle: 'Ma progression',
+                pageSubtitle: 'Une page simple pour suivre votre évolution.',
+                heroTitle: 'Suivez votre progression simplement',
+                heroText: 'Cette page montre uniquement les éléments utiles pour vous : douleur, mobilité, force, dextérité et autres mesures selon votre situation.',
+                scoreLabel: 'Progression globale',
+                metricsTitle: 'Mes indicateurs',
+                metricsSub: 'Vue rapide et claire.',
+                chartsTitle: 'Mon évolution',
+                chartsSub: 'Graphiques simples.',
+                chartHint: 'Dernières semaines',
+                feelingTitle: 'Mon ressenti du jour',
+                feelingSub: 'Simple et rapide.',
+                painLabel: 'Douleur (0 à 10)',
+                fatigueLabel: 'Fatigue (1 à 5)',
+                moodLabel: 'Humeur',
+                saveFeelingBtn: 'Enregistrer',
+                demoBtn: 'Exemple',
+                resetBtn: 'Réinitialiser',
+                footerText: '© 2026 SmartWrist Rehab · Tous droits réservés',
+                savedFeeling: 'Vos données ont été enregistrées.',
+                resetDone: 'La page a été réinitialisée.',
+                metrics: {
+                    pain: 'Douleur',
+                    mood: 'Humeur',
+                    mobility: 'Mobilité',
+                    strength: 'Force',
+                    endurance: 'Endurance',
+                    dexterity: 'Dextérité',
+                    sensitivity: 'Sensibilité',
+                    grip: 'Préhension'
+                },
+                trends: {
+                    up: 'en amélioration',
+                    down: 'à surveiller',
+                    stable: 'stable'
+                },
+                chartTitles: {
+                    pain: 'Évolution de la douleur',
+                    mobility: 'Évolution satisfaction',
+                    strength: 'Évolution de l\'humeur',
+                    dexterity: 'Évolution de la dextérité'
+                }
+            },
+            en: {
+                backText: 'Back',
+                pageTitle: 'My progress',
+                pageSubtitle: 'A simple page to follow your progress.',
+                heroTitle: 'Follow your progress simply',
+                heroText: 'This page shows only the useful elements for you: pain, mobility, strength, dexterity and other measures depending on your situation.',
+                scoreLabel: 'Overall progress',
+                metricsTitle: 'My indicators',
+                metricsSub: 'Quick and clear view.',
+                chartsTitle: 'My evolution',
+                chartsSub: 'Simple charts.',
+                chartHint: 'Recent weeks',
+                feelingTitle: 'How I feel today',
+                feelingSub: 'Simple and quick.',
+                painLabel: 'Pain (0 to 10)',
+                fatigueLabel: 'Fatigue (1 to 5)',
+                moodLabel: 'Mood',
+                saveFeelingBtn: 'Save',
+                demoBtn: 'Example',
+                resetBtn: 'Reset',
+                footerText: '© 2026 SmartWrist Rehab · Tous droits réservés',
+                savedFeeling: 'Your data has been saved.',
+                resetDone: 'The page has been reset.',
+                metrics: {
+                    pain: 'Pain',
+                    mood: 'Mood',
+                    mobility: 'Mobility',
+                    strength: 'Strength',
+                    endurance: 'Endurance',
+                    dexterity: 'Dexterity',
+                    sensitivity: 'Sensitivity',
+                    grip: 'Grip'
+                },
+                trends: {
+                    up: 'improving',
+                    down: 'needs attention',
+                    stable: 'stable'
+                },
+                chartTitles: {
+                    pain: 'Pain evolution',
+                    mobility: 'Satisfaction evolution',
+                    strength: 'Mood evolution',
+                    dexterity: 'Dexterity evolution'
+                }
+            },
+            ar: {
+                backText: 'رجوع',
+                pageTitle: 'تقدمي',
+                pageSubtitle: 'صفحة بسيطة لمتابعة تطورك.',
+                heroTitle: 'تابع تقدمك ببساطة',
+                heroText: 'تعرض هذه الصفحة فقط العناصر المفيدة لك: الألم، الحركة، القوة، البراعة وغيرها حسب حالتك.',
+                scoreLabel: 'التقدم العام',
+                metricsTitle: 'مؤشراتي',
+                metricsSub: 'عرض سريع وواضح.',
+                chartsTitle: 'تطوري',
+                chartsSub: 'رسوم بسيطة.',
+                chartHint: 'الأسابيع الأخيرة',
+                feelingTitle: 'شعوري اليوم',
+                feelingSub: 'بسيط وسريع.',
+                painLabel: 'الألم (0 إلى 10)',
+                fatigueLabel: 'الإرهاق (1 إلى 5)',
+                moodLabel: 'المزاج',
+                saveFeelingBtn: 'حفظ',
+                demoBtn: 'مثال',
+                resetBtn: 'إعادة ضبط',
+                footerText: '© 2026 SmartWrist Rehab · Tous droits réservés',   
+                savedFeeling: 'تم حفظ بياناتك.',
+                resetDone: 'تمت إعادة ضبط الصفحة.',
+                metrics: {
+                    pain: 'الألم',
+                    mood: 'المزاج',
+                    mobility: 'الحركة',
+                    strength: 'القوة',
+                    endurance: 'التحمل',
+                    dexterity: 'البراعة',
+                    sensitivity: 'الحساسية',
+                    grip: 'القبض'
+                },
+                trends: {
+                    up: 'في تحسن',
+                    down: 'يحتاج متابعة',
+                    stable: 'مستقر'
+                },
+                chartTitles: {
+                    pain: 'تطور الألم',
+                    mobility: 'تطور الرضا',
+                    strength: 'تطور المزاج',
+                    dexterity: 'تطور البراعة'
+                }
+            }
+        };
+
+        const metricMeta = {
+            pain:       { icon: 'bi-activity', type: 'inverse', value: null, series: [8, 7, 5, 4] },
+            satisfaction:{ icon: 'bi-star', type: 'normal', value: null, series: [40, 55, 62, 75] },
+            mood:       { icon: 'bi-emoji-smile', type: 'normal', value: null, series: [40, 55, 62, 75] },
+            mobility:   { icon: 'bi-arrow-repeat', type: 'normal', value: null, series: [30, 42, 57, 68] },
+            strength:   { icon: 'bi-lightning-charge', type: 'normal', value: null, series: [22, 36, 48, 60] },
+            endurance:  { icon: 'bi-hourglass-split', type: 'normal', value: null, series: [25, 34, 46, 55] },
+            dexterity:  { icon: 'bi-hand-index-thumb', type: 'normal', value: null, series: [28, 39, 55, 70] },
+            sensitivity:{ icon: 'bi-bullseye', type: 'normal', value: null, series: [20, 30, 40, 52] },
+            grip:       { icon: 'bi-hand-grab', type: 'normal', value: null, series: [18, 32, 45, 58] }
+        };
+
+        const serverProgressionData = JSON.parse(document.getElementById('progression-page-data')?.textContent || '{}');
+        const serverLang = "{{ current_lang|default:'fr'|escapejs }}";
+
+        const defaultState = {
+            lang: serverLang,
+            darkMode: false,
+            visibleMetrics: ['pain', 'mood'],
+            metricValues: {
+                pain: null,
+                mood: null,
+                mobility: null,
+                strength: null,
+                endurance: null,
+                dexterity: null,
+                sensitivity: null,
+                grip: null
+            },
+            feelings: {
+                pain: null,
+                fatigue: null,
+                mood: null
+            }
+        };
+
+        let appState = JSON.parse(JSON.stringify(defaultState));
+        let currentLang = "{{ current_lang|default:'fr'|escapejs }}";
+        let charts = [];
+
+        function clone(obj) {
+            return JSON.parse(JSON.stringify(obj));
+        }
+
+        function loadState() {
+            const saved = localStorage.getItem('smartwrist_patient_progression');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    appState = { ...clone(defaultState), ...parsed };
+                    appState.metricValues = { ...defaultState.metricValues, ...(parsed.metricValues || {}) };
+                    appState.feelings = { ...defaultState.feelings, ...(parsed.feelings || {}) };
+                } catch (e) {
+                    appState = clone(defaultState);
+                }
+            }
+            appState.lang = serverLang;
+            currentLang = serverLang;
+            applyServerData();
+        }
+
+        function applyServerData() {
+            const data = serverProgressionData || {};
+            const labels = Array.isArray(data.labels) ? data.labels : [];
+            metricMeta.pain.series = Array.isArray(data.pain) && data.pain.length ? data.pain : metricMeta.pain.series;
+            metricMeta.satisfaction.series = Array.isArray(data.satisfaction) && data.satisfaction.length ? data.satisfaction : metricMeta.satisfaction.series;
+            metricMeta.mood.series = Array.isArray(data.mood) && data.mood.length ? data.mood : metricMeta.mood.series;
+            metricMeta.mobility.series = Array.isArray(data.mobility) && data.mobility.length ? data.mobility : metricMeta.mobility.series;
+            metricMeta.strength.series = Array.isArray(data.strength) && data.strength.length ? data.strength : metricMeta.strength.series;
+            metricMeta.endurance.series = Array.isArray(data.endurance) && data.endurance.length ? data.endurance : metricMeta.endurance.series;
+            metricMeta.dexterity.series = Array.isArray(data.dexterity) && data.dexterity.length ? data.dexterity : metricMeta.dexterity.series;
+            metricMeta.sensitivity.series = Array.isArray(data.sensitivity) && data.sensitivity.length ? data.sensitivity : metricMeta.sensitivity.series;
+            metricMeta.grip.series = Array.isArray(data.grip) && data.grip.length ? data.grip : metricMeta.grip.series;
+
+            appState.visibleMetrics = ['pain', 'mood'];
+            appState.metricValues.pain = data.latestPain ?? metricMeta.pain.series[metricMeta.pain.series.length - 1] ?? null;
+            appState.metricValues.mood = data.latestMood ?? null;
+            appState.metricValues.mobility = metricMeta.mobility.series[metricMeta.mobility.series.length - 1] || null;
+            appState.metricValues.strength = metricMeta.strength.series[metricMeta.strength.series.length - 1] || null;
+            appState.metricValues.dexterity = metricMeta.dexterity.series[metricMeta.dexterity.series.length - 1] || null;
+            window.progressionLabels = labels;
+        }
+
+        function saveState() {
+            localStorage.setItem('smartwrist_patient_progression', JSON.stringify(appState));
+        }
+
+        function t() {
+            return translations[currentLang];
+        }
+
+        function applyTexts() {
+            const tr = t();
+            document.getElementById('backText').textContent = tr.backText;
+            document.getElementById('pageTitle').textContent = tr.pageTitle;
+            document.getElementById('pageSubtitle').textContent = tr.pageSubtitle;
+            document.getElementById('heroTitle').textContent = tr.heroTitle;
+            document.getElementById('heroText').textContent = tr.heroText;
+            document.getElementById('scoreLabel').textContent = tr.scoreLabel;
+            document.getElementById('metricsTitle').textContent = tr.metricsTitle;
+            document.getElementById('metricsSub').textContent = tr.metricsSub;
+            document.getElementById('chartsTitle').textContent = tr.chartsTitle;
+            document.getElementById('chartsSub').textContent = tr.chartsSub;
+            document.getElementById('chartHint1').textContent = tr.chartHint;
+            document.getElementById('chartHint2').textContent = tr.chartHint;
+            document.getElementById('chartHint3').textContent = tr.chartHint;
+            document.getElementById('chartHint4').textContent = tr.chartHint;
+            document.getElementById('feelingTitle').textContent = tr.feelingTitle;
+            document.getElementById('feelingSub').textContent = tr.feelingSub;
+            document.getElementById('painLabel').textContent = tr.painLabel;
+            document.getElementById('fatigueLabel').textContent = tr.fatigueLabel;
+            document.getElementById('moodLabel').textContent = tr.moodLabel;
+            document.getElementById('saveFeelingBtn').textContent = tr.saveFeelingBtn;
+            document.getElementById('demoBtn').textContent = tr.demoBtn;
+            document.getElementById('resetBtn').textContent = tr.resetBtn;
+            document.getElementById('footerText').textContent = tr.footerText;
+
+            document.getElementById('chart1Title').textContent = tr.chartTitles.pain;
+            document.getElementById('chart2Title').textContent = tr.chartTitles.mobility;
+            document.getElementById('chart3Title').textContent = tr.chartTitles.strength;
+            document.getElementById('chart4Title').textContent = tr.chartTitles.dexterity;
+
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if (btn.textContent.trim().toLowerCase() === currentLang) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        function getMetricDisplayValue(key) {
+            const value = appState.metricValues[key];
+            if (value === null || value === undefined || value === '') return '--';
+            return key === 'pain' ? `${value}/10` : `${value}%`;
+        }
+
+        function getPercent(key) {
+            const value = appState.metricValues[key];
+            if (value === null || value === undefined || value === '') return 0;
+            if (key === 'pain') return Math.max(0, Math.min(100, 100 - (value * 10)));
+            return Math.max(0, Math.min(100, Number(value)));
+        }
+
+        function getTrend(key) {
+            const tr = t();
+            const s = metricMeta[key].series;
+            if (!s || s.length < 2) return tr.trends.stable;
+            const last = s[s.length - 1];
+            const prev = s[s.length - 2];
+
+            if (key === 'pain') {
+                if (last < prev) return tr.trends.up;
+                if (last > prev) return tr.trends.down;
+                return tr.trends.stable;
+            }
+
+            if (last > prev) return tr.trends.up;
+            if (last < prev) return tr.trends.down;
+            return tr.trends.stable;
+        }
+
+        function trendClass(key) {
+            const s = metricMeta[key].series;
+            if (!s || s.length < 2) return '';
+            const last = s[s.length - 1];
+            const prev = s[s.length - 2];
+
+            if (key === 'pain') return last > prev ? 'down' : '';
+            return last < prev ? 'down' : '';
+        }
+
+        function renderMetrics() {
+            const tr = t();
+            const grid = document.getElementById('metricsGrid');
+            const keys = appState.visibleMetrics;
+
+            grid.innerHTML = keys.map(key => `
+                <div class="card metric-card">
+                    <div class="metric-icon">
+                        <i class="bi ${metricMeta[key].icon}"></i>
+                    </div>
+                    <div class="metric-label">${tr.metrics[key]}</div>
+                    <div class="metric-value">${getMetricDisplayValue(key)}</div>
+                    <div class="metric-trend ${trendClass(key)}">${getTrend(key)}</div>
+                    <div class="progress-line">
+                        <div class="progress-fill" style="width:${getPercent(key)}%"></div>
+                    </div>
+                </div>
+            `).join('');
+
+            updateGlobalScore();
+            updateSummaryCards();
+            renderFeelingsDays();
+        }
+
+        function updateGlobalScore() {
+            const serverGlobal = Number(serverProgressionData.global || 0);
+            if (serverGlobal) {
+                document.getElementById('globalScore').textContent = `${serverGlobal}%`;
+                return;
+            }
+            const usable = [];
+
+            appState.visibleMetrics.forEach(key => {
+                const v = appState.metricValues[key];
+                if (v !== null && v !== undefined && v !== '') {
+                    if (key === 'pain') usable.push(100 - (v * 10));
+                    else usable.push(Number(v));
+                }
+            });
+
+            const el = document.getElementById('globalScore');
+            if (!usable.length) {
+                el.textContent = '--%';
+                return;
+            }
+
+            const avg = Math.round(usable.reduce((a, b) => a + b, 0) / usable.length);
+            el.textContent = `${avg}%`;
+        }
+
+        function updateSummaryCards() {
+            const data = serverProgressionData || {};
+            const defis = data.progressionDefis || {};
+            document.getElementById('summarySatisfaction').textContent = `${Number(data.latestSatisfaction || 0)}%`;
+            document.getElementById('summaryPain').textContent = `${data.latestPain ?? '--'}/10`;
+            document.getElementById('summaryMood').textContent = `${Number(data.latestMood || 0)}%`;
+            document.getElementById('summaryReward').textContent = `${defis.defis_completes ?? 0}/${defis.total_defis ?? 0} ${defis.niveau_badge || ''}`;
+            document.getElementById('summaryPoints').textContent = `${defis.points ?? 0} points`;
+        }
+
+        function renderFeelingsDays() {
+            const list = document.getElementById('feelingsDaysList');
+            const days = serverProgressionData.feelingsDays || [];
+            list.innerHTML = days.length ? days.map(day => `
+                <div class="day-item">
+                    <strong>${day.date}</strong>
+                    <span class="day-values">Douleur ${day.douleur}/10 · Fatigue ${day.fatigue}/5 · Humeur ${day.humeur} · Satisfaction ${day.satisfaction}/5</span>
+                </div>
+            `).join('') : '<div class="day-item"><strong>Aucune auto-évaluation enregistrée.</strong></div>';
+        }
+
+        function initScales() {
+            const painScale = document.getElementById('painScale');
+            const fatigueScale = document.getElementById('fatigueScale');
+            painScale.innerHTML = '';
+            fatigueScale.innerHTML = '';
+
+            for (let i = 0; i <= 10; i++) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'scale-dot';
+                btn.textContent = i;
+                btn.onclick = () => {
+                    appState.feelings.pain = i;
+                    appState.metricValues.pain = i;
+                    saveState();
+                    applyFeelingSelections();
+                    renderMetrics();
+                };
+                painScale.appendChild(btn);
+            }
+
+            for (let i = 1; i <= 5; i++) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'scale-dot';
+                btn.textContent = i;
+                btn.onclick = () => {
+                    appState.feelings.fatigue = i;
+                    saveState();
+                    applyFeelingSelections();
+                };
+                fatigueScale.appendChild(btn);
+            }
+        }
+
+        function applyFeelingSelections() {
+            document.querySelectorAll('#painScale .scale-dot').forEach(dot => {
+                dot.classList.toggle('active', Number(dot.textContent) === appState.feelings.pain);
+            });
+
+            document.querySelectorAll('#fatigueScale .scale-dot').forEach(dot => {
+                dot.classList.toggle('active', Number(dot.textContent) === appState.feelings.fatigue);
+            });
+
+            const moodMap = { '😊': 'happy', '😐': 'neutral', '☹️': 'sad' };
+            document.querySelectorAll('#moodRow .mood-btn').forEach(btn => {
+                btn.classList.toggle('active', moodMap[btn.textContent] === appState.feelings.mood);
+            });
+        }
+
+        function selectMood(mood) {
+            appState.feelings.mood = mood;
+            if (appState.metricValues.mood === null) {
+                appState.metricValues.mood = mood === 'happy' ? 80 : mood === 'neutral' ? 55 : 30;
+            }
+            saveState();
+            applyFeelingSelections();
+            renderMetrics();
+        }
+
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return '';
+        }
+
+        async function saveFeeling() {
+            saveState();
+            try {
+                const response = await fetch("{% url 'api_patient_dashboard_evaluation' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify({
+                        douleur: appState.feelings.pain,
+                        fatigue: appState.feelings.fatigue,
+                        humeur: appState.feelings.mood
+                    })
+                });
+                if (!response.ok) throw new Error('save failed');
+                alert(t().savedFeeling);
+                window.location.reload();
+            } catch (error) {
+                alert(t().savedFeeling);
+            }
+        }
+
+        function loadDemoData() {
+            appState.visibleMetrics = ['pain', 'mood'];
+            appState.metricValues = {
+                pain: 3,
+                mood: 75,
+                mobility: 68,
+                strength: 60,
+                endurance: null,
+                dexterity: 70,
+                sensitivity: null,
+                grip: null
+            };
+            appState.feelings = {
+                pain: 3,
+                fatigue: 2,
+                mood: 'happy'
+            };
+            saveState();
+            renderAll();
+            applyFeelingSelections();
+        }
+
+        function resetAll() {
+            localStorage.removeItem('smartwrist_patient_progression');
+            appState = clone(defaultState);
+            currentLang = "{{ current_lang|default:'fr'|escapejs }}";
+            saveState();
+            renderAll();
+            applyFeelingSelections();
+            alert(translations.fr.resetDone);
+        }
+
+        function destroyCharts() {
+            charts.forEach(c => c.destroy());
+            charts = [];
+        }
+
+        function renderCharts() {
+            destroyCharts();
+
+            const labels = Array.isArray(window.progressionLabels) && window.progressionLabels.length ? window.progressionLabels : (currentLang === 'fr'
+                ? ['S-3', 'S-2', 'S-1', 'Cette semaine']
+                : currentLang === 'en'
+                ? ['W-3', 'W-2', 'W-1', 'This week']
+                : ['-3أ', '-2أ', '-1أ', 'هذا الأسبوع']);
+
+            const configs = [
+                { id: 'chart1', key: 'pain', type: 'line', color: '#ef4444', fill: true, max: 10 },
+                { id: 'chart2', key: 'satisfaction', type: 'bar', color: '#2E8B57', fill: false, max: 100 },
+                { id: 'chart3', key: 'mood', type: 'bar', color: '#4361ee', fill: false, max: 100 }
+            ];
+
+            configs.forEach(cfg => {
+                const ctx = document.getElementById(cfg.id).getContext('2d');
+                const chart = new Chart(ctx, {
+                    type: cfg.type,
+                    data: {
+                        labels,
+                        datasets: [{
+                            data: metricMeta[cfg.key].series,
+                            borderColor: cfg.color,
+                            backgroundColor: cfg.type === 'line' ? 'rgba(239,68,68,0.12)' : 'rgba(46,139,87,0.78)',
+                            borderWidth: 2,
+                            borderRadius: 10,
+                            tension: 0.35,
+                            fill: cfg.fill
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: cfg.max,
+                                grid: { color: 'rgba(148,163,184,0.16)' },
+                                ticks: { color: getComputedStyle(document.body).getPropertyValue('--text-3').trim() }
+                            },
+                            x: {
+                                grid: { display: false },
+                                ticks: { color: getComputedStyle(document.body).getPropertyValue('--text-3').trim() }
+                            }
+                        }
+                    }
+                });
+                charts.push(chart);
+            });
+        }
+
+        function applyTheme() {
+            document.body.classList.toggle('dark-mode', !!appState.darkMode);
+            document.getElementById('themeIcon').className = appState.darkMode ? 'bi bi-brightness-high' : 'bi bi-moon-stars';
+        }
+
+        function toggleDarkMode() {
+            appState.darkMode = !appState.darkMode;
+            saveState();
+            applyTheme();
+            renderCharts();
+        }
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            appState.lang = lang;
+            saveState();
+            applyTexts();
+            renderMetrics();
+            renderCharts();
+            applyFeelingSelections();
+        }
+
+        function renderAll() {
+            currentLang = appState.lang || "{{ current_lang|default:'fr'|escapejs }}";
+            applyTheme();
+            applyTexts();
+            renderMetrics();
+            initScales();
+            renderCharts();
+        }
+
+        window.onload = function () {
+            loadState();
+            renderAll();
+            applyFeelingSelections();
+        };
+    </script>
+</body>
+</html>

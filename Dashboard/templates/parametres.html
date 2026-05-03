@@ -1,0 +1,1346 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paramètres | SmartWrist Rehab</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #2E8B57;
+            --primary-dark: #1f6a43;
+            --primary-light: #e8f3ed;
+            --primary-soft: rgba(46, 139, 87, 0.12);
+            --primary-glow: rgba(46, 139, 87, 0.18);
+            --success: #10b981;
+            --danger: #ef4444;
+            --gray-1: #1e293b;
+            --gray-2: #334155;
+            --gray-3: #475569;
+            --gray-4: #64748b;
+            --line: rgba(46, 139, 87, 0.10);
+            --light-1: #f8fafc;
+            --light-2: #f1f5f9;
+            --white: #ffffff;
+            --shadow-sm: 0 8px 24px rgba(15, 23, 42, 0.06);
+            --shadow-md: 0 22px 48px rgba(15, 23, 42, 0.10);
+            --radius-md: 18px;
+            --radius-lg: 28px;
+            --card-bg: rgba(255,255,255,0.90);
+            --glass: rgba(255,255,255,0.78);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            color: var(--gray-1);
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top left, rgba(46,139,87,0.12), transparent 24%),
+                radial-gradient(circle at top right, rgba(59,130,246,0.10), transparent 22%),
+                linear-gradient(160deg, #eef7f1 0%, #f5f8fc 46%, #eef3ff 100%);
+        }
+
+        html[dir="rtl"] body { font-family: 'Tajawal', sans-serif; }
+
+        body.dark-mode {
+            --primary: #42b06f;
+            --primary-dark: #2f8d57;
+            --primary-light: #14261d;
+            --primary-soft: rgba(66, 176, 111, 0.12);
+            --primary-glow: rgba(66, 176, 111, 0.14);
+            --gray-1: #e5edf6;
+            --gray-2: #cad5e3;
+            --gray-3: #9fb0c4;
+            --gray-4: #7c90aa;
+            --line: rgba(148, 163, 184, 0.14);
+            --light-1: #0f172a;
+            --light-2: #111c31;
+            --white: #0b1324;
+            --card-bg: rgba(15, 23, 42, 0.80);
+            --glass: rgba(15, 23, 42, 0.72);
+            background:
+                radial-gradient(circle at top left, rgba(66,176,111,0.10), transparent 24%),
+                radial-gradient(circle at top right, rgba(59,130,246,0.12), transparent 22%),
+                linear-gradient(160deg, #08111f 0%, #0f172a 48%, #111827 100%);
+        }
+
+        a { text-decoration: none; color: inherit; }
+        button, input, select { font: inherit; }
+
+        .page-shell {
+            width: min(1120px, calc(100% - 28px));
+            margin: 18px auto;
+        }
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            background: var(--glass);
+            backdrop-filter: blur(18px);
+            border-radius: 30px;
+            padding: 18px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .hero::before,
+        .hero::after {
+            content: '';
+            position: absolute;
+            border-radius: 999px;
+            filter: blur(10px);
+            z-index: 0;
+        }
+
+        .hero::before {
+            width: 220px;
+            height: 220px;
+            top: -70px;
+            right: -70px;
+            background: rgba(46, 139, 87, 0.12);
+        }
+
+        .hero::after {
+            width: 180px;
+            height: 180px;
+            bottom: -60px;
+            left: -45px;
+            background: rgba(59, 130, 246, 0.10);
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            border-radius: 16px;
+            background: var(--white);
+            border: 1px solid var(--line);
+            box-shadow: var(--shadow-sm);
+            color: var(--gray-1);
+            font-weight: 700;
+            transition: 0.25s ease;
+        }
+
+        .back-link:hover {
+            transform: translateY(-2px);
+            border-color: rgba(46,139,87,0.22);
+            color: var(--primary-dark);
+        }
+
+        .hero-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+            min-width: 240px;
+            justify-content: center;
+        }
+
+        .hero-badge {
+            width: 56px;
+            height: 56px;
+            flex-shrink: 0;
+            border-radius: 18px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            box-shadow: 0 18px 32px var(--primary-glow);
+            font-size: 22px;
+        }
+
+        .hero-title h1 {
+            font-size: clamp(24px, 3vw, 34px);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-title p {
+            margin-top: 6px;
+            color: var(--gray-4);
+            font-size: 14px;
+        }
+
+        .theme-button {
+            width: 48px;
+            height: 48px;
+            border: 0;
+            border-radius: 16px;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            color: var(--gray-1);
+            transition: 0.25s ease;
+        }
+
+        .theme-button:hover {
+            transform: translateY(-2px) rotate(3deg);
+            color: var(--primary-dark);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 330px 1fr;
+            gap: 22px;
+            margin-top: 22px;
+            align-items: start;
+        }
+
+        .profile-panel,
+        .settings-panel {
+            background: var(--card-bg);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            backdrop-filter: blur(14px);
+        }
+
+        .profile-panel {
+            padding: 24px;
+            position: sticky;
+            top: 18px;
+        }
+
+        .profile-top {
+            text-align: center;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .profile-photo {
+            width: 112px;
+            height: 112px;
+            margin: 0 auto 14px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, rgba(46,139,87,0.18), rgba(59,130,246,0.10));
+            border: 1px solid rgba(46,139,87,0.16);
+            display: grid;
+            place-items: center;
+            color: var(--primary-dark);
+            font-size: 42px;
+            cursor: pointer;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            transition: 0.25s ease;
+        }
+
+        .profile-photo:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 30px rgba(46,139,87,0.18);
+        }
+
+        .profile-name {
+            font-size: 22px;
+            font-weight: 800;
+            min-height: 30px;
+            word-break: break-word;
+        }
+
+        .profile-email {
+            margin-top: 4px;
+            min-height: 20px;
+            color: var(--gray-4);
+            font-size: 14px;
+            word-break: break-word;
+        }
+
+        .profile-mini-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .mini-stat {
+            padding: 14px;
+            border-radius: 18px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(46,139,87,0.04));
+            border: 1px solid var(--line);
+        }
+
+        .mini-stat span {
+            display: block;
+            font-size: 12px;
+            color: var(--gray-4);
+            margin-bottom: 6px;
+        }
+
+        .mini-stat strong {
+            font-size: 15px;
+            color: var(--gray-1);
+        }
+
+        .inline-actions {
+            display: grid;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .ghost-btn,
+        .danger-btn,
+        .primary-btn,
+        .logout-btn {
+            width: 100%;
+            border: 0;
+            border-radius: 16px;
+            padding: 14px 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.25s ease;
+        }
+
+        .ghost-btn {
+            background: rgba(46,139,87,0.08);
+            color: var(--primary-dark);
+        }
+
+        .ghost-btn:hover { transform: translateY(-2px); }
+
+        .danger-btn {
+            background: rgba(239,68,68,0.10);
+            color: #c52d2d;
+        }
+
+        .danger-btn:hover { transform: translateY(-2px); }
+
+        .logout-btn {
+            background: linear-gradient(135deg, #64748b, #334155);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 14px 24px rgba(51, 65, 85, 0.18);
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.96;
+        }
+
+        .settings-panel {
+            padding: 22px;
+            display: grid;
+            gap: 18px;
+        }
+
+        .settings-card {
+            background: linear-gradient(180deg, rgba(255,255,255,0.62), rgba(255,255,255,0.30));
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            overflow: hidden;
+        }
+
+        body.dark-mode .settings-card,
+        body.dark-mode .mini-stat {
+            background: linear-gradient(180deg, rgba(15,23,42,0.56), rgba(15,23,42,0.28));
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 18px 0;
+        }
+
+        .card-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            background: var(--primary-soft);
+            color: var(--primary-dark);
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .card-header h3 {
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .card-body {
+            padding: 18px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--gray-2);
+        }
+
+        .form-control,
+        .select-control {
+            width: 100%;
+            height: 52px;
+            border-radius: 16px;
+            border: 1px solid var(--line);
+            background: rgba(255,255,255,0.92);
+            color: var(--gray-1);
+            padding: 0 16px;
+            outline: none;
+            transition: 0.25s ease;
+        }
+
+        body.dark-mode .form-control,
+        body.dark-mode .select-control {
+            background: rgba(15,23,42,0.82);
+        }
+
+        .form-control:focus,
+        .select-control:focus {
+            border-color: rgba(46,139,87,0.34);
+            box-shadow: 0 0 0 4px rgba(46,139,87,0.10);
+        }
+
+        .readonly {
+            opacity: 0.72;
+            cursor: not-allowed;
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper .form-control {
+            padding-right: 52px;
+        }
+
+        html[dir="rtl"] .password-wrapper .form-control {
+            padding-right: 16px;
+            padding-left: 52px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 8px;
+            transform: translateY(-50%);
+            width: 38px;
+            height: 38px;
+            border: 0;
+            border-radius: 12px;
+            background: transparent;
+            color: var(--gray-4);
+            cursor: pointer;
+        }
+
+        html[dir="rtl"] .toggle-password {
+            right: auto;
+            left: 8px;
+        }
+
+        .setting-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .setting-row:last-child { border-bottom: 0; }
+
+        .setting-copy h4 {
+            font-size: 15px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .setting-copy p {
+            font-size: 13px;
+            color: var(--gray-4);
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 58px;
+            height: 32px;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            inset: 0;
+            background: rgba(148,163,184,0.36);
+            border-radius: 999px;
+            cursor: pointer;
+            transition: 0.25s ease;
+        }
+
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            left: 4px;
+            top: 4px;
+            background: #fff;
+            border-radius: 50%;
+            transition: 0.25s ease;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+        }
+
+        .toggle-switch input:checked + .toggle-slider {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        }
+
+        .toggle-switch input:checked + .toggle-slider::before {
+            transform: translateX(26px);
+        }
+
+        html[dir="rtl"] .toggle-switch input:checked + .toggle-slider::before {
+            transform: translateX(-26px);
+        }
+
+        .bottom-actions {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 14px;
+            align-items: center;
+        }
+
+        .save-btn {
+            border: 0;
+            padding: 15px 20px;
+            border-radius: 18px;
+            font-weight: 800;
+            color: #fff;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            box-shadow: 0 18px 30px var(--primary-glow);
+            transition: 0.25s ease;
+        }
+
+        .save-btn:hover { transform: translateY(-2px); }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 18px;
+            color: var(--gray-4);
+            font-size: 12px;
+        }
+
+        .notification-toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            background: var(--card-bg);
+            color: var(--gray-1);
+            border: 1px solid var(--line);
+            box-shadow: var(--shadow-md);
+            padding: 14px 16px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: toastIn 0.28s ease;
+        }
+
+        html[dir="rtl"] .notification-toast {
+            right: auto;
+            left: 20px;
+        }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 980px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-panel {
+                position: static;
+            }
+
+            .hero-inner {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 680px) {
+            .page-shell {
+                width: min(100% - 18px, 1000px);
+            }
+
+            .hero {
+                padding: 14px;
+                border-radius: 24px;
+            }
+
+            .hero-inner {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .hero-title-wrap {
+                justify-content: flex-start;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bottom-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .setting-row {
+                align-items: flex-start;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'assets/css/responsive-guard.css' %}">
+</head>
+<body>
+    <div class="page-shell">
+        <header class="hero">
+            <div class="hero-inner">
+                <a href="{% url 'patient_dashboard' %}" class="back-link" id="backLink">
+                    <i class="bi bi-arrow-left"></i>
+                    <span id="backText">Retour</span>
+                </a>
+
+                <div class="hero-title-wrap">
+                    <div class="hero-badge"><i class="bi bi-gear"></i></div>
+                    <div class="hero-title">
+                        <h1 id="pageTitle">Paramètres</h1>
+                        <p id="pageSubtitle">Simple, propre et rapide.</p>
+                    </div>
+                </div>
+
+                <button type="button" class="theme-button" id="themeToggle" aria-label="Basculer le thème">
+                    <i class="bi bi-moon-stars" id="themeIcon"></i>
+                </button>
+            </div>
+        </header>
+
+        <div class="content-grid">
+            <aside class="profile-panel">
+                <div class="profile-top">
+                    <div class="profile-photo" id="profilePhoto" onclick="changeProfilePhoto()">
+                        <i class="bi bi-person-circle"></i>
+                    </div>
+                    <div class="profile-name" id="profileName"></div>
+                    <div class="profile-email" id="profileEmail"></div>
+                </div>
+
+                <div class="profile-mini-stats">
+                    <div class="mini-stat">
+                        <span id="miniLanguageLabel">Langue</span>
+                        <strong id="miniLanguageValue">Français</strong>
+                    </div>
+                    <div class="mini-stat">
+                        <span id="miniThemeLabel">Mode</span>
+                        <strong id="miniThemeValue">Clair</strong>
+                    </div>
+                </div>
+
+                <div class="inline-actions">
+                    <button type="button" class="ghost-btn" id="photoBtn" onclick="changeProfilePhoto()">Changer la photo</button>
+                    <button type="button" class="logout-btn" id="logoutBtnSide" onclick="logout()">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span id="logoutBtnText">Déconnexion</span>
+                    </button>
+                </div>
+            </aside>
+
+            <main class="settings-panel">
+                <section class="settings-card">
+                    <div class="card-header">
+                        <div class="card-icon"><i class="bi bi-person"></i></div>
+                        <h3 id="personalInfoTitle">Informations personnelles</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label id="labelFullName" for="fullName">Nom complet</label>
+                                <input type="text" id="fullName" class="form-control" placeholder="Entrez votre nom complet">
+                            </div>
+                            <div class="form-group">
+                                <label id="labelEmail" for="email">Adresse email</label>
+                                <input type="email" id="email" class="form-control" placeholder="Entrez votre adresse email">
+                            </div>
+                            <div class="form-group">
+                                <label id="labelPhone" for="phone">Téléphone</label>
+                                <input type="tel" id="phone" class="form-control" placeholder="Entrez votre numéro de téléphone">
+                            </div>
+                            <div class="form-group">
+                                <label id="labelTherapist" for="therapist">Thérapeute référent</label>
+                                <input type="text" id="therapist" class="form-control" placeholder="Nom du thérapeute">
+                            </div>
+                            <div class="form-group full">
+                                <label id="labelStartDate" for="startDate">Début de rééducation</label>
+                                <input type="text" id="startDate" class="form-control" placeholder="Date de début">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="settings-card">
+                    <div class="card-header">
+                        <div class="card-icon"><i class="bi bi-sliders2"></i></div>
+                        <h3 id="preferencesTitle">Préférences</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="setting-row">
+                            <div class="setting-copy">
+                                <h4 id="languageTitle">Langue</h4>
+                                <p id="languageDesc">Choisissez votre langue préférée</p>
+                            </div>
+                            <div>
+                                <select id="languageSelect" class="select-control">
+                                    <option value="fr">Français</option>
+                                    <option value="en">English</option>
+                                    <option value="ar">العربية</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="setting-row">
+                            <div class="setting-copy">
+                                <h4 id="darkModeTitle">Thème sombre</h4>
+                                <p id="darkModeDesc">Activer le mode sombre</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="darkModeToggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-row">
+                            <div class="setting-copy">
+                                <h4 id="notificationsTitle">Notifications</h4>
+                                <p id="notificationsDesc">Recevoir des alertes et rappels</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="notificationsToggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="settings-card">
+                    <div class="card-header">
+                        <div class="card-icon"><i class="bi bi-shield-lock"></i></div>
+                        <h3 id="securityTitle">Sécurité</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-grid">
+                            <div class="form-group full">
+                                <label id="currentPasswordLabel" for="currentPassword">Mot de passe actuel</label>
+                                <div class="password-wrapper">
+                                    <input type="password" id="currentPassword" class="form-control" placeholder="••••••••">
+                                    <button type="button" class="toggle-password" onclick="togglePassword('currentPassword', this)" aria-label="Afficher ou masquer le mot de passe">
+                                        <i class="bi bi-eye-slash"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label id="newPasswordLabel" for="newPassword">Nouveau mot de passe</label>
+                                <div class="password-wrapper">
+                                    <input type="password" id="newPassword" class="form-control" placeholder="••••••••">
+                                    <button type="button" class="toggle-password" onclick="togglePassword('newPassword', this)" aria-label="Afficher ou masquer le mot de passe">
+                                        <i class="bi bi-eye-slash"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label id="confirmPasswordLabel" for="confirmPassword">Confirmer le mot de passe</label>
+                                <div class="password-wrapper">
+                                    <input type="password" id="confirmPassword" class="form-control" placeholder="••••••••">
+                                    <button type="button" class="toggle-password" onclick="togglePassword('confirmPassword', this)" aria-label="Afficher ou masquer le mot de passe">
+                                        <i class="bi bi-eye-slash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="bottom-actions">
+                    <button type="button" class="save-btn" id="saveAllBtn" onclick="saveAllSettings()">Enregistrer</button>
+                    <button type="button" class="ghost-btn" id="changePasswordBtn" onclick="changePassword()">Changer le mot de passe</button>
+                </div>
+            </main>
+        </div>
+
+    <div class="footer-note" id="footerText">© 2026 SmartWrist Rehab · Tous droits réservés</div>
+    </div>
+
+    {{ settings_initial|json_script:"patient_settings_initial" }}
+    <script>
+        const DEFAULT_SETTINGS = {
+            fullName: '',
+            email: '',
+            phone: '',
+            therapist: '',
+            startDate: '',
+            language: 'fr',
+            darkMode: false,
+            notifications: true
+        };
+
+        const FALLBACK_PASSWORD = '12345678';
+        let currentLang = 'fr';
+
+        const translations = {
+            fr: {
+                documentTitle: 'Paramètres | SmartWrist Rehab',
+                pageTitle: 'Paramètres',
+                pageSubtitle: 'Simple, propre et rapide.',
+                backText: 'Retour',
+                personalInfoTitle: 'Informations personnelles',
+                preferencesTitle: 'Préférences',
+                securityTitle: 'Sécurité',
+                labelFullName: 'Nom complet',
+                labelEmail: 'Adresse email',
+                labelPhone: 'Téléphone',
+                labelTherapist: 'Thérapeute référent',
+                labelStartDate: 'Début de rééducation',
+                languageTitle: 'Langue',
+                languageDesc: 'Choisissez votre langue préférée',
+                darkModeTitle: 'Thème sombre',
+                darkModeDesc: 'Activer le mode sombre',
+                notificationsTitle: 'Notifications',
+                notificationsDesc: 'Recevoir des alertes et rappels',
+                currentPasswordLabel: 'Mot de passe actuel',
+                newPasswordLabel: 'Nouveau mot de passe',
+                confirmPasswordLabel: 'Confirmer le mot de passe',
+                changePasswordBtn: 'Changer le mot de passe',
+                saveAllBtn: 'Enregistrer',
+                photoBtn: 'Changer la photo',
+                logoutBtnText: 'Déconnexion',
+                footerText: '© 2026 SmartWrist Rehab · Tous droits réservés',
+                fullNamePlaceholder: 'Entrez votre nom complet',
+                emailPlaceholder: 'Entrez votre adresse email',
+                phonePlaceholder: 'Entrez votre numéro de téléphone',
+                therapistPlaceholder: 'Nom du thérapeute',
+                startDatePlaceholder: 'Date de début',
+                profileFallbackName: '',
+                profileFallbackEmail: '',
+                miniLanguageLabel: 'Langue',
+                miniThemeLabel: 'Mode',
+                themeLight: 'Clair',
+                themeDark: 'Sombre',
+                langValue_fr: 'Français',
+                langValue_en: 'Anglais',
+                langValue_ar: 'Arabe',
+                settingsSaved: '✅ Paramètres enregistrés avec succès',
+                notificationsEnabled: '🔔 Notifications activées',
+                notificationsDisabled: '🔕 Notifications désactivées',
+                fillAllFields: '⚠️ Veuillez remplir tous les champs',
+                passwordMismatch: '❌ Les mots de passe ne correspondent pas',
+                currentPasswordIncorrect: '❌ Mot de passe actuel incorrect',
+                passwordChanged: '🔐 Mot de passe modifié avec succès',
+                deleteConfirm: '⚠️ Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.',
+                accountDeleted: '🗑️ Compte supprimé avec succès',
+                logoutConfirm: 'Voulez-vous vraiment vous déconnecter ?',
+                logoutMessage: '👋 Déconnexion en cours...'
+            },
+            en: {
+                documentTitle: 'Settings | SmartWrist Rehab',
+                pageTitle: 'Settings',
+                pageSubtitle: 'Simple, clean and fast.',
+                backText: 'Back',
+                personalInfoTitle: 'Personal information',
+                preferencesTitle: 'Preferences',
+                securityTitle: 'Security',
+                labelFullName: 'Full name',
+                labelEmail: 'Email address',
+                labelPhone: 'Phone',
+                labelTherapist: 'Assigned therapist',
+                labelStartDate: 'Rehabilitation start date',
+                languageTitle: 'Language',
+                languageDesc: 'Choose your preferred language',
+                darkModeTitle: 'Dark mode',
+                darkModeDesc: 'Enable dark mode',
+                notificationsTitle: 'Notifications',
+                notificationsDesc: 'Receive alerts and reminders',
+                currentPasswordLabel: 'Current password',
+                newPasswordLabel: 'New password',
+                confirmPasswordLabel: 'Confirm password',
+                changePasswordBtn: 'Change password',
+                saveAllBtn: 'Save',
+                photoBtn: 'Change photo',
+                logoutBtnText: 'Log out',
+                footerText: '© 2026 SmartWrist Rehab · Tous droits réservés',
+                fullNamePlaceholder: 'Enter your full name',
+                emailPlaceholder: 'Enter your email address',
+                phonePlaceholder: 'Enter your phone number',
+                therapistPlaceholder: 'Therapist name',
+                startDatePlaceholder: 'Start date',
+                profileFallbackName: '',
+                profileFallbackEmail: '',
+                miniLanguageLabel: 'Language',
+                miniThemeLabel: 'Mode',
+                themeLight: 'Light',
+                themeDark: 'Dark',
+                langValue_fr: 'French',
+                langValue_en: 'English',
+                langValue_ar: 'Arabic',
+                settingsSaved: '✅ Settings saved successfully',
+                notificationsEnabled: '🔔 Notifications enabled',
+                notificationsDisabled: '🔕 Notifications disabled',
+                fillAllFields: '⚠️ Please fill in all fields',
+                passwordMismatch: '❌ Passwords do not match',
+                currentPasswordIncorrect: '❌ Current password is incorrect',
+                passwordChanged: '🔐 Password changed successfully',
+                deleteConfirm: '⚠️ Are you sure you want to delete your account? This action cannot be undone.',
+                accountDeleted: '🗑️ Account deleted successfully',
+                logoutConfirm: 'Do you really want to log out?',
+                logoutMessage: '👋 Logging out...'
+            },
+            ar: {
+                documentTitle: 'الإعدادات | SmartWrist Rehab',
+                pageTitle: 'الإعدادات',
+                pageSubtitle: 'بسيطة وأنيقة وسريعة.',
+                backText: 'رجوع',
+                personalInfoTitle: 'المعلومات الشخصية',
+                preferencesTitle: 'التفضيلات',
+                securityTitle: 'الأمان',
+                labelFullName: 'الاسم الكامل',
+                labelEmail: 'البريد الإلكتروني',
+                labelPhone: 'الهاتف',
+                labelTherapist: 'المعالج المرجعي',
+                labelStartDate: 'بداية إعادة التأهيل',
+                languageTitle: 'اللغة',
+                languageDesc: 'اختر لغتك المفضلة',
+                darkModeTitle: 'الوضع الداكن',
+                darkModeDesc: 'تفعيل الوضع الداكن',
+                notificationsTitle: 'الإشعارات',
+                notificationsDesc: 'استقبال التنبيهات والتذكيرات',
+                currentPasswordLabel: 'كلمة المرور الحالية',
+                newPasswordLabel: 'كلمة المرور الجديدة',
+                confirmPasswordLabel: 'تأكيد كلمة المرور',
+                changePasswordBtn: 'تغيير كلمة المرور',
+                saveAllBtn: 'حفظ',
+                photoBtn: 'تغيير الصورة',
+                logoutBtnText: 'تسجيل الخروج',
+                footerText: '© 2026 SmartWrist Rehab · Tous droits réservés',
+                fullNamePlaceholder: 'أدخل اسمك الكامل',
+                emailPlaceholder: 'أدخل بريدك الإلكتروني',
+                phonePlaceholder: 'أدخل رقم الهاتف',
+                therapistPlaceholder: 'اسم المعالج',
+                startDatePlaceholder: 'تاريخ البداية',
+                profileFallbackName: '',
+                profileFallbackEmail: '',
+                miniLanguageLabel: 'اللغة',
+                miniThemeLabel: 'الوضع',
+                themeLight: 'فاتح',
+                themeDark: 'داكن',
+                langValue_fr: 'الفرنسية',
+                langValue_en: 'الإنجليزية',
+                langValue_ar: 'العربية',
+                settingsSaved: '✅ تم حفظ الإعدادات بنجاح',
+                notificationsEnabled: '🔔 تم تفعيل الإشعارات',
+                notificationsDisabled: '🔕 تم إيقاف الإشعارات',
+                fillAllFields: '⚠️ يرجى ملء جميع الحقول',
+                passwordMismatch: '❌ كلمتا المرور غير متطابقتين',
+                currentPasswordIncorrect: '❌ كلمة المرور الحالية غير صحيحة',
+                passwordChanged: '🔐 تم تغيير كلمة المرور بنجاح',
+                deleteConfirm: '⚠️ هل أنت متأكد من حذف الحساب؟ هذا الإجراء غير قابل للتراجع.',
+                accountDeleted: '🗑️ تم حذف الحساب بنجاح',
+                logoutConfirm: 'هل تريد حقًا تسجيل الخروج؟',
+                logoutMessage: '👋 جارٍ تسجيل الخروج...'
+            }
+        };
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function getInitialSettings() {
+            const script = document.getElementById('patient_settings_initial');
+            if (!script) return {};
+            try {
+                return JSON.parse(script.textContent || '{}');
+            } catch (e) {
+                return {};
+            }
+        }
+
+        function getStoredSettings() {
+            let local = {};
+            try {
+                local = JSON.parse(localStorage.getItem('patient_settings') || '{}') || {};
+            } catch (e) {
+                local = {};
+            }
+            return { ...DEFAULT_SETTINGS, ...getInitialSettings(), ...local };
+        }
+
+        async function postJson(url, payload) {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify(payload || {})
+            });
+            const data = await response.json().catch(() => ({}));
+            if (!response.ok || data.success === false) {
+                throw new Error(data.error || 'Erreur serveur');
+            }
+            return data;
+        }
+
+        function getCurrentText() {
+            return translations[currentLang] || translations.fr;
+        }
+
+        function updateProfileHeader() {
+            const t = getCurrentText();
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const language = document.getElementById('languageSelect').value;
+            const darkMode = document.getElementById('darkModeToggle').checked;
+
+            document.getElementById('profileName').textContent = fullName || t.profileFallbackName;
+            document.getElementById('profileEmail').textContent = email || t.profileFallbackEmail;
+            document.getElementById('miniLanguageValue').textContent = t[`langValue_${language}`] || t.langValue_fr;
+            document.getElementById('miniThemeValue').textContent = darkMode ? t.themeDark : t.themeLight;
+        }
+
+        function applyTranslations(lang) {
+            const t = translations[lang] || translations.fr;
+            currentLang = lang;
+
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            document.title = t.documentTitle;
+
+            const textMap = {
+                backText: 'backText',
+                pageTitle: 'pageTitle',
+                pageSubtitle: 'pageSubtitle',
+                personalInfoTitle: 'personalInfoTitle',
+                preferencesTitle: 'preferencesTitle',
+                securityTitle: 'securityTitle',
+                labelFullName: 'labelFullName',
+                labelEmail: 'labelEmail',
+                labelPhone: 'labelPhone',
+                labelTherapist: 'labelTherapist',
+                labelStartDate: 'labelStartDate',
+                languageTitle: 'languageTitle',
+                languageDesc: 'languageDesc',
+                darkModeTitle: 'darkModeTitle',
+                darkModeDesc: 'darkModeDesc',
+                notificationsTitle: 'notificationsTitle',
+                notificationsDesc: 'notificationsDesc',
+                currentPasswordLabel: 'currentPasswordLabel',
+                newPasswordLabel: 'newPasswordLabel',
+                confirmPasswordLabel: 'confirmPasswordLabel',
+                changePasswordBtn: 'changePasswordBtn',
+                saveAllBtn: 'saveAllBtn',
+                photoBtn: 'photoBtn',
+                logoutBtnText: 'logoutBtnText',
+                footerText: 'footerText',
+                miniLanguageLabel: 'miniLanguageLabel',
+                miniThemeLabel: 'miniThemeLabel'
+            };
+
+            Object.entries(textMap).forEach(([id, key]) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = t[key];
+            });
+
+            document.getElementById('fullName').placeholder = t.fullNamePlaceholder;
+            document.getElementById('email').placeholder = t.emailPlaceholder;
+            document.getElementById('phone').placeholder = t.phonePlaceholder;
+            document.getElementById('therapist').placeholder = t.therapistPlaceholder;
+            document.getElementById('startDate').placeholder = t.startDatePlaceholder;
+            document.getElementById('languageSelect').value = lang;
+
+            const backIcon = document.querySelector('#backLink i');
+            backIcon.className = lang === 'ar' ? 'bi bi-arrow-right' : 'bi bi-arrow-left';
+
+            updateProfileHeader();
+        }
+
+        function applyTheme(isDark) {
+            document.body.classList.toggle('dark-mode', Boolean(isDark));
+            document.getElementById('darkModeToggle').checked = Boolean(isDark);
+            const icon = document.getElementById('themeIcon');
+            icon.className = isDark ? 'bi bi-brightness-high' : 'bi bi-moon-stars';
+            updateProfileHeader();
+        }
+
+        async function loadUserData() {
+            let settings = getStoredSettings();
+            try {
+                const data = await fetch("{% url 'patient_settings_api' %}", { credentials: 'same-origin' }).then(r => r.json());
+                if (data.success && data.settings) {
+                    settings = { ...settings, ...data.settings };
+                    localStorage.setItem('patient_settings', JSON.stringify(settings));
+                }
+            } catch (error) {
+                console.warn('Paramètres serveur indisponibles, lecture locale.', error);
+            }
+            currentLang = settings.language || 'fr';
+
+            document.getElementById('fullName').value = settings.fullName || '';
+            document.getElementById('email').value = settings.email || '';
+            document.getElementById('phone').value = settings.phone || '';
+            document.getElementById('therapist').value = settings.therapist || '';
+            document.getElementById('startDate').value = settings.startDate || '';
+            document.getElementById('notificationsToggle').checked = settings.notifications;
+            document.getElementById('languageSelect').value = currentLang;
+
+            applyTheme(Boolean(settings.darkMode));
+            applyTranslations(currentLang);
+        }
+
+        async function saveAllSettings(options = {}) {
+            const shouldNotify = options.notify !== false;
+            const settings = {
+                fullName: document.getElementById('fullName').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                therapist: document.getElementById('therapist').value.trim(),
+                startDate: document.getElementById('startDate').value.trim(),
+                language: document.getElementById('languageSelect').value,
+                darkMode: document.getElementById('darkModeToggle').checked,
+                notifications: document.getElementById('notificationsToggle').checked
+            };
+
+            try {
+                const data = await postJson("{% url 'patient_settings_api' %}", settings);
+                const savedSettings = data.settings || settings;
+                localStorage.setItem('patient_settings', JSON.stringify(savedSettings));
+                currentLang = savedSettings.language;
+                applyTheme(savedSettings.darkMode);
+                applyTranslations(currentLang);
+                if (shouldNotify) {
+                    showNotification(getCurrentText().settingsSaved);
+                }
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+
+        function togglePassword(inputId, button) {
+            const input = document.getElementById(inputId);
+            const icon = button.querySelector('i');
+            const visible = input.type === 'password';
+            input.type = visible ? 'text' : 'password';
+            icon.className = visible ? 'bi bi-eye' : 'bi bi-eye-slash';
+        }
+
+        async function changePassword() {
+            const t = getCurrentText();
+            const currentPwd = document.getElementById('currentPassword').value.trim();
+            const newPwd = document.getElementById('newPassword').value.trim();
+            const confirmPwd = document.getElementById('confirmPassword').value.trim();
+
+            if (!currentPwd || !newPwd || !confirmPwd) {
+                alert(t.fillAllFields);
+                return;
+            }
+
+            if (newPwd !== confirmPwd) {
+                alert(t.passwordMismatch);
+                return;
+            }
+
+            try {
+                await postJson("{% url 'patient_change_password_api' %}", {
+                    currentPassword: currentPwd,
+                    newPassword: newPwd,
+                    confirmPassword: confirmPwd
+                });
+                document.getElementById('currentPassword').value = '';
+                document.getElementById('newPassword').value = '';
+                document.getElementById('confirmPassword').value = '';
+                document.querySelectorAll('.toggle-password i').forEach(icon => icon.className = 'bi bi-eye-slash');
+                document.getElementById('currentPassword').type = 'password';
+                document.getElementById('newPassword').type = 'password';
+                document.getElementById('confirmPassword').type = 'password';
+                showNotification(t.passwordChanged);
+            } catch (error) {
+                alert(error.message || t.currentPasswordIncorrect);
+            }
+        }
+
+        async function deleteAccount() {
+            const t = getCurrentText();
+            if (!confirm(t.deleteConfirm)) return;
+
+            try {
+                await postJson("{% url 'patient_delete_own_account_api' %}", {});
+                localStorage.removeItem('patient_settings');
+                localStorage.removeItem('patient_photo');
+                localStorage.removeItem('patient_password');
+                showNotification(t.accountDeleted);
+                setTimeout(() => {
+                    window.location.href = "{% url 'login' %}";
+                }, 900);
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+
+        function logout() {
+            const t = getCurrentText();
+            if (!confirm(t.logoutConfirm)) return;
+
+            showNotification(t.logoutMessage);
+
+            setTimeout(() => {
+                window.location.href = "{% url 'logout' %}";
+            }, 1000);
+        }
+
+        function changeProfilePhoto() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = (e) => {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const photoUrl = ev.target.result;
+                    localStorage.setItem('patient_photo', photoUrl);
+                    document.querySelectorAll('.profile-photo').forEach(el => {
+                        el.style.backgroundImage = `url(${photoUrl})`;
+                        el.innerHTML = '';
+                    });
+                };
+                reader.readAsDataURL(file);
+            };
+            input.click();
+        }
+
+        function loadSavedPhoto() {
+            const savedPhoto = localStorage.getItem('patient_photo');
+            if (!savedPhoto) return;
+            document.querySelectorAll('.profile-photo').forEach(el => {
+                el.style.backgroundImage = `url(${savedPhoto})`;
+                el.innerHTML = '';
+            });
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification-toast';
+            notification.innerHTML = `<i class="bi bi-check-circle-fill"></i><span>${message}</span>`;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 2600);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSavedPhoto();
+            loadUserData();
+
+            document.getElementById('languageSelect').addEventListener('change', (e) => {
+                const settings = getStoredSettings();
+                settings.language = e.target.value;
+                localStorage.setItem('patient_settings', JSON.stringify(settings));
+                applyTranslations(e.target.value);
+                saveAllSettings({ notify: false });
+            });
+
+            document.getElementById('themeToggle').addEventListener('click', () => {
+                const isDark = !document.body.classList.contains('dark-mode');
+                const settings = getStoredSettings();
+                settings.darkMode = isDark;
+                localStorage.setItem('patient_settings', JSON.stringify(settings));
+                applyTheme(isDark);
+                saveAllSettings({ notify: false });
+            });
+
+            document.getElementById('darkModeToggle').addEventListener('change', (e) => {
+                const settings = getStoredSettings();
+                settings.darkMode = e.target.checked;
+                localStorage.setItem('patient_settings', JSON.stringify(settings));
+                applyTheme(e.target.checked);
+                saveAllSettings({ notify: false });
+                showNotification(e.target.checked ? '🌙' : '☀️');
+            });
+
+            document.getElementById('notificationsToggle').addEventListener('change', (e) => {
+                const settings = getStoredSettings();
+                settings.notifications = e.target.checked;
+                localStorage.setItem('patient_settings', JSON.stringify(settings));
+                saveAllSettings({ notify: false });
+                showNotification(e.target.checked ? getCurrentText().notificationsEnabled : getCurrentText().notificationsDisabled);
+            });
+
+            ['fullName', 'email'].forEach((id) => {
+                document.getElementById(id).addEventListener('input', updateProfileHeader);
+            });
+        });
+    </script>
+</body>
+</html>

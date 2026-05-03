@@ -1,0 +1,1991 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>SmartWrist Rehab · Espace Patient</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary: #2E8B57;
+      --primary-dark: #1f6a43;
+      --primary-light: #e8f3ed;
+      --primary-soft: rgba(46, 139, 87, 0.15);
+      --primary-glow: rgba(46, 139, 87, 0.35);
+      --dark: #0f172a;
+      --gray-1: #1e293b;
+      --gray-2: #334155;
+      --gray-3: #475569;
+      --gray-4: #64748b;
+      --light-1: #f8fafc;
+      --light-2: #f1f5f9;
+      --white: #ffffff;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 10px 28px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 18px 40px rgba(46, 139, 87, 0.15);
+      --shadow-glow: 0 0 25px rgba(46, 139, 87, 0.25);
+      --radius-md: 16px;
+      --radius-lg: 22px;
+      --radius-xl: 30px;
+      --border: 1px solid rgba(46,139,87,0.12);
+      --glass: rgba(255,255,255,0.95);
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: linear-gradient(145deg, #eef2ff 0%, #e0e7ff 100%);
+      color: var(--gray-1);
+      min-height: 100vh;
+    }
+
+    body[dir="rtl"] { font-family: 'Tajawal', sans-serif; }
+
+    body.dark-mode {
+      --primary: #3aa76c;
+      --primary-dark: #2E8B57;
+      --primary-light: #1e3a2e;
+      --primary-soft: rgba(58, 167, 108, 0.2);
+      --primary-glow: rgba(58, 167, 108, 0.35);
+      --dark: #e2e8f0;
+      --gray-1: #f1f5f9;
+      --gray-2: #cbd5e1;
+      --gray-3: #94a3b8;
+      --gray-4: #64748b;
+      --light-1: #1e293b;
+      --light-2: #0f172a;
+      --white: #0f172a;
+      --border: 1px solid rgba(58, 167, 108, 0.2);
+      --glass: rgba(15, 23, 42, 0.85);
+      background: linear-gradient(145deg, #0f172a, #1e293b);
+    }
+
+    .app { display: flex; min-height: 100vh; }
+
+    .sidebar {
+      width: 260px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(14px);
+      padding: 18px 14px;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+      box-shadow: 8px 0 24px rgba(0,0,0,0.05);
+      border-right: var(--border);
+      z-index: 100;
+      transition: all .32s ease;
+    }
+
+    body.dark-mode .sidebar { background: rgba(15, 23, 42, 0.9); }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 22px;
+      padding: 8px 10px;
+      background: linear-gradient(145deg, var(--primary-light), var(--white));
+      border-radius: var(--radius-md);
+      border: var(--border);
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 800;
+      color: white;
+      box-shadow: 0 6px 12px var(--primary-glow);
+    }
+
+    .logo-text { font-weight: 700; font-size: 17px; color: var(--primary-dark); }
+    .logo-sub { font-size: 11px; color: var(--gray-3); }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      color: var(--gray-2);
+      margin-bottom: 5px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all .24s ease;
+      position: relative;
+    }
+
+    .nav-item:hover { background: var(--primary-light); color: var(--primary); transform: translateX(3px); }
+    .nav-item.active { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; box-shadow: 0 4px 12px var(--primary-glow); }
+    .nav-icon { width: 22px; font-size: 17px; }
+    .nav-badge {
+      position: absolute;
+      right: 12px;
+      background: var(--primary);
+      color: white;
+      border-radius: 20px;
+      padding: 2px 8px;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .main {
+      flex: 1;
+      margin-left: 260px;
+      padding: 18px 22px 26px;
+      max-width: calc(100vw - 260px);
+    }
+
+    .top-bar {
+      background: var(--glass);
+      backdrop-filter: blur(14px);
+      border-radius: 22px;
+      padding: 10px 18px;
+      margin-bottom: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow-md);
+      border: var(--border);
+      position: sticky;
+      top: 14px;
+      z-index: 30;
+    }
+
+    .page-title { display: flex; align-items: center; gap: 10px; }
+    .page-title h1 { font-size: 21px; font-weight: 700; color: var(--gray-1); }
+
+    .menu-toggle { display: none; font-size: 22px; cursor: pointer; color: var(--primary); }
+
+    .lang-selector {
+      display: flex;
+      gap: 6px;
+      background: var(--light-2);
+      padding: 4px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,.18);
+    }
+
+    .lang-option {
+      padding: 5px 13px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 13px;
+      transition: all .25s ease;
+    }
+
+    .lang-option:hover { background: var(--primary-light); color: var(--primary); }
+    .lang-option.active { background: var(--primary); color: white; box-shadow: 0 2px 8px var(--primary-glow); }
+
+    .theme-toggle {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,.9);
+      border: 1px solid rgba(148,163,184,.2);
+      cursor: pointer;
+      color: var(--gray-3);
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-soft), var(--white));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: var(--primary);
+      border: 2px solid white;
+      cursor: pointer;
+      background-size: cover !important;
+      background-position: center !important;
+      background-repeat: no-repeat !important;
+      position: relative;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .delete-photo-btn {
+      position: absolute;
+      bottom: -5px;
+      right: -5px;
+      width: 20px;
+      height: 20px;
+      background: #ef4444;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 10px;
+      cursor: pointer;
+      border: 2px solid white;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .user-avatar:hover .delete-photo-btn,
+    .patient-photo:hover .delete-photo-btn { opacity: 1; }
+
+    .logout-btn {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: var(--gray-3);
+      transition: all .24s ease;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logout-btn:hover { background: #fee2e2; color: #dc2626; }
+
+    .welcome-card {
+      background: var(--glass);
+      backdrop-filter: blur(15px);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      box-shadow: var(--shadow-lg);
+      border: var(--border);
+      margin-bottom: 22px;
+    }
+
+    .patient-photo {
+      width: 86px;
+      height: 86px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-soft), var(--white));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      color: var(--primary);
+      border: 4px solid white;
+      cursor: pointer;
+      background-size: cover !important;
+      background-position: center !important;
+      background-repeat: no-repeat !important;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .welcome-greeting { font-size: 28px; font-weight: 800; margin-bottom: 6px; color: var(--gray-1); }
+    .welcome-greeting span { color: var(--primary); }
+
+    .therapist-message {
+      background: linear-gradient(135deg, var(--primary-light), rgba(255,255,255,.9));
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      margin: 12px 0;
+      border-left: 4px solid var(--primary);
+      font-style: italic;
+      color: var(--gray-2);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .therapist-name { font-weight: 700; margin-top: 6px; color: var(--primary); font-style: normal; }
+
+    .badge-rehab {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      text-align: center;
+      border: var(--border);
+      transition: all 0.3s;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+
+    .stat-value { font-size: 32px; font-weight: 800; color: var(--primary); line-height: 1.2; }
+    .stat-label { font-size: 13px; color: var(--gray-3); font-weight: 600; margin-top: 6px; }
+
+    .info-section {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 22px;
+      border: var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .info-box {
+      background: var(--white);
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(46,139,87,0.1);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+
+    .info-label {
+      font-size: 11px;
+      color: var(--gray-4);
+      text-transform: uppercase;
+      margin-bottom: 5px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .info-value { font-weight: 700; color: var(--gray-1); font-size: 14px; }
+
+    .program-card {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 22px;
+      border: var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--gray-1);
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .program-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .program-date {
+      background: var(--primary-light);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 12px;
+      color: var(--primary);
+    }
+
+    .view-all {
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .24s ease;
+      white-space: nowrap;
+      background: var(--primary-light);
+      padding: 6px 14px;
+      border-radius: 999px;
+    }
+
+    .view-all:hover { background: var(--primary); color: white; transform: translateX(3px); }
+
+    .exercise-list { list-style: none; }
+
+    .exercise-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(148,163,184,.12);
+    }
+
+    .exercise-check {
+      width: 24px;
+      height: 24px;
+      border-radius: 8px;
+      border: 2px solid var(--gray-4);
+      background: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .exercise-check.checked { background: var(--success); border-color: var(--success); }
+    .exercise-check.checked i { color: white; font-size: 14px; }
+
+    .exercise-info { flex: 1; }
+    .exercise-name { font-weight: 700; font-size: 15px; color: var(--gray-1); }
+    .exercise-details { font-size: 12px; color: var(--gray-3); display: flex; gap: 12px; }
+
+    .exercise-video {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      cursor: pointer;
+    }
+
+    .program-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .media-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .24s ease;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px var(--primary-glow); }
+
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid rgba(46,139,87,.4);
+      color: var(--primary);
+    }
+
+    .btn-outline:hover { background: var(--primary-light); transform: translateY(-2px); }
+
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-bottom: 22px;
+    }
+
+    .chart-card {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+      border: var(--border);
+    }
+
+    .chart-title { font-weight: 700; margin-bottom: 12px; display: flex; justify-content: space-between; color: var(--gray-1); font-size: 14px; }
+    .chart-container { height: 150px; }
+
+    .weekly-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .day-card {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius-md);
+      padding: 12px 8px;
+      text-align: center;
+      border: var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .day-name {
+      font-weight: 800;
+      color: var(--primary);
+      font-size: 12px;
+      padding-bottom: 5px;
+      border-bottom: 2px dashed rgba(46,139,87,.2);
+      margin-bottom: 8px;
+    }
+
+    .reminders-section {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 22px;
+      border: var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .reminder-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(148,163,184,.12);
+    }
+
+    .reminder-item:last-child { border-bottom: none; }
+
+    #progressChartsGrid {
+      display: grid;
+    }
+
+    #progressChartsGrid .chart-card:nth-child(n+4) {
+      display: none !important;
+    }
+
+    #view-details-text {
+      display: none !important;
+    }
+    .reminder-time { font-weight: 800; color: var(--primary); min-width: 70px; font-size: 13px; }
+    .reminder-text { flex: 1; font-size: 14px; color: var(--gray-2); }
+    .reminder-badge { background: var(--primary-light); padding: 4px 12px; border-radius: 999px; font-size: 10px; font-weight: 600; color: var(--primary); }
+
+    .self-eval-section {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 22px;
+      border: var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .eval-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin: 16px 0;
+    }
+
+    .eval-item { text-align: center; }
+    .eval-label { font-size: 13px; color: var(--gray-3); margin-bottom: 10px; font-weight: 600; }
+
+    .eval-scale {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin: 8px 0;
+      flex-wrap: wrap;
+    }
+
+    .scale-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--light-2);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      margin: 0 2px;
+      transition: all .22s ease;
+      border: 1px solid var(--gray-4);
+    }
+
+    .scale-dot.selected { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); }
+
+    .stars-selector {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      font-size: 28px;
+    }
+
+    .star {
+      cursor: pointer;
+      transition: all .22s ease;
+      color: #cbd5e1;
+    }
+
+    .star.selected { color: #FFD700; text-shadow: 0 0 5px #FFD700; }
+    .star:hover { transform: scale(1.1); }
+
+    .mood-selector {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      font-size: 32px;
+    }
+
+    .mood-option {
+      cursor: pointer;
+      opacity: .5;
+      transition: all .24s ease;
+    }
+
+    .mood-option.selected { opacity: 1; transform: scale(1.15); }
+
+    .form-input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid rgba(148,163,184,.22);
+      border-radius: 12px;
+      font-size: 14px;
+      resize: vertical;
+      background: var(--white);
+    }
+
+    .quick-question-section {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 22px;
+      border: var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .quick-question-buttons { display: flex; gap: 10px; margin-top: 10px; }
+
+    .tip-card {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      border-radius: var(--radius-md);
+      padding: 18px 22px;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 8px 20px var(--primary-glow);
+    }
+
+    .tip-icon { font-size: 38px; }
+    .tip-content { flex: 1; }
+    .tip-title { font-weight: 800; margin-bottom: 5px; font-size: 16px; }
+
+    .goals-section {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 22px;
+      border: var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .goal-item { margin-bottom: 14px; }
+    .goal-header { display: flex; justify-content: space-between; margin-bottom: 6px; }
+    .goal-name { font-weight: 700; font-size: 14px; color: var(--gray-1); }
+    .goal-percent { color: var(--primary); font-weight: 800; font-size: 13px; }
+
+    .goal-bar {
+      height: 8px;
+      background: var(--light-2);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .goal-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), #43b06f);
+      border-radius: 999px;
+    }
+
+    .challenges-section {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 22px;
+      border: var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .challenge-item { margin-bottom: 14px; }
+    .challenge-header { display: flex; justify-content: space-between; margin-bottom: 6px; }
+    .challenge-name { font-weight: 700; font-size: 14px; color: var(--gray-1); }
+    .challenge-progress { color: var(--primary); font-weight: 800; font-size: 13px; }
+    .challenge-bar {
+      height: 8px;
+      background: var(--light-2);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .challenge-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), #43b06f);
+      border-radius: 999px;
+    }
+
+    .appointment-card {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      margin-bottom: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      border-left: 5px solid var(--primary);
+      border-top: var(--border);
+      border-right: var(--border);
+      border-bottom: var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .appointment-date { font-weight: 800; font-size: 16px; color: var(--gray-1); margin-bottom: 6px; }
+    .appointment-link { color: var(--primary); text-decoration: none; font-weight: 700; }
+
+    .messages-section {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 22px;
+      border: var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .journal-section {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 22px;
+      border: var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .journal-entry {
+      background: var(--white);
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 12px;
+      border: 1px solid rgba(148,163,184,.12);
+    }
+
+    .journal-date { font-weight: 700; color: var(--primary); font-size: 13px; margin-bottom: 8px; }
+
+    .rewards-section {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 22px;
+      border: var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .badges-grid {
+      display: flex;
+      gap: 14px;
+      margin: 14px 0;
+      flex-wrap: wrap;
+    }
+
+    .badge-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-light), var(--white));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: var(--primary);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .streak-counter {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, var(--warning), #fbbf24);
+      color: white;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13px;
+      box-shadow: 0 4px 12px rgba(245,158,11,0.3);
+    }
+
+    .footer {
+      margin-top: 20px;
+      padding: 20px 0;
+      border-top: 1px solid rgba(148,163,184,.15);
+      text-align: center;
+      color: var(--gray-4);
+      font-size: 13px;
+      background: var(--glass);
+      border-radius: var(--radius-lg);
+      margin-bottom: 20px;
+    }
+
+    .floating-buttons {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 100;
+    }
+
+    .float-btn {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      cursor: pointer;
+      transition: all .24s ease;
+      box-shadow: 0 6px 16px var(--primary-glow);
+    }
+
+    .float-btn:hover { transform: scale(1.1); box-shadow: 0 10px 24px var(--primary-glow); }
+    .float-btn.chat { background: linear-gradient(135deg, #10b981, #34d399); }
+
+    @media (max-width: 1200px) {
+      .sidebar { transform: translateX(-100%); position: fixed; z-index: 1000; }
+      .sidebar.active { transform: translateX(0); }
+      .main { margin-left: 0; max-width: 100vw; }
+      .menu-toggle { display: block; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .weekly-grid { grid-template-columns: repeat(4, 1fr); }
+      .eval-grid { grid-template-columns: repeat(2, 1fr); }
+      .info-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 992px) {
+      .charts-grid { grid-template-columns: 1fr; }
+      .weekly-grid { grid-template-columns: repeat(2, 1fr); }
+      .eval-grid { grid-template-columns: 1fr; }
+      .info-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .main { padding: 14px; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .weekly-grid { grid-template-columns: 1fr; }
+      .program-actions, .media-actions { flex-direction: column; }
+      .floating-buttons { bottom: 14px; right: 14px; }
+      .welcome-card { flex-direction: column; text-align: center; }
+      .eval-grid { grid-template-columns: 1fr; }
+      .reminder-item { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .appointment-card { flex-direction: column; align-items: flex-start; }
+    }
+
+    [dir="rtl"] .sidebar { right: 0; left: auto; }
+    [dir="rtl"] .main { margin-left: 0; margin-right: 260px; }
+    [dir="rtl"] .therapist-message { border-left: none; border-right: 4px solid var(--primary); }
+    [dir="rtl"] .appointment-card { border-left: none; border-right: 5px solid var(--primary); }
+
+    @media (max-width: 1200px) { [dir="rtl"] .main { margin-right: 0; } }
+</style>
+<style>
+  .stats-grid,
+  .weekly-section-header,
+  .weekly-grid,
+  .reminders-section,
+  .tip-card,
+  .goals-section,
+  .challenges-section,
+  .rewards-section,
+  .nav-badge {
+    display: none !important;
+  }
+</style>
+    <link rel="stylesheet" href="{% static 'assets/css/responsive-guard.css' %}">
+</head>
+<body>
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <a href="{% url 'patient' %}" class="logo">
+      <div class="logo-icon">SW</div>
+      <div>
+        <div class="logo-text">SmartWrist Rehab</div>
+        <div class="logo-sub" id="sidebar-subtitle">Espace Patient</div>
+      </div>
+    </a>
+    <nav>
+  <a href="{% url 'patient_dashboard' %}" class="nav-item active">
+    <i class="nav-icon bi bi-speedometer2"></i>
+    <span>Tableau de bord</span>
+  </a>
+  
+  <a href="{% url 'patient_programme' %}" class="nav-item">
+    <i class="nav-icon bi bi-calendar-check"></i>
+    <span>Mon programme</span>
+    <span class="nav-badge">3</span>
+</a>
+  
+  <a href="{% url 'patient_progression' %}" class="nav-item">
+    <i class="nav-icon bi bi-graph-up"></i>
+    <span>Ma progression</span>
+  </a>
+  
+  <a href="{% url 'patient_rendezvous' %}" class="nav-item">
+    <i class="nav-icon bi bi-calendar"></i>
+    <span>Rendez-vous</span>
+  </a>
+  
+  <a href="{% url 'patient_messages' %}" class="nav-item">
+    <i class="nav-icon bi bi-chat-dots"></i>
+    <span>Messages</span>
+    <span class="nav-badge">2</span>
+  </a>
+  
+  <a href="{% url 'patient_ressources' %}" class="nav-item">
+    <i class="nav-icon bi bi-book"></i>
+    <span>Ressources</span>
+  </a>
+  
+  <a href="{% url 'patient_parametres' %}" class="nav-item">
+    <i class="nav-icon bi bi-gear"></i>
+    <span>Paramètres</span>
+  </a>
+</nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="top-bar">
+      <div class="page-title">
+        <i class="bi bi-list menu-toggle" id="menuToggle"></i>
+        <h1 id="page-title">Mon espace patient</h1>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div class="lang-selector">
+          <span class="lang-option active" onclick="changeLanguage('fr', this)">FR</span>
+          <span class="lang-option" onclick="changeLanguage('en', this)">EN</span>
+          <span class="lang-option" onclick="changeLanguage('ar', this)">AR</span>
+        </div>
+        <div class="theme-toggle" onclick="toggleDarkMode()">
+          <i class="bi bi-moon-stars" id="theme-icon"></i>
+        </div>
+        <div class="user-avatar" onclick="changeProfilePhoto()" id="userAvatar">
+          <div class="delete-photo-btn" onclick="event.stopPropagation(); deleteProfilePhoto()">✕</div>
+        </div>
+        <span class="user-name" id="user-name">{{ user.prenom }} {{ user.nom }}</span>
+        <button class="logout-btn" onclick="logout()"><i class="bi bi-box-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <!-- WELCOME CARD -->
+    <div class="welcome-card">
+      <div class="patient-photo" onclick="changeProfilePhoto()" id="patientAvatar">
+        <div class="delete-photo-btn" onclick="event.stopPropagation(); deleteProfilePhoto()">✕</div>
+      </div>
+      <div class="welcome-text">
+        <div class="welcome-greeting"><span id="greeting-word">Bonjour</span>, <span id="patient-name">{{ user.prenom }} {{ user.nom }}</span> 👋</div>
+        <script>
+          (function () {
+            function setPatientGreetingNow() {
+              const hour = new Date().getHours();
+              const lang = document.documentElement.lang || 'fr';
+              const words = {
+                fr: hour >= 6 && hour < 18 ? 'Bonjour' : 'Bonsoir',
+                en: hour >= 6 && hour < 18 ? 'Good morning' : 'Good evening',
+                ar: hour >= 6 && hour < 18 ? 'صباح الخير' : 'مساء الخير'
+              };
+              const el = document.getElementById('greeting-word');
+              if (el) el.textContent = words[lang] || words.fr;
+            }
+            setPatientGreetingNow();
+            window.setPatientGreetingNow = setPatientGreetingNow;
+            setInterval(setPatientGreetingNow, 10000);
+          })();
+        </script>
+        <div class="therapist-message" id="therapistMessage">
+          <i class="bi bi-quote"></i>
+          <span id="therapist-quote">Continuez vos efforts, vous faites d'excellents progrès !</span>
+          <div class="therapist-name" id="therapist-name">— Votre thérapeute</div>
+        </div>
+        <div><span class="badge-rehab" id="rehab-badge">Suivi personnalisé</span></div>
+      </div>
+    </div>
+
+    <!-- STATISTIQUES -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="stat-days">J+0</div>
+        <div class="stat-label" id="stat-label-days">Jours de rééducation</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="stat-progress">0%</div>
+        <div class="stat-label" id="stat-label-progress">Progression globale</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="stat-pain">0/10</div>
+        <div class="stat-label" id="stat-label-pain">Douleur moyenne</div>
+      </div>
+    </div>
+
+    <!-- MA FRACTURE -->
+    <div class="info-section">
+      <h3 class="section-title"><i class="bi bi-bandaid"></i> <span id="fracture-title">Ma fracture</span></h3>
+      <div class="info-grid" id="fractureGrid">
+        <div class="info-box"><div class="info-label" id="fracture-type-label">Type</div><div class="info-value" id="fracture-type">-</div></div>
+        <div class="info-box"><div class="info-label" id="fracture-date-label">Date</div><div class="info-value" id="fracture-date">-</div></div>
+        <div class="info-box"><div class="info-label" id="fracture-side-label">Membre</div><div class="info-value" id="fracture-side">-</div></div>
+        <div class="info-box"><div class="info-label" id="fracture-treatment-label">Traitement</div><div class="info-value" id="fracture-treatment">-</div></div>
+        <div class="info-box"><div class="info-label" id="fracture-start-label">Début rééducation</div><div class="info-value" id="fracture-start">-</div></div>
+      </div>
+    </div>
+
+    <!-- PROGRAMME DU JOUR AVEC "VOIR TOUT" -->
+    <div class="program-card">
+      <div class="program-header">
+        <h3 class="section-title"><i class="bi bi-calendar-day"></i> <span id="program-title">Mon programme aujourd'hui</span></h3>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <span class="program-date" id="program-date"></span>
+          <span class="view-all" onclick="showSection('program', this)"><span id="view-all-text">Voir tout →</span></span>
+        </div>
+      </div>
+      <ul class="exercise-list" id="exerciseList"></ul>
+      <div class="program-actions">
+        <button class="btn btn-primary" onclick="startSession()"><i class="bi bi-play-circle"></i> <span id="start-session-btn">Démarrer la séance</span></button>
+        <button class="btn btn-outline" onclick="viewAllExercises()"><span id="view-all-exercises-btn">Voir tous les exercices</span></button>
+      </div>
+      <div class="media-actions">
+        <button class="btn btn-outline" onclick="sendMediaToTherapist('video')"><i class="bi bi-camera-video"></i> <span id="send-video-btn">Envoyer une vidéo</span></button>
+        <button class="btn btn-outline" onclick="sendMediaToTherapist('photo')"><i class="bi bi-camera"></i> <span id="send-photo-btn">Envoyer une photo</span></button>
+      </div>
+    </div>
+
+    <!-- RESSENTIS -->
+    <div class="section-header" style="display:flex; justify-content:space-between; margin:20px 0 14px;">
+      <h3 class="section-title"><i class="bi bi-graph-up"></i> <span id="progress-title">Ma progression</span></h3>
+      <span class="view-all" onclick="viewFullProgress()"><span id="view-details-text">Voir détails →</span></span>
+    </div>
+    <div class="reminders-list" id="feelingsDaysDashboard"></div>
+    <div class="charts-grid" id="progressChartsGrid">
+      <div class="chart-card"><div class="chart-title"><span id="pain-chart-title">Évolution de la douleur</span></div><div class="chart-container"><canvas id="painChart"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title"><span id="mood-chart-title">Évolution de l'humeur</span></div><div class="chart-container"><canvas id="moodChart"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title"><span id="mobility-chart-title">Évolution satisfaction</span></div><div class="chart-container"><canvas id="mobilityChart"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title"><span id="strength-chart-title">Évolution de la force</span></div><div class="chart-container"><canvas id="strengthChart"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title"><span id="endurance-chart-title">Évolution de l'endurance</span></div><div class="chart-container"><canvas id="enduranceChart"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title"><span id="dexterity-chart-title">Évolution de la dextérité</span></div><div class="chart-container"><canvas id="dexterityChart"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title"><span id="sensitivity-chart-title">Évolution de la sensibilité</span></div><div class="chart-container"><canvas id="sensitivityChart"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title"><span id="grip-chart-title">Évolution de la préhension</span></div><div class="chart-container"><canvas id="gripChart"></canvas></div></div>
+    </div>
+
+    <!-- CALENDRIER HEBDOMADAIRE -->
+    <div class="section-header weekly-section-header" style="display:flex; justify-content:space-between; margin:20px 0 14px;">
+      <h3 class="section-title"><i class="bi bi-calendar-week"></i> <span id="week-title">Cette semaine</span></h3>
+      <span class="view-all" onclick="viewFullWeek()"><span id="view-full-week-text">Voir semaine complète →</span></span>
+    </div>
+    <div class="weekly-grid" id="weeklyGrid"></div>
+
+    <!-- RAPPELS -->
+    <div class="reminders-section">
+      <h3 class="section-title"><i class="bi bi-bell"></i> <span id="reminders-title">Rappels</span></h3>
+      <div id="remindersList"></div>
+      <button class="btn btn-outline" style="margin-top:14px; width:100%;" onclick="configureReminders()"><span id="configure-reminders-btn">Configurer mes rappels</span></button>
+    </div>
+
+    <!-- AUTO-ÉVALUATION AVEC ÉTOILES -->
+    <div class="self-eval-section">
+      <h3 class="section-title"><i class="bi bi-pencil-square"></i> <span id="self-eval-title">Comment vous sentez-vous aujourd'hui ?</span></h3>
+      <div class="eval-grid">
+        <div class="eval-item">
+          <div class="eval-label" id="pain-eval-label">Douleur (0-10)</div>
+          <div class="eval-scale" id="painScale"></div>
+        </div>
+        <div class="eval-item">
+          <div class="eval-label" id="fatigue-eval-label">Fatigue (1-5)</div>
+          <div class="eval-scale" id="fatigueScale"></div>
+        </div>
+        <div class="eval-item">
+          <div class="eval-label" id="mood-eval-label">Humeur</div>
+          <div class="mood-selector">
+            <span class="mood-option" onclick="selectMood('happy', this)">😊</span>
+            <span class="mood-option" onclick="selectMood('neutral', this)">😐</span>
+            <span class="mood-option" onclick="selectMood('sad', this)">☹️</span>
+          </div>
+        </div>
+        <div class="eval-item">
+          <div class="eval-label" id="satisfaction-eval-label">Satisfaction</div>
+          <div class="stars-selector" id="starsSelector"></div>
+        </div>
+      </div>
+      <textarea class="form-input" rows="2" id="eval-notes" placeholder="Difficultés rencontrées aujourd'hui..."></textarea>
+      <button class="btn btn-primary" onclick="saveEvaluation()" style="margin-top:14px; width:100%;"><span id="save-eval-btn">Enregistrer mon évaluation</span></button>
+    </div>
+
+    <!-- QUESTION DU JOUR -->
+    <div class="quick-question-section">
+      <h3 class="section-title"><i class="bi bi-question-circle"></i> <span id="daily-question-title">Question du jour</span></h3>
+      <p style="margin:10px 0; font-weight:500;" id="dailyQuestion">-</p>
+      <div class="quick-question-buttons" id="dailyQuestionButtons">
+        <button class="btn btn-primary" style="flex:1;" onclick="answerDailyQuestion('oui')"><span id="yes-btn">Oui</span></button>
+        <button class="btn btn-outline" style="flex:1;" onclick="answerDailyQuestion('non')"><span id="no-btn">Non</span></button>
+      </div>
+    </div>
+
+    <!-- CONSEIL DU JOUR -->
+    <div class="tip-card">
+      <div class="tip-icon">💡</div>
+      <div class="tip-content">
+        <div class="tip-title"><span id="daily-tip-title">Conseil du jour</span></div>
+        <div id="dailyTip">-</div>
+      </div>
+    </div>
+
+    <!-- OBJECTIFS -->
+    <div class="goals-section">
+      <h3 class="section-title"><i class="bi bi-bullseye"></i> <span id="goals-title">Mes objectifs</span></h3>
+      <div id="goalsList"></div>
+    </div>
+
+    <!-- DÉFIS -->
+    <div class="challenges-section">
+      <h3 class="section-title"><i class="bi bi-trophy"></i> <span id="challenges-title">Défis de la semaine</span></h3>
+      <div id="challengesList"></div>
+    </div>
+
+    <!-- PROCHAIN SUIVI -->
+    <div class="appointment-card">
+      <div>
+        <div class="appointment-date" id="nextAppointmentDate">Prochain suivi: -</div>
+        <div><span class="appointment-type" id="nextAppointmentType">-</span></div>
+      </div>
+      <a href="#" class="appointment-link" id="nextAppointmentLink"><span id="details-link">Détails →</span></a>
+    </div>
+
+    <!-- MESSAGES -->
+    <div class="messages-section">
+      <div style="display:flex; justify-content:space-between; margin-bottom:14px;">
+        <h3 class="section-title"><i class="bi bi-chat-dots"></i> <span id="messages-title">Derniers messages</span></h3>
+        <span class="view-all" onclick="viewAllMessages()"><span id="view-all-messages-text">Voir tous →</span></span>
+      </div>
+      <div id="recentMessages"></div>
+    </div>
+
+    <!-- JOURNAL -->
+    <div class="journal-section">
+      <div style="display:flex; justify-content:space-between; margin-bottom:14px;">
+        <h3 class="section-title"><i class="bi bi-journal"></i> <span id="journal-title">Mon journal</span></h3>
+        <button class="btn btn-outline" style="padding:5px 12px;" onclick="addJournalEntry()"><span id="add-journal-btn">+ Ajouter</span></button>
+      </div>
+      <div id="journalEntries"></div>
+    </div>
+
+    <!-- RÉCOMPENSES -->
+    <div class="rewards-section">
+      <div style="display:flex; justify-content:space-between; margin-bottom:14px;">
+        <h3 class="section-title"><i class="bi bi-award"></i> <span id="rewards-title">Mes récompenses</span></h3>
+        <span class="view-all" onclick="viewAllRewards()"><span id="view-all-rewards-text">Voir tout →</span></span>
+      </div>
+      <div class="badges-grid" id="badgesGrid"></div>
+      <div class="streak-counter" id="streakCounter"><i class="bi bi-fire"></i> <span id="streak-text">0 jours d'affilée</span></div>
+    </div>
+
+    <footer class="footer">
+      <p>© 2026 SmartWrist Rehab · <span id="footer-rights">Tous droits réservés</span></p>
+    </footer>
+
+    <div class="floating-buttons">
+      <div class="float-btn" onclick="startSession()"><i class="bi bi-play-circle"></i></div>
+      <div class="float-btn chat" onclick="openChat()"><i class="bi bi-chat"></i></div>
+      <div class="float-btn" onclick="sendMediaToTherapist('video')"><i class="bi bi-camera-video"></i></div>
+    </div>
+  </main>
+</div>
+
+{{ dashboard_data|json_script:"patient-dashboard-data" }}
+<script>
+  let selectedPain = null;
+  let selectedFatigue = null;
+  let selectedMood = null;
+  let selectedStars = 0;
+
+  // Dictionnaire complet des traductions (3 langues)
+  const translations = {
+    fr: {
+      sidebarSubtitle: 'Espace Patient',
+      menuDashboard: 'Tableau de bord',
+      menuProgram: 'Mon programme',
+      menuProgress: 'Ma progression',
+      menuAppointments: 'Rendez-vous',
+      menuMessages: 'Messages',
+      menuResources: 'Ressources',
+      menuSettings: 'Paramètres',
+      pageTitle: 'Mon espace patient',
+      rehabBadge: 'Suivi personnalisé',
+      statDays: 'Jours de rééducation',
+      statProgress: 'Progression globale',
+      statPain: 'Douleur moyenne',
+      fractureTitle: 'Ma fracture',
+      fractureType: 'Type',
+      fractureDate: 'Date',
+      fractureSide: 'Membre',
+      fractureTreatment: 'Traitement',
+      fractureStart: 'Début rééducation',
+      programTitle: 'Mon programme aujourd\'hui',
+      viewAll: 'Voir tout →',
+      startSession: 'Démarrer la séance',
+      viewAllExercises: 'Voir tous les exercices',
+      sendVideo: 'Envoyer une vidéo',
+      sendPhoto: 'Envoyer une photo',
+      progressTitle: 'Mes ressentis',
+      viewDetails: 'Voir détails →',
+      painChart: 'Évolution de la douleur',
+      moodChart: 'Évolution de l\'humeur',
+      mobilityChart: 'Évolution satisfaction',
+      strengthChart: 'Évolution de la force',
+      enduranceChart: 'Évolution de l\'endurance',
+      dexterityChart: 'Évolution de la dextérité',
+      sensitivityChart: 'Évolution de la sensibilité',
+      gripChart: 'Évolution de la préhension',
+      weekTitle: 'Cette semaine',
+      viewFullWeek: 'Voir semaine complète →',
+      remindersTitle: 'Rappels',
+      configureReminders: 'Configurer mes rappels',
+      selfEvalTitle: 'Comment vous sentez-vous aujourd\'hui ?',
+      painEval: 'Douleur (0-10)',
+      fatigueEval: 'Fatigue (1-5)',
+      moodEval: 'Humeur',
+      satisfactionEval: 'Satisfaction',
+      saveEval: 'Enregistrer mon évaluation',
+      dailyQuestionTitle: 'Question du jour',
+      yes: 'Oui',
+      no: 'Non',
+      dailyTipTitle: 'Conseil du jour',
+      goalsTitle: 'Mes objectifs',
+      challengesTitle: 'Défis de la semaine',
+      nextAppointment: 'Prochain suivi: -',
+      details: 'Détails →',
+      messagesTitle: 'Derniers messages',
+      viewAllMessages: 'Voir tous →',
+      journalTitle: 'Mon journal',
+      addJournal: '+ Ajouter',
+      rewardsTitle: 'Mes récompenses',
+      viewAllRewards: 'Voir tout →',
+      streakText: '0 jours d\'affilée',
+      footerRights: 'Tous droits réservés',
+      therapistMessage: 'Continuez vos efforts, vous faites d\'excellents progrès !',
+      therapistName: '— Votre thérapeute',
+      greetingMorning: 'Bonjour',
+      greetingEvening: 'Bonsoir'
+    },
+    en: {
+      sidebarSubtitle: 'Patient Space',
+      menuDashboard: 'Dashboard',
+      menuProgram: 'My program',
+      menuProgress: 'My progress',
+      menuAppointments: 'Appointments',
+      menuMessages: 'Messages',
+      menuResources: 'Resources',
+      menuSettings: 'Settings',
+      pageTitle: 'My patient space',
+      rehabBadge: 'Personalized follow-up',
+      statDays: 'Days of rehab',
+      statProgress: 'Overall progress',
+      statPain: 'Average pain',
+      fractureTitle: 'My fracture',
+      fractureType: 'Type',
+      fractureDate: 'Date',
+      fractureSide: 'Limb',
+      fractureTreatment: 'Treatment',
+      fractureStart: 'Rehab start',
+      programTitle: 'My program today',
+      viewAll: 'View all →',
+      startSession: 'Start session',
+      viewAllExercises: 'View all exercises',
+      sendVideo: 'Send video',
+      sendPhoto: 'Send photo',
+      progressTitle: 'How I feel',
+      viewDetails: 'View details →',
+      painChart: 'Pain evolution',
+      moodChart: 'Mood evolution',
+      mobilityChart: 'Satisfaction evolution',
+      strengthChart: 'Strength evolution',
+      enduranceChart: 'Endurance evolution',
+      dexterityChart: 'Dexterity evolution',
+      sensitivityChart: 'Sensitivity evolution',
+      gripChart: 'Grip evolution',
+      weekTitle: 'This week',
+      viewFullWeek: 'View full week →',
+      remindersTitle: 'Reminders',
+      configureReminders: 'Configure reminders',
+      selfEvalTitle: 'How do you feel today?',
+      painEval: 'Pain (0-10)',
+      fatigueEval: 'Fatigue (1-5)',
+      moodEval: 'Mood',
+      satisfactionEval: 'Satisfaction',
+      saveEval: 'Save evaluation',
+      dailyQuestionTitle: 'Question of the day',
+      yes: 'Yes',
+      no: 'No',
+      dailyTipTitle: 'Tip of the day',
+      goalsTitle: 'My goals',
+      challengesTitle: 'Weekly challenges',
+      nextAppointment: 'Next follow-up: -',
+      details: 'Details →',
+      messagesTitle: 'Latest messages',
+      viewAllMessages: 'View all →',
+      journalTitle: 'My journal',
+      addJournal: '+ Add',
+      rewardsTitle: 'My rewards',
+      viewAllRewards: 'View all →',
+      streakText: '0 days in a row',
+      footerRights: 'Tous droits réservés',
+      therapistMessage: 'Keep up the effort, you\'re making excellent progress!',
+      therapistName: '— Your therapist',
+      greetingMorning: 'Good morning',
+      greetingEvening: 'Good evening'
+    },
+    ar: {
+      sidebarSubtitle: 'مساحة المريض',
+      menuDashboard: 'لوحة التحكم',
+      menuProgram: 'برنامجي',
+      menuProgress: 'تقدمي',
+      menuAppointments: 'المواعيد',
+      menuMessages: 'الرسائل',
+      menuResources: 'الموارد',
+      menuSettings: 'الإعدادات',
+      pageTitle: 'مساحة المريض',
+      rehabBadge: 'متابعة شخصية',
+      statDays: 'أيام إعادة التأهيل',
+      statProgress: 'التقدم العام',
+      statPain: 'متوسط الألم',
+      fractureTitle: 'كسري',
+      fractureType: 'النوع',
+      fractureDate: 'التاريخ',
+      fractureSide: 'الطرف',
+      fractureTreatment: 'العلاج',
+      fractureStart: 'بدء التأهيل',
+      programTitle: 'برنامج اليوم',
+      viewAll: 'عرض الكل →',
+      startSession: 'بدء الجلسة',
+      viewAllExercises: 'عرض جميع التمارين',
+      sendVideo: 'إرسال فيديو',
+      sendPhoto: 'إرسال صورة',
+      progressTitle: 'شعوري',
+      viewDetails: 'عرض التفاصيل →',
+      painChart: 'تطور الألم',
+      moodChart: 'تطور المزاج',
+      mobilityChart: 'تطور الرضا',
+      strengthChart: 'تطور القوة',
+      enduranceChart: 'تطور التحمل',
+      dexterityChart: 'تطور البراعة',
+      sensitivityChart: 'تطور الحساسية',
+      gripChart: 'تطور القبضة',
+      weekTitle: 'هذا الأسبوع',
+      viewFullWeek: 'عرض الأسبوع الكامل →',
+      remindersTitle: 'التذكيرات',
+      configureReminders: 'تكوين التذكيرات',
+      selfEvalTitle: 'كيف تشعر اليوم؟',
+      painEval: 'الألم (0-10)',
+      fatigueEval: 'الإرهاق (1-5)',
+      moodEval: 'المزاج',
+      satisfactionEval: 'الرضا',
+      saveEval: 'حفظ التقييم',
+      dailyQuestionTitle: 'سؤال اليوم',
+      yes: 'نعم',
+      no: 'لا',
+      dailyTipTitle: 'نصيحة اليوم',
+      goalsTitle: 'أهدافي',
+      challengesTitle: 'تحديات الأسبوع',
+      nextAppointment: 'المتابعة القادمة: -',
+      details: 'التفاصيل →',
+      messagesTitle: 'أحدث الرسائل',
+      viewAllMessages: 'عرض الكل →',
+      journalTitle: 'مذكراتي',
+      addJournal: '+ إضافة',
+      rewardsTitle: 'جوائزي',
+      viewAllRewards: 'عرض الكل →',
+      streakText: '٠ أيام متتالية',
+      footerRights: 'Tous droits réservés',
+      therapistMessage: 'واصل جهودك، تحرز تقدماً ممتازاً!',
+      therapistName: '— معالجك',
+      greetingMorning: 'صباح الخير',
+      greetingEvening: 'مساء الخير'
+    }
+  };
+
+  let currentLang = "{{ current_lang|default:'fr'|escapejs }}";
+  const patientDashboardData = JSON.parse(document.getElementById('patient-dashboard-data')?.textContent || '{}');
+
+  const therapistMessages = {
+    fr: [
+      "Continuez vos efforts, vous faites d'excellents progrès !",
+      "Bravo pour votre assiduité cette semaine !",
+      "Chaque exercice vous rapproche de votre objectif !",
+      "Votre persévérance est remarquable !",
+      "La rééducation est un chemin, vous êtes sur la bonne voie !"
+    ],
+    en: [
+      "Keep up the effort, you're making excellent progress!",
+      "Congratulations on your diligence this week!",
+      "Each exercise brings you closer to your goal!",
+      "Your perseverance is remarkable!",
+      "Rehabilitation is a journey, you're on the right track!"
+    ],
+    ar: [
+      "واصل جهودك، تحرز تقدماً ممتازاً!",
+      "أحسنت على اجتهادك هذا الأسبوع!",
+      "كل تمرين يقربك من هدفك!",
+      "مثابرتك ملحوظة!",
+      "إعادة التأهيل رحلة، أنت على الطريق الصحيح!"
+    ]
+  };
+
+  function updateTherapistMessage() {
+    const randomIndex = Math.floor(Math.random() * therapistMessages[currentLang].length);
+    document.getElementById('therapist-quote').textContent = therapistMessages[currentLang][randomIndex];
+  }
+
+  function updateGreeting() {
+    const hour = new Date().getHours();
+    const isMorning = hour >= 6 && hour < 18;
+    if (typeof window.setPatientGreetingNow === 'function') {
+      window.setPatientGreetingNow();
+    }
+    const lang = currentLang || document.documentElement.lang || 'fr';
+    const tr = translations[lang] || translations.fr;
+    const greetingEl = document.getElementById('greeting-word');
+    if (greetingEl) greetingEl.textContent = isMorning ? tr.greetingMorning : tr.greetingEvening;
+    const patientName = patientDashboardData.patientName || document.getElementById('patient-name')?.textContent || '';
+    document.getElementById('patient-name').textContent = patientName;
+    document.getElementById('user-name').textContent = patientName;
+  }
+
+  // Fonction de traduction complète
+  function updateTranslations(lang) {
+    currentLang = lang;
+    const t = translations[lang];
+    
+    document.getElementById('sidebar-subtitle').textContent = t.sidebarSubtitle;
+    document.getElementById('menu-dashboard').textContent = t.menuDashboard;
+    document.getElementById('menu-program').textContent = t.menuProgram;
+    document.getElementById('menu-progress').textContent = t.menuProgress;
+    document.getElementById('menu-appointments').textContent = t.menuAppointments;
+    document.getElementById('menu-messages').textContent = t.menuMessages;
+    document.getElementById('menu-resources').textContent = t.menuResources;
+    document.getElementById('menu-settings').textContent = t.menuSettings;
+    document.getElementById('page-title').textContent = t.pageTitle;
+    document.getElementById('rehab-badge').textContent = t.rehabBadge;
+    
+    document.getElementById('stat-label-days').textContent = t.statDays;
+    document.getElementById('stat-label-progress').textContent = t.statProgress;
+    document.getElementById('stat-label-pain').textContent = t.statPain;
+    
+    document.getElementById('fracture-title').textContent = t.fractureTitle;
+    document.getElementById('fracture-type-label').textContent = t.fractureType;
+    document.getElementById('fracture-date-label').textContent = t.fractureDate;
+    document.getElementById('fracture-side-label').textContent = t.fractureSide;
+    document.getElementById('fracture-treatment-label').textContent = t.fractureTreatment;
+    document.getElementById('fracture-start-label').textContent = t.fractureStart;
+    
+    document.getElementById('program-title').textContent = t.programTitle;
+    document.getElementById('view-all-text').textContent = t.viewAll;
+    document.getElementById('start-session-btn').textContent = t.startSession;
+    document.getElementById('view-all-exercises-btn').textContent = t.viewAllExercises;
+    document.getElementById('send-video-btn').textContent = t.sendVideo;
+    document.getElementById('send-photo-btn').textContent = t.sendPhoto;
+    
+    document.getElementById('progress-title').textContent = t.progressTitle;
+    document.getElementById('view-details-text').textContent = t.viewDetails;
+    
+    document.getElementById('pain-chart-title').textContent = t.painChart;
+    document.getElementById('mood-chart-title').textContent = t.moodChart;
+    document.getElementById('mobility-chart-title').textContent = t.mobilityChart;
+    document.getElementById('strength-chart-title').textContent = t.strengthChart;
+    document.getElementById('endurance-chart-title').textContent = t.enduranceChart;
+    document.getElementById('dexterity-chart-title').textContent = t.dexterityChart;
+    document.getElementById('sensitivity-chart-title').textContent = t.sensitivityChart;
+    document.getElementById('grip-chart-title').textContent = t.gripChart;
+    
+    document.getElementById('week-title').textContent = t.weekTitle;
+    document.getElementById('view-full-week-text').textContent = t.viewFullWeek;
+    
+    document.getElementById('reminders-title').textContent = t.remindersTitle;
+    document.getElementById('configure-reminders-btn').textContent = t.configureReminders;
+    
+    document.getElementById('self-eval-title').textContent = t.selfEvalTitle;
+    document.getElementById('pain-eval-label').textContent = t.painEval;
+    document.getElementById('fatigue-eval-label').textContent = t.fatigueEval;
+    document.getElementById('mood-eval-label').textContent = t.moodEval;
+    document.getElementById('satisfaction-eval-label').textContent = t.satisfactionEval;
+    document.getElementById('save-eval-btn').textContent = t.saveEval;
+    
+    document.getElementById('daily-question-title').textContent = t.dailyQuestionTitle;
+    document.getElementById('yes-btn').textContent = t.yes;
+    document.getElementById('no-btn').textContent = t.no;
+    
+    document.getElementById('daily-tip-title').textContent = t.dailyTipTitle;
+    document.getElementById('goals-title').textContent = t.goalsTitle;
+    document.getElementById('challenges-title').textContent = t.challengesTitle;
+    
+    document.getElementById('nextAppointmentDate').textContent = t.nextAppointment;
+    document.getElementById('details-link').textContent = t.details;
+    
+    document.getElementById('messages-title').textContent = t.messagesTitle;
+    document.getElementById('view-all-messages-text').textContent = t.viewAllMessages;
+    
+    document.getElementById('journal-title').textContent = t.journalTitle;
+    document.getElementById('add-journal-btn').textContent = t.addJournal;
+    
+    document.getElementById('rewards-title').textContent = t.rewardsTitle;
+    document.getElementById('view-all-rewards-text').textContent = t.viewAllRewards;
+    document.getElementById('streak-text').textContent = t.streakText;
+    document.getElementById('footer-rights').textContent = t.footerRights;
+    
+    document.getElementById('therapist-name').textContent = t.therapistName;
+    
+    updateGreeting();
+    updateTherapistMessage();
+  }
+
+  function changeLanguage(lang, el) {
+    document.querySelectorAll('.lang-option').forEach(btn => btn.classList.remove('active'));
+    if (el) el.classList.add('active');
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = lang;
+    updateTranslations(lang);
+    updateWeeklyGrid();
+    updateReminders();
+    updateProgramDate();
+    updateBadgesGrid();
+    updateNextAppointment();
+  }
+
+  function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    const icon = document.getElementById('theme-icon');
+    if (document.body.classList.contains('dark-mode')) {
+      icon.classList.remove('bi-moon-stars');
+      icon.classList.add('bi-brightness-high');
+    } else {
+      icon.classList.remove('bi-brightness-high');
+      icon.classList.add('bi-moon-stars');
+    }
+  }
+
+  function changeProfilePhoto() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const imageUrl = event.target.result;
+          localStorage.setItem('patientPhoto', imageUrl);
+          document.querySelectorAll('.user-avatar, .patient-photo').forEach(el => {
+            el.style.backgroundImage = `url(${imageUrl})`;
+            el.style.backgroundSize = 'cover';
+            el.style.backgroundPosition = 'center';
+          });
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+    input.click();
+  }
+
+  function deleteProfilePhoto() {
+    localStorage.removeItem('patientPhoto');
+    document.querySelectorAll('.user-avatar, .patient-photo').forEach(el => {
+      el.style.backgroundImage = '';
+    });
+  }
+
+  function loadSavedPhoto() {
+    const savedPhoto = localStorage.getItem('patientPhoto');
+    if (savedPhoto) {
+      document.querySelectorAll('.user-avatar, .patient-photo').forEach(el => {
+        el.style.backgroundImage = `url(${savedPhoto})`;
+        el.style.backgroundSize = 'cover';
+        el.style.backgroundPosition = 'center';
+      });
+    }
+  }
+
+  function logout() {
+    if (confirm('Voulez-vous vraiment vous déconnecter ?')) {
+      window.location.href = "{% url 'login' %}";
+    }
+  }
+
+  // ==================== GRAPHIQUES ====================
+  function initCharts() {
+    const chartData = patientDashboardData.charts || {};
+    const labels = chartData.labels || ['-'];
+      const chartMap = {
+      painChart: { data: chartData.pain || [0], max: 10 },
+      moodChart: { data: chartData.mood || [0], max: 100 },
+      mobilityChart: { data: chartData.satisfaction || [0], max: 100 },
+      strengthChart: { data: chartData.strength || [0], max: 100 },
+      enduranceChart: { data: chartData.endurance || [0], max: 100 },
+      dexterityChart: { data: chartData.dexterity || [0], max: 100 },
+      sensitivityChart: { data: chartData.sensitivity || [0], max: 100 },
+      gripChart: { data: chartData.grip || [0], max: 100 },
+    };
+    Object.entries(chartMap).forEach(([id, config]) => {
+      const ctx = document.getElementById(id).getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: { labels, datasets: [{ data: config.data, borderColor: '#2E8B57', backgroundColor: 'rgba(46,139,87,0.1)', tension: 0.3, fill: true, borderWidth: 3 }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: config.max } } }
+      });
+    });
+  }
+
+  function updateWeeklyGrid() {
+    const days = { fr: ['LUN', 'MAR', 'MER', 'JEU', 'VEN', 'SAM', 'DIM'], en: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'], ar: ['الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت', 'الأحد'] };
+    const container = document.getElementById('weeklyGrid');
+    const exercises = patientDashboardData.exercises || [];
+    container.innerHTML = days[currentLang].map(day => `<div class="day-card"><div class="day-name">${day}</div><ul class="day-exercises">${exercises.slice(0, 2).map(ex => `<li><i class="bi ${ex.completed ? 'bi-check-circle-fill' : 'bi-circle'}"></i> <span>${ex.nom}</span></li>`).join('') || '<li><i class="bi bi-circle"></i> <span>-</span></li>'}</ul></div>`).join('');
+  }
+
+  function updateReminders() {
+    const container = document.getElementById('remindersList');
+    const reminders = patientDashboardData.reminders || [];
+    container.innerHTML = reminders.length ? reminders.map(r => `<div class="reminder-item"><span class="reminder-time">${r.time}</span><span class="reminder-text">${r.text}</span><span class="reminder-badge">${r.badge}</span></div>`).join('') : '<div class="reminder-item"><span class="reminder-text">Aucun rappel activé</span></div>';
+  }
+
+  function initEvaluationScales() {
+    const painScale = document.getElementById('painScale');
+    for (let i = 0; i <= 10; i++) {
+      const dot = document.createElement('span'); dot.className = 'scale-dot'; dot.textContent = i;
+      dot.onclick = () => { selectedPain = i; document.querySelectorAll('#painScale .scale-dot').forEach(d => d.classList.remove('selected')); dot.classList.add('selected'); };
+      painScale.appendChild(dot);
+    }
+    const fatigueScale = document.getElementById('fatigueScale');
+    for (let i = 1; i <= 5; i++) {
+      const dot = document.createElement('span'); dot.className = 'scale-dot'; dot.textContent = i;
+      dot.onclick = () => { selectedFatigue = i; document.querySelectorAll('#fatigueScale .scale-dot').forEach(d => d.classList.remove('selected')); dot.classList.add('selected'); };
+      fatigueScale.appendChild(dot);
+    }
+    const starsSelector = document.getElementById('starsSelector');
+    for (let i = 1; i <= 5; i++) {
+      const star = document.createElement('span'); star.className = 'star'; star.textContent = '★'; star.style.fontSize = '32px'; star.style.cursor = 'pointer'; star.style.margin = '0 4px';
+      star.onclick = () => { selectedStars = i; document.querySelectorAll('#starsSelector .star').forEach((s, idx) => { if (idx < i) s.classList.add('selected'); else s.classList.remove('selected'); }); };
+      starsSelector.appendChild(star);
+    }
+  }
+
+  function selectMood(mood, el) {
+    document.querySelectorAll('.mood-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedMood = mood;
+  }
+
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      document.cookie.split(';').forEach(cookie => {
+        const c = cookie.trim();
+        if (c.substring(0, name.length + 1) === `${name}=`) {
+          cookieValue = decodeURIComponent(c.substring(name.length + 1));
+        }
+      });
+    }
+    return cookieValue;
+  }
+
+  async function saveEvaluation() {
+    const notes = document.getElementById('eval-notes').value;
+    const response = await fetch("{% url 'api_patient_dashboard_evaluation' %}", {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken') },
+      body: JSON.stringify({
+        douleur: selectedPain ?? 0,
+        fatigue: selectedFatigue ?? 0,
+        humeur: selectedMood || '',
+        satisfaction: selectedStars ?? 0,
+        notes
+      })
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok || data.success === false) {
+      alert(data.error || 'Erreur enregistrement');
+      return;
+    }
+    alert(`✅ ${currentLang === 'fr' ? 'Évaluation enregistrée' : currentLang === 'en' ? 'Evaluation saved' : 'تم حفظ التقييم'}`);
+  }
+
+  async function answerDailyQuestion(answer) {
+    const payload = { question_id: patientDashboardData.dailyQuestion?.id, reponse_question: answer };
+    if (selectedPain !== null) payload.douleur = selectedPain;
+    if (selectedFatigue !== null) payload.fatigue = selectedFatigue;
+    if (selectedMood) payload.humeur = selectedMood;
+    if (selectedStars) payload.satisfaction = selectedStars;
+    await fetch("{% url 'api_patient_dashboard_evaluation' %}", {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken') },
+      body: JSON.stringify(payload)
+    });
+    alert(`✅ ${currentLang === 'fr' ? 'Réponse enregistrée' : currentLang === 'en' ? 'Answer saved' : 'تم حفظ الإجابة'} : ${answer}`);
+  }
+  function startSession() { window.location.href = "{% url 'patient_programme' %}";}
+  function viewAllExercises() {window.location.href = "{% url 'patient_programme' %}";}
+  function sendMediaToTherapist(type) {
+  const input = document.createElement('input');
+  input.type = 'file';
+
+  if (type === 'video') {
+    input.accept = 'video/*';
+    input.capture = 'environment';
+  } else {
+    input.accept = 'image/*';
+    input.capture = 'environment';
+  }
+
+  input.onchange = function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const message =
+      currentLang === 'fr'
+        ? `${type === 'video' ? 'Vidéo' : 'Photo'} sélectionnée : ${file.name}`
+        : currentLang === 'en'
+        ? `${type === 'video' ? 'Video' : 'Photo'} selected: ${file.name}`
+        : `${type === 'video' ? 'تم اختيار فيديو' : 'تم اختيار صورة'}: ${file.name}`;
+
+    alert(message);
+
+    // ici plus tard tu pourras envoyer le fichier vers Django
+  };
+
+  input.click();
+}
+
+  function viewFullProgress() { window.location.href = "{% url 'patient_progression' %}"; }
+  function viewFullWeek() { window.location.href = "{% url 'patient_programme' %}"; }
+  function viewAllMessages() {window.location.href = "{% url 'patient_messages' %}";}
+  function viewAllRewards() { alert(currentLang === 'fr' ? 'Voir toutes les récompenses' : currentLang === 'en' ? 'View all rewards' : 'عرض جميع الجوائز'); }
+  async function addJournalEntry() {
+    const contenu = prompt('Écrire une entrée dans mon journal');
+    if (!contenu || !contenu.trim()) return;
+    const response = await fetch("{% url 'api_patient_dashboard_evaluation' %}", {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken') },
+      body: JSON.stringify({
+        douleur: selectedPain ?? 0,
+        fatigue: selectedFatigue ?? 0,
+        humeur: selectedMood || '',
+        satisfaction: selectedStars ?? 0,
+        notes: contenu.trim()
+      })
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok || data.success === false) {
+      alert(data.error || 'Erreur journal');
+      return;
+    }
+    patientDashboardData.journal = patientDashboardData.journal || [];
+    patientDashboardData.journal.unshift({
+      date: new Date().toLocaleDateString('fr-FR'),
+      mood: selectedMood || '',
+      text: contenu.trim()
+    });
+    updateJournalEntries();
+  }
+  function openChat() {window.location.href = "{% url 'patient_messages' %}";}
+  function toggleExercise(el) { el.classList.toggle('checked'); el.innerHTML = el.classList.contains('checked') ? '<i class="bi bi-check"></i>' : ''; }
+  function configureReminders() { alert(currentLang === 'fr' ? 'Configuration des rappels' : currentLang === 'en' ? 'Configure reminders' : 'تكوين التذكيرات'); }
+  function showSection(section, el) {
+    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+    if (el) el.classList.add('active');
+    if (window.innerWidth <= 1200) document.getElementById('sidebar').classList.remove('active');
+    alert(`${currentLang === 'fr' ? 'Section' : currentLang === 'en' ? 'Section' : 'القسم'} : ${section}`);
+  }
+
+  function updateFractureData() {
+    const d = patientDashboardData.fracture || {};
+    document.getElementById('fracture-type').textContent = d.type;
+    document.getElementById('fracture-date').textContent = d.date;
+    document.getElementById('fracture-side').textContent = d.side;
+    document.getElementById('fracture-treatment').textContent = d.treatment;
+    document.getElementById('fracture-start').textContent = d.start;
+  }
+
+  function updateExerciseList() {
+    const exercises = patientDashboardData.exercises || [];
+    const list = document.getElementById('exerciseList');
+    list.innerHTML = exercises.length ? exercises.map(ex => `<li class="exercise-item"><div class="exercise-check ${ex.completed ? 'checked' : ''}" onclick="toggleExercise(this)">${ex.completed ? '<i class="bi bi-check"></i>' : ''}</div><div class="exercise-info"><div class="exercise-name">${ex.nom}</div><div class="exercise-details">${ex.details}</div></div><div class="exercise-video"><i class="bi bi-play-circle"></i></div></li>`).join('') : '<li class="exercise-item"><div class="exercise-info"><div class="exercise-name">Aucun exercice aujourd’hui</div></div></li>';
+  }
+
+  function updateStatistics() {
+    const stats = patientDashboardData.stats || {};
+    document.getElementById('stat-days').textContent = `J+${stats.days || 0}`;
+    document.getElementById('stat-progress').textContent = `${stats.progression || 0}%`;
+    document.getElementById('stat-pain').textContent = `${stats.painAverage || 0}/10`;
+  }
+
+  function updateProgramDate() {
+    const today = new Date();
+    const options = { weekday: 'long', day: 'numeric', month: 'long' };
+    document.getElementById('program-date').textContent = today.toLocaleDateString(currentLang === 'ar' ? 'ar-DZ' : currentLang === 'fr' ? 'fr-FR' : 'en-US', options);
+  }
+
+  function updateGoalsList() {
+    const goals = patientDashboardData.goals || [];
+    document.getElementById('goalsList').innerHTML = goals.map(g => `<div class="goal-item"><div class="goal-header"><span class="goal-name">${g.name}</span><span class="goal-percent">${g.percent}%</span></div><div class="goal-bar"><div class="goal-fill" style="width:${g.percent}%"></div></div></div>`).join('');
+  }
+
+  function updateChallengesList() {
+    const challenges = patientDashboardData.challenges || [];
+    document.getElementById('challengesList').innerHTML = challenges.map(c => `<div class="challenge-item"><div class="challenge-header"><span class="challenge-name">${c.name}</span><span class="challenge-progress">${c.progress}/${c.total}</span></div><div class="challenge-bar"><div class="challenge-fill" style="width:${(c.progress/Math.max(c.total,1))*100}%"></div></div></div>`).join('');
+  }
+
+  function updateRecentMessages() {
+    const messages = patientDashboardData.recentMessages || [];
+    document.getElementById('recentMessages').innerHTML = messages.length ? messages.map(m => `<div class="reminder-item"><div style="flex:1;"><div style="font-weight:700;">${m.from}</div><div style="color:var(--gray-3);">${m.text}</div></div><span style="color:var(--gray-3);">${m.date}</span></div>`).join('') : '<div class="reminder-item"><span>Aucun message récent</span></div>';
+  }
+
+  function updateFeelingsDaysDashboard() {
+    const days = patientDashboardData.feelingsDays || [];
+    const container = document.getElementById('feelingsDaysDashboard');
+    if (!container) return;
+    container.innerHTML = days.length ? days.map(day => `
+      <div class="reminder-item">
+        <div style="flex:1;">
+          <div style="font-weight:800;">${day.date}</div>
+          <div style="color:var(--gray-3);">Douleur ${day.douleur}/10 · Fatigue ${day.fatigue}/5 · Humeur ${day.humeur} · Satisfaction ${day.satisfaction}/5</div>
+        </div>
+      </div>
+    `).join('') : '<div class="reminder-item"><span>Aucune auto-évaluation enregistrée</span></div>';
+  }
+
+  function updateJournalEntries() {
+    const entries = patientDashboardData.journal || [];
+    document.getElementById('journalEntries').innerHTML = entries.length ? entries.map(e => `<div class="journal-entry"><div class="journal-date">${e.date}</div><div class="journal-mood">${e.mood}</div><p>${e.text}</p></div>`).join('') : '<div class="journal-entry"><p>Aucune entrée de journal</p></div>';
+  }
+
+  function updateBadgesGrid() {
+    const rewards = patientDashboardData.rewards || [];
+    document.getElementById('badgesGrid').innerHTML = rewards.length ? rewards.map(r => `<div class="badge-item"><div class="badge-icon"><i class="bi ${r.icon}"></i></div><div>${r.name}</div></div>`).join('') : '<div class="badge-item"><div class="badge-icon"><i class="bi bi-award"></i></div><div>0</div></div>';
+    const streak = patientDashboardData.streak || 0;
+    document.getElementById('streak-text').textContent = `${streak} ${currentLang === 'en' ? 'active day(s)' : currentLang === 'ar' ? 'يوم نشاط' : 'jour(s) actif(s)'}`;
+  }
+
+  function updateNextAppointment() {
+    const next = patientDashboardData.nextAppointment || {};
+    document.getElementById('nextAppointmentDate').textContent = next.date || 'Prochain suivi: -';
+    document.getElementById('nextAppointmentType').textContent = next.type || '-';
+    document.getElementById('nextAppointmentLink').href = next.url || "{% url 'patient_rendezvous' %}";
+    document.getElementById('nextAppointmentLink').innerHTML = `<span id="details-link">${currentLang === 'fr' ? 'Détails →' : currentLang === 'en' ? 'Details →' : 'التفاصيل →'}</span>`;
+  }
+
+  function updateDailyQuestion() {
+    const questions = {
+      fr: 'Avez-vous ressenti une amélioration cette semaine ?',
+      en: 'Have you felt an improvement this week?',
+      ar: 'هل شعرت بتحسن هذا الأسبوع؟'
+    };
+    document.getElementById('dailyQuestion').textContent = questions[currentLang];
+  }
+
+  function updateDailyTip() {
+    const tips = {
+      fr: 'Essayez d\'appliquer de la glace après vos exercices si vous ressentez une douleur.',
+      en: 'Try applying ice after your exercises if you feel pain.',
+      ar: 'حاول وضع الثلج بعد التمارين إذا شعرت بألم.'
+    };
+    document.getElementById('dailyTip').textContent = tips[currentLang];
+  }
+
+  // ==================== INITIALISATION ====================
+  updateDailyQuestion = function() {
+    const daily = patientDashboardData.dailyQuestion || {};
+    document.getElementById('dailyQuestion').textContent = daily.text || 'Aucune question pour le moment.';
+  };
+
+  document.getElementById('menuToggle').addEventListener('click', () => document.getElementById('sidebar').classList.toggle('active'));
+
+  window.onload = () => {
+    initCharts();
+    updateWeeklyGrid();
+    initEvaluationScales();
+    updateFractureData();
+    updateGoalsList();
+    updateChallengesList();
+    updateFeelingsDaysDashboard();
+    updateRecentMessages();
+    updateJournalEntries();
+    updateBadgesGrid();
+    updateNextAppointment();
+    updateDailyQuestion();
+    updateDailyTip();
+    updateExerciseList();
+    updateStatistics();
+    updateProgramDate();
+    updateReminders();
+    loadSavedPhoto();
+    const initialLang = "{{ current_lang|default:'fr'|escapejs }}";
+    const initialLangButton = Array.from(document.querySelectorAll('.lang-option')).find(btn => btn.textContent.trim().toLowerCase() === initialLang);
+    changeLanguage(initialLang, initialLangButton || document.querySelector('.lang-option.active'));
+    updateGreeting();
+    setInterval(updateGreeting, 10000);
+  };
+</script>
+</body>
+</html>

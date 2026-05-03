@@ -1,0 +1,2596 @@
+{% load static %}
+<!doctype html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inscription | SmartWrist Rehab</title>
+
+  <!-- Bootstrap + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  
+  <!-- Font Awesome pour plus d'icônes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#eef2f7;
+      --text:#0f172a;
+      --muted:#64748b;
+      --primary:#2E8B57;
+      --primary2:#1f6a43;
+      --border: rgba(0,0,0,.12);
+      --card: rgba(255,255,255,.96);
+      --soft: rgba(0,0,0,.02);
+    }
+
+    body{
+      min-height:100vh;
+      margin:0;
+      background:
+        radial-gradient(900px 450px at 18% 10%, rgba(46,139,87,.12), transparent 55%),
+        radial-gradient(900px 450px at 85% 12%, rgba(15,23,42,.10), transparent 55%),
+        var(--bg);
+      font-family: system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      color:var(--text);
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Animation d'entrée très subtile */
+    @keyframes gentleEntrance {
+      0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Effet de lumière douce qui traverse */
+    @keyframes lightPass {
+      0% {
+        background-position: -100% 50%;
+      }
+      100% {
+        background-position: 200% 50%;
+      }
+    }
+
+    /* Pulsation discrète */
+    @keyframes softPulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.8;
+      }
+    }
+
+    /* Animation du logo au chargement */
+    @keyframes logoAppear {
+      0% {
+        transform: scale(0.8) rotate(-10deg);
+        opacity: 0;
+      }
+      70% {
+        transform: scale(1.05) rotate(5deg);
+      }
+      100% {
+        transform: scale(1) rotate(0);
+        opacity: 1;
+      }
+    }
+
+    /* Effet de scan médical */
+    @keyframes medicalScan {
+      0% {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      50% {
+        opacity: 0.3;
+      }
+      100% {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+    }
+
+    /* Animation des puces */
+    @keyframes chipGlow {
+      0%, 100% {
+        box-shadow: 0 0 0 rgba(46,139,87,0);
+      }
+      50% {
+        box-shadow: 0 0 15px rgba(46,139,87,0.3);
+      }
+    }
+
+    /* Barre de progression animée */
+    @keyframes progressFlow {
+      0% {
+        background-position: 0% 50%;
+      }
+      100% {
+        background-position: 100% 50%;
+      }
+    }
+
+    /* Animation des sections */
+    @keyframes sectionSlide {
+      0% {
+        transform: translateX(-10px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    /* Soulignement animé */
+    @keyframes underlineDraw {
+      0% {
+        width: 0;
+      }
+      100% {
+        width: 100%;
+      }
+    }
+
+    /* Ripple effect */
+    @keyframes rippleEffect {
+      0% {
+        transform: scale(0);
+        opacity: 0.5;
+      }
+      100% {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+
+    /* Élément flottant léger */
+    @keyframes gentleFloat {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-5px);
+      }
+    }
+
+    body {
+      animation: gentleEntrance 0.8s ease-out;
+    }
+
+    .topbar{ 
+      background:#fff; 
+      border-bottom:1px solid var(--border);
+      position: relative;
+      z-index: 1000;
+    }
+    
+    .brand{ 
+      display:flex; 
+      align-items:center; 
+      gap:12px; 
+      text-decoration:none; 
+      color:inherit;
+      transition: all 0.3s ease;
+    }
+    
+    .brand:hover {
+      transform: translateY(-2px);
+    }
+    
+    .logo{ 
+      width:96px; 
+      height:96px; 
+      object-fit:contain; 
+      display:block;
+      transition: all 0.3s ease;
+      animation: logoAppear 1s ease-out;
+      animation-fill-mode: forwards;
+    }
+    
+    .logo:hover {
+      transform: scale(1.05) rotate(5deg);
+      filter: drop-shadow(0 5px 15px rgba(46,139,87,0.3));
+    }
+    
+    .brand-title{ 
+      font-weight:950; 
+      font-size:1.25rem; 
+      line-height:1.1;
+      animation: gentleEntrance 0.8s ease-out 0.2s both;
+    }
+    
+    .brand-sub{ 
+      font-weight:900; 
+      color:#111827; 
+      opacity:.78; 
+      font-size:1rem;
+      animation: gentleEntrance 0.8s ease-out 0.3s both;
+    }
+
+    .wrap{ 
+      padding:26px 12px 34px;
+      animation: gentleEntrance 0.8s ease-out 0.4s both;
+    }
+    
+    .reg-card{
+      width:100%;
+      max-width:980px;
+      margin: 0 auto;
+      background: var(--card);
+      border:1px solid rgba(0,0,0,.10);
+      border-radius:22px;
+      box-shadow: 0 22px 55px rgba(0,0,0,.12);
+      padding:22px;
+      animation: gentleEntrance 0.8s ease-out 0.5s both;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 2;
+      overflow: hidden;
+    }
+
+    /* Effet de lumière qui traverse la carte */
+    .reg-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,0.2),
+        transparent
+      );
+      animation: lightPass 2s ease-in-out;
+      animation-fill-mode: forwards;
+      pointer-events: none;
+    }
+
+    .reg-card:hover {
+      box-shadow: 0 30px 70px rgba(0,0,0,.15);
+      transform: translateY(-5px);
+    }
+
+    .hero{
+      display:flex; align-items:flex-start; justify-content:space-between;
+      gap:14px; flex-wrap:wrap; padding: 6px 6px 14px;
+      animation: gentleEntrance 0.6s ease-out 0.6s both;
+    }
+    
+    .hero h1{ 
+      margin:0; 
+      font-weight:950; 
+      font-size:1.55rem; 
+      letter-spacing:.2px;
+      animation: gentleEntrance 0.5s ease-out 0.7s both;
+      position: relative;
+      display: inline-block;
+    }
+
+    .hero h1::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: var(--primary);
+      animation: underlineDraw 1s ease-out 1.2s forwards;
+    }
+    
+    .hero p{ 
+      margin:6px 0 0; 
+      color:var(--muted); 
+      font-weight:900; 
+      max-width:720px;
+      animation: gentleEntrance 0.5s ease-out 0.8s both;
+    }
+
+    .hint{
+      display:flex; align-items:center; gap:.6rem;
+      color:#111827; opacity:.72; font-weight:900; font-size:.95rem; margin-top:10px;
+      animation: gentleEntrance 0.5s ease-out 0.9s both;
+    }
+
+    .progress-wrap{ 
+      margin: 6px 0 14px; 
+      padding: 0 6px;
+      animation: gentleEntrance 0.5s ease-out 1s both;
+    }
+    
+    .progress{ 
+      height: 12px; 
+      border-radius: 999px; 
+      background: rgba(0,0,0,.06);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    /* Effet de scan sur la barre de progression */
+    .progress::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255,255,255,0.4), 
+        transparent);
+      animation: medicalScan 2s ease-in-out;
+      animation-fill-mode: forwards;
+    }
+    
+    .progress:hover {
+      transform: scaleY(1.2);
+    }
+    
+    .progress-bar{ 
+      background: linear-gradient(90deg, var(--primary), var(--primary2)); 
+      border-radius: 999px; 
+      box-shadow: 0 0 12px rgba(46,139,87,.55);
+      transition: width 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      position: relative;
+      overflow: hidden;
+      background-size: 200% 100%;
+      animation: progressFlow 2s ease-in-out infinite;
+    }
+
+    .steps-mini{
+      display:flex; gap:10px; flex-wrap:wrap; margin-top:8px;
+      color:#111827; opacity:.7; font-weight:900; font-size:.92rem;
+      animation: gentleEntrance 0.5s ease-out 1.1s both;
+    }
+    
+    .chip{
+      display:inline-flex; align-items:center; gap:.45rem;
+      padding:6px 10px; border-radius:999px;
+      border:1px solid rgba(46,139,87,.28);
+      background: rgba(46,139,87,.06);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      animation: gentleEntrance 0.5s ease-out var(--delay) both;
+    }
+    
+    .chip:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 20px rgba(46,139,87,0.2);
+      background: rgba(46,139,87,.12);
+      animation: chipGlow 0.5s ease-in-out;
+    }
+    
+    .chip.active {
+      background: rgba(46,139,87,.18);
+      border-color: rgba(46,139,87,.6);
+      box-shadow: 0 0 14px rgba(46,139,87,.45);
+      color: #0f172a;
+      animation: chipGlow 0.5s ease-in-out;
+    }
+
+    .section-title{ 
+      display:flex; 
+      align-items:center; 
+      gap:.6rem; 
+      font-weight:950; 
+      margin:0; 
+      font-size:1.05rem; 
+      color:#111827;
+      transition: all 0.3s ease;
+      animation: sectionSlide 0.5s ease-out;
+    }
+    
+    .section-title:hover {
+      color: var(--primary);
+      transform: translateX(5px);
+    }
+    
+    .section-sub{ 
+      margin:6px 0 0; 
+      color:var(--muted); 
+      font-weight:900;
+      animation: gentleEntrance 0.5s ease-out;
+    }
+
+    .form-label{ 
+      font-weight:950; 
+      color:#111827;
+      transition: all 0.3s ease;
+    }
+    
+    .form-label:hover {
+      color: var(--primary);
+    }
+    
+    .req-note{ 
+      color:#111827; 
+      opacity:.7; 
+      font-weight:900; 
+      font-size:.92rem; 
+      margin: 10px 0 0;
+      animation: gentleEntrance 0.5s ease-out 1.2s both;
+    }
+
+    .ig{
+      background:#fff;
+      border:1px solid var(--border);
+      border-right:0;
+      border-radius:14px 0 0 14px !important;
+      padding:.82rem .92rem;
+      color:#111827;
+      transition: all 0.3s ease;
+    }
+    
+    .field{
+      border:1px solid var(--border);
+      border-left:0;
+      border-radius:0 14px 14px 0 !important;
+      padding:.82rem .92rem;
+      font-weight:850;
+      color:#111827;
+      transition: all 0.3s ease;
+    }
+    
+    .field:focus, .form-select:focus{
+      box-shadow: 0 0 0 3px rgba(46,139,87,.18);
+      border-color: rgba(46,139,87,.45);
+      transform: translateY(-2px);
+    }
+
+    .pw-eye{
+      border:1px solid var(--border);
+      border-left:0;
+      background:#fff;
+      border-radius:0 14px 14px 0 !important;
+      padding:.82rem .92rem;
+      color:#111827;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .pw-eye:hover {
+      background: var(--primary);
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .pw-eye::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.3s, height 0.3s;
+    }
+
+    .pw-eye:hover::after {
+      width: 100%;
+      height: 100%;
+    }
+    
+    .pw-input{ 
+      border-right:0; 
+      border-radius:0 !important;
+      transition: all 0.3s ease;
+    }
+
+    .small-help{
+      color:#111827; 
+      opacity:.65; 
+      font-weight:900; 
+      font-size:.9rem; 
+      margin-top:6px;
+      transition: all 0.3s ease;
+    }
+    
+    .small-help:hover {
+      opacity: 1;
+      transform: translateX(5px);
+    }
+
+    .rules{
+      margin-top:10px; 
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(46,139,87,.22);
+      background: rgba(46,139,87,.05);
+      font-weight:900; 
+      color:#111827;
+      transition: all 0.3s ease;
+      animation: gentleEntrance 0.5s ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .rules:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(46,139,87,0.1);
+      background: rgba(46,139,87,.08);
+    }
+
+    .rules::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,0.1),
+        transparent
+      );
+      transition: left 0.5s;
+    }
+
+    .rules:hover::before {
+      left: 100%;
+    }
+    
+    .rule-item{ 
+      display:flex; 
+      align-items:center; 
+      gap:.55rem; 
+      margin:6px 0; 
+      opacity:.85;
+      transition: all 0.3s ease;
+    }
+    
+    .rule-item:hover {
+      opacity: 1;
+      transform: translateX(8px);
+      color: var(--primary);
+    }
+    
+    .rule-item i{ 
+      color: var(--primary);
+      transition: all 0.3s ease;
+      animation: gentleFloat 2s ease-in-out infinite;
+    }
+    
+    .rule-item:hover i {
+      transform: scale(1.2) rotate(10deg);
+    }
+
+    .btn-main{
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      border:1px solid var(--primary);
+      color:#fff;
+      font-weight:950;
+      border-radius:14px;
+      padding:12px 14px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      animation: gentleEntrance 0.5s ease-out;
+    }
+    
+    .btn-main:hover{ 
+      background: linear-gradient(135deg, var(--primary2), var(--primary));
+      border-color:var(--primary2); 
+      color:#fff;
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 10px 25px rgba(46,139,87,0.4);
+    }
+    
+    .btn-main:active {
+      transform: translateY(0) scale(0.98);
+    }
+    
+    .btn-main::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 5px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.5);
+      opacity: 0;
+      border-radius: 100%;
+      transform: scale(1, 1) translate(-50%);
+      transform-origin: 50% 50%;
+    }
+    
+    .btn-main:focus:not(:active)::after {
+      animation: rippleEffect 1s ease-out;
+    }
+
+    .btn-soft{
+      background:#fff;
+      border:1px solid var(--border);
+      color:#111827;
+      font-weight:950;
+      border-radius:14px;
+      padding:12px 14px;
+      transition: all 0.3s ease;
+      animation: gentleEntrance 0.5s ease-out;
+    }
+    
+    .btn-soft:hover {
+      background: var(--soft);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    
+    .btn-soft:active {
+      transform: translateY(0);
+    }
+
+    .box-soft{
+      border:1px solid rgba(0,0,0,.10);
+      border-radius:16px;
+      background:var(--soft);
+      padding:12px;
+      transition: all 0.3s ease;
+      animation: gentleEntrance 0.5s ease-out;
+    }
+    
+    .box-soft:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      background: rgba(255,255,255,0.98);
+    }
+
+    /* ✅ Autre: affichage */
+    .other-wrap{ 
+      display:none; 
+      margin-top:10px;
+      animation: gentleEntrance 0.4s ease-out;
+    }
+    
+    .other-wrap.show{ 
+      display:block;
+      animation: gentleEntrance 0.4s ease-out;
+    }
+
+    /* RTL */
+    [dir="rtl"] .ig{
+      border-radius:0 14px 14px 0 !important;
+      border-left:0; border-right:1px solid var(--border);
+    }
+    
+    [dir="rtl"] .field{
+      border-left:1px solid var(--border);
+      border-right:0;
+      border-radius:14px 0 0 14px !important;
+    }
+    
+    [dir="rtl"] .pw-eye{
+      border-right:0; border-left:1px solid var(--border);
+      border-radius:14px 0 0 14px !important;
+    }
+
+    /* Input group animations */
+    .input-group {
+      transition: all 0.3s ease;
+      animation: gentleEntrance 0.5s ease-out var(--delay-input) both;
+    }
+    
+    .input-group:focus-within {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(46,139,87,0.15);
+    }
+    
+    .input-group:focus-within .ig {
+      background: linear-gradient(135deg, rgba(46,139,87,0.1), rgba(46,139,87,0.05));
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: scale(1.05);
+    }
+    
+    .input-group:focus-within .field {
+      border-color: var(--primary);
+    }
+    
+    .input-group:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Checkbox and Radio animations */
+    .form-check-input {
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .form-check-input:hover {
+      transform: scale(1.1);
+      border-color: var(--primary);
+    }
+    
+    .form-check-input:checked {
+      background-color: var(--primary);
+      border-color: var(--primary);
+      animation: chipGlow 0.3s ease-in-out;
+    }
+    
+    .form-check-label {
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .form-check-label:hover {
+      color: var(--primary);
+      transform: translateX(3px);
+    }
+
+    /* Range slider animations */
+    .form-range {
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .form-range:hover {
+      transform: translateY(-2px);
+    }
+    
+    .form-range::-webkit-slider-thumb {
+      transition: all 0.3s ease;
+      background: var(--primary);
+      border: 2px solid white;
+      box-shadow: 0 0 0 2px var(--primary);
+    }
+    
+    .form-range::-webkit-slider-thumb:hover {
+      transform: scale(1.3);
+      box-shadow: 0 0 0 4px var(--primary), 0 0 15px rgba(46,139,87,0.7);
+    }
+    
+    .form-range::-webkit-slider-thumb:active {
+      transform: scale(1.2);
+    }
+    
+    .badge {
+      transition: all 0.3s ease;
+      animation: softPulse 2s ease-in-out infinite;
+    }
+    
+    .badge:hover {
+      transform: scale(1.1);
+      background: var(--primary) !important;
+      color: white !important;
+    }
+
+    /* Accordion animations */
+    .accordion-item {
+      transition: all 0.3s ease;
+      animation: gentleEntrance 0.5s ease-out var(--delay-accordion) both;
+      margin-bottom: 10px;
+    }
+    
+    .accordion-item:hover {
+      box-shadow: 0 10px 30px rgba(46,139,87,0.1);
+      transform: translateY(-3px);
+    }
+    
+    .accordion-button {
+      transition: all 0.3s ease !important;
+    }
+    
+    .accordion-button:not(.collapsed) {
+      background: rgba(46,139,87,0.05);
+      color: var(--primary);
+      box-shadow: 0 5px 15px rgba(46,139,87,0.1);
+    }
+    
+    .accordion-button:hover {
+      background: rgba(46,139,87,0.08);
+      transform: translateX(5px);
+    }
+    
+    .accordion-button:focus {
+      box-shadow: 0 0 0 3px rgba(46,139,87,0.2);
+    }
+    
+    .accordion-collapse {
+      transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    /* Lang circles */
+    .lang-circles { 
+      display:flex; 
+      gap:10px;
+      animation: gentleEntrance 0.5s ease-out 0.3s both;
+    }
+    
+    .lang-dot {
+      width:42px; 
+      height:42px; 
+      border-radius:50%;
+      border:1px solid rgba(46,139,87,.5);
+      background:rgba(46,139,87,.08);
+      font-weight:900; 
+      font-size:.85rem;
+      color:#0f172a; 
+      cursor:pointer;
+      display:flex; 
+      align-items:center; 
+      justify-content:center;
+      transition: all 0.3s ease;
+      animation: gentleFloat 3s ease-in-out infinite;
+      animation-delay: var(--lang-delay);
+    }
+    
+    .lang-dot:hover { 
+      transform: scale(1.1) rotate(5deg);
+      box-shadow:0 0 20px rgba(46,139,87,.6);
+      background:rgba(46,139,87,.15);
+    }
+    
+    .lang-dot.active {
+      background:rgba(46,139,87,.28);
+      box-shadow:0 0 25px rgba(46,139,87,.8);
+      transform: scale(1.15);
+      animation: chipGlow 0.5s ease-in-out;
+    }
+
+    /* Message de confirmation */
+    .confirmation-message {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      color: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(46,139,87,0.3);
+      z-index: 1000;
+      transform: translateX(150%);
+      transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: gentleEntrance 0.5s ease-out;
+    }
+    
+    .confirmation-message.show {
+      transform: translateX(0);
+      animation: gentleEntrance 0.5s ease-out, chipGlow 0.5s ease-in-out 0.5s;
+    }
+    
+    .confirmation-message i {
+      animation: gentleFloat 1s ease-in-out;
+    }
+
+    /* Footer animations */
+    footer {
+      animation: gentleEntrance 0.8s ease-out 1.5s both;
+    }
+    
+    footer a {
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    footer a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+    
+    footer a:hover {
+      color: var(--primary);
+    }
+    
+    footer a:hover::after {
+      width: 100%;
+    }
+
+    /* Animation de validation */
+    @keyframes validateCheck {
+      0% {
+        transform: scale(0);
+      }
+      50% {
+        transform: scale(1.2);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    /* Pour les champs validés */
+    .field:valid {
+      border-color: rgba(46,139,87,0.5);
+      background: rgba(46,139,87,0.02);
+    }
+
+    .field:valid + .input-group-text {
+      color: var(--primary);
+    }
+
+    /* Animation des icônes */
+    i[class*="bi-"], i[class*="fa-"] {
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    i[class*="bi-"]:hover, i[class*="fa-"]:hover {
+      animation: gentleFloat 0.6s ease-in-out;
+    }
+
+    /* Animation subtile au survol des cartes */
+    .accordion-item:hover .section-title {
+      animation: sectionSlide 0.3s ease-out;
+    }
+
+    /* Effet de particules discrètes */
+    .particle-effect {
+      position: relative;
+    }
+
+    .particle-effect::before {
+      content: '✦';
+      position: absolute;
+      color: var(--primary);
+      font-size: 8px;
+      opacity: 0;
+      animation: gentleFloat 3s ease-in-out infinite;
+      animation-delay: var(--particle-delay);
+    }
+
+    /* Délais d'animation pour les éléments */
+    .chip:nth-child(1) { --delay: 1.2s; }
+    .chip:nth-child(2) { --delay: 1.3s; }
+    .chip:nth-child(3) { --delay: 1.4s; }
+    .chip:nth-child(4) { --delay: 1.5s; }
+
+    .input-group:nth-child(1) { --delay-input: 1.3s; }
+    .input-group:nth-child(2) { --delay-input: 1.4s; }
+    .input-group:nth-child(3) { --delay-input: 1.5s; }
+    .input-group:nth-child(4) { --delay-input: 1.6s; }
+    .input-group:nth-child(5) { --delay-input: 1.7s; }
+    .input-group:nth-child(6) { --delay-input: 1.8s; }
+    .input-group:nth-child(7) { --delay-input: 1.9s; }
+    .input-group:nth-child(8) { --delay-input: 2.0s; }
+
+    .accordion-item:nth-child(1) { --delay-accordion: 1.4s; }
+    .accordion-item:nth-child(2) { --delay-accordion: 1.5s; }
+    .accordion-item:nth-child(3) { --delay-accordion: 1.6s; }
+    .accordion-item:nth-child(4) { --delay-accordion: 1.7s; }
+
+    .lang-dot:nth-child(1) { --lang-delay: 0s; }
+    .lang-dot:nth-child(2) { --lang-delay: 0.5s; }
+    .lang-dot:nth-child(3) { --lang-delay: 1s; }
+
+    /* Responsive animations */
+    @media (max-width: 768px) {
+      .logo {
+        animation: logoAppear 0.8s ease-out;
+      }
+      
+      .reg-card::before {
+        animation: lightPass 1.5s ease-in-out;
+      }
+      
+      .progress-bar {
+        animation: progressFlow 3s ease-in-out infinite;
+      }
+      
+      .lang-dot {
+        animation: gentleFloat 4s ease-in-out infinite;
+      }
+    }
+
+    /* Pour les utilisateurs qui préfèrent moins d'animations */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* Effet de surbrillance au survol */
+    .highlight-on-hover {
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .highlight-on-hover::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(46,139,87,0.05);
+      border-radius: inherit;
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .highlight-on-hover:hover::before {
+      opacity: 1;
+    }
+
+    /* Effet de focus amélioré */
+    *:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(46,139,87,0.3) !important;
+      animation: chipGlow 0.3s ease-in-out;
+    }
+
+    /* Transition pour tous les éléments interactifs */
+    button, 
+    input, 
+    select, 
+    textarea,
+    a {
+      transition: all 0.3s ease !important;
+    }
+
+    /* Animation de chargement subtile */
+    .loading {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .loading::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      animation: lightPass 1.5s ease-in-out infinite;
+    }
+
+    /* Style pour la mention de consentement */
+    .consent-mention {
+      font-style: italic;
+      color: var(--primary);
+      border-top: 1px dashed rgba(46,139,87,0.3);
+      padding-top: 10px;
+      margin-top: 15px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    
+    .consent-mention i {
+      margin-right: 6px;
+      color: var(--primary);
+      animation: gentleFloat 2s ease-in-out infinite;
+    }
+  </style>
+    <link rel="stylesheet" href="{% static 'assets/css/responsive-guard.css' %}">
+</head>
+
+<body>
+<!-- Message de confirmation temporaire -->
+<div id="confirmationMessage" class="confirmation-message">
+  <i class="fas fa-check-circle"></i>
+  <span id="confirmationText">Enregistrement réussi !</span>
+</div>
+
+<header class="topbar py-3">
+  <div class="container d-flex justify-content-between align-items-center gap-3">
+    <a class="brand" href="{% url 'login' %}" aria-label="Accueil">
+      <img class="logo" src="{% static 'assets/img/logo-3d.png' %}" alt="SmartWrist Rehab">
+      <div>
+        <div class="brand-title">SmartWrist Rehab</div>
+        <div class="brand-sub" data-i18n="tagline">Réapprendre à faire, agir et participer à l’ère numérique</div>
+      </div>
+    </a>
+
+    <div class="lang-wrap">
+      <div class="lang-circles" role="group" aria-label="Language">
+        <button type="button" class="lang-dot active" data-lang="fr" aria-label="Français">FR</button>
+        <button type="button" class="lang-dot" data-lang="en" aria-label="English">EN</button>
+        <button type="button" class="lang-dot" data-lang="ar" aria-label="العربية">AR</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="reg-card">
+
+    <div class="hero">
+      <div>
+        <h1 data-i18n="h1"><i class="bi bi-shield-lock me-2"></i>Créer votre compte patient</h1>
+        <p data-i18n="sub"> Un premier pas vers une récupération plus sereine de votre poignet</p>
+
+        <div class="hint">
+          <i class="bi bi-clock-history"></i>
+          <span data-i18n="timeHint">Prenez le temps qu'il vous faut, le parcours s'adapte à vous</span>
+        </div>
+
+        <div class="req-note" data-i18n="reqNote">Les champs marqués d'un astérisque (*) sont obligatoires.</div>
+        
+        <div class="small-help mt-2">
+          <i class="bi bi-lock me-1"></i>
+          <span data-i18n="privacyShort">Vos données sont confidentielles et utilisées uniquement pour votre suivi.</span>
+        </div>
+      </div>
+
+      <div class="text-end" style="min-width:260px;">
+        <!-- Cette div reste pour le design mais le contenu est déplacé au-dessus -->
+      </div>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-wrap">
+      <div class="progress" role="progressbar" aria-label="progress">
+        <div id="bar" class="progress-bar" style="width: 25%"></div>
+      </div>
+      <div class="steps-mini">
+        <span class="chip" id="chip1"><i class="bi bi-person"></i><span data-i18n="step1">Identité</span></span>
+        <span class="chip" id="chip2"><i class="fas fa-bone"></i><span data-i18n="step2">Fracture</span></span>
+        <span class="chip" id="chip3"><i class="fas fa-bullseye"></i><span data-i18n="step3">Objectifs</span></span>
+        <span class="chip" id="chip4"><i class="bi bi-key"></i><span data-i18n="step4">Compte</span></span>
+      </div>
+    </div>
+
+          {% if message %}
+      <div class="alert alert-danger mt-3">
+        {{ message }}
+      </div>
+      {% endif %}
+      <form method="post" action="{% url 'register' %}" class="mt-2" id="regForm" novalidate>
+      {% csrf_token %}
+
+      <div class="accordion" id="acc">
+
+        <!-- 1) Identité & Contact -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#s1" aria-expanded="true">
+              <span class="section-title"><i class="bi bi-person"></i><span data-i18n="sec1">Identité & contact</span></span>
+            </button>
+          </h2>
+
+          <div id="s1" class="accordion-collapse collapse show" data-bs-parent="#acc">
+            <div class="accordion-body">
+              <p class="section-sub" data-i18n="sec1sub">Mieux vous connaître pour vous accompagner de façon personnalisée</p>
+
+              <div class="row g-3 mt-1">
+                <div class="col-md-6">
+                  <label class="form-label" data-i18n="lastName">Nom *</label>
+                  <div class="input-group highlight-on-hover">
+                    <span class="input-group-text ig"><i class="bi bi-card-text"></i></span>
+                    <input class="form-control field" name="last_name" required autocomplete="family-name" />
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label" data-i18n="firstName">Prénom *</label>
+                  <div class="input-group highlight-on-hover">
+                    <span class="input-group-text ig"><i class="bi bi-card-text"></i></span>
+                    <input class="form-control field" name="first_name" required autocomplete="given-name" />
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label" data-i18n="dob">Date de naissance *</label>
+                  <div class="input-group highlight-on-hover">
+                    <span class="input-group-text ig"><i class="bi bi-calendar-event"></i></span>
+                    <input type="date" class="form-control field" name="birth_date" required id="birthDate" />
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label" data-i18n="gender">Sexe</label>
+                  <div class="d-flex gap-3 mt-2" style="font-weight:900;">
+                    <label class="form-check">
+                      <input class="form-check-input" type="radio" name="gender" value="F">
+                      <span class="form-check-label" data-i18n="female">Femme</span>
+                    </label>
+                    <label class="form-check">
+                      <input class="form-check-input" type="radio" name="gender" value="M">
+                      <span class="form-check-label" data-i18n="male">Homme</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label" data-i18n="phone">Téléphone *</label>
+                  <div class="input-group highlight-on-hover">
+                    <span class="input-group-text ig"><i class="bi bi-telephone"></i></span>
+                    <input class="form-control field" name="phone" required data-i18n-placeholder="phPhone" placeholder="+213 ..." inputmode="tel" />
+                  </div>
+                  <div class="small-help" data-i18n="phoneHelp">Pour les rappels et communications importantes.</div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label" data-i18n="email">Email *</label>
+                  <div class="input-group highlight-on-hover">
+                    <span class="input-group-text ig"><i class="bi bi-envelope"></i></span>
+                    <input type="email" class="form-control field" name="email" required autocomplete="email" data-i18n-placeholder="phEmail" placeholder="ex: nom@email.com" />
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label" data-i18n="address">Adresse (facultatif)</label>
+                  <div class="input-group highlight-on-hover">
+                    <span class="input-group-text ig"><i class="bi bi-geo-alt"></i></span>
+                    <input class="form-control field" name="address" data-i18n-placeholder="phAddress" placeholder="Rue, ville, code postal" />
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label" data-i18n="displayName">Nom à afficher (optionnel)</label>
+                  <div class="input-group highlight-on-hover">
+                    <span class="input-group-text ig"><i class="bi bi-person-badge"></i></span>
+                    <input class="form-control field" name="display_name" data-i18n-placeholder="phDisplayName" placeholder="Comment souhaitez-vous être appelé(e) ?" />
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label" data-i18n="prefLang">Langue préférée</label>
+                  <div class="input-group highlight-on-hover">
+                    <span class="input-group-text ig"><i class="bi bi-translate"></i></span>
+                    <select class="form-select field" name="preferred_lang" id="preferredLang">
+                      <option value="fr" selected data-i18n="langFR">Français</option>
+                      <option value="en" data-i18n="langEN">English</option>
+                      <option value="ar" data-i18n="langAR">العربية</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-12 d-flex justify-content-end">
+                  <button type="button" class="btn btn-soft" onclick="openStep(2)">
+                    <i class="bi bi-arrow-right-circle me-1"></i><span data-i18n="next">Continuer</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2) Fracture & médical -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#s2">
+              <span class="section-title"><i class="fas fa-bone"></i><span data-i18n="sec2">Votre fracture</span></span>
+            </button>
+          </h2>
+
+          <div id="s2" class="accordion-collapse collapse" data-bs-parent="#acc">
+            <div class="accordion-body">
+              <p class="section-sub" data-i18n="sec2sub">Ces informations restent confidentielles et aident à adapter votre suivi.</p>
+
+              <div class="row g-3 mt-1">
+
+                <!-- Type fracture + Autre -->
+                <div class="col-md-6">
+                  <label class="form-label" data-i18n="fractType">Type de fracture *</label>
+                  <div class="input-group highlight-on-hover">
+                    <span class="input-group-text ig"><i class="bi bi-list-check"></i></span>
+                    <select class="form-select field" name="fracture_type" required data-other-target="#fractureOtherWrap">
+                      <option value="" selected disabled data-i18n="dash">—</option>
+                      <option value="pouteau" data-i18n="fractPouteau">Fracture de Pouteau-Colles</option>
+                      <option value="scaphoide" data-i18n="fractScaphoid">Fracture du scaphoïde</option>
+                      <option value="articulaire" data-i18n="fractArticular">Fracture articulaire</option>
+                      <option value="other" data-i18n="fractOther">Autre / Je ne sais pas</option>
+                    </select>
+                  </div>
+                  <div id="fractureOtherWrap" class="other-wrap">
+                    <div class="input-group highlight-on-hover">
+                      <span class="input-group-text ig"><i class="bi bi-pencil"></i></span>
+                      <input class="form-control field" name="fracture_type_other" data-i18n-placeholder="phSpecifyDx" placeholder="Précisez (diagnostic / protocole…)" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label" data-i18n="fractDate">Date de la fracture *</label>
+                  <div class="input-group highlight-on-hover">
+                    <span class="input-group-text ig"><i class="fas fa-calendar-heart"></i></span>
+                    <input type="date" class="form-control field" name="fracture_date" required id="fractureDate" />
+                  </div>
+                  <div class="small-help" id="sinceText"></div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label" data-i18n="side">Côté atteint *</label>
+                  <div class="d-flex gap-3 mt-2" style="font-weight:900;">
+                    <label class="form-check">
+                      <input class="form-check-input" type="radio" name="side" value="Droit" required>
+                      <span class="form-check-label" data-i18n="right">Droit</span>
+                    </label>
+                    <label class="form-check">
+                      <input class="form-check-input" type="radio" name="side" value="Gauche" required>
+                      <span class="form-check-label" data-i18n="left">Gauche</span>
+                    </label>
+                    <label class="form-check">
+                      <input class="form-check-input" type="radio" name="side" value="Les deux" required>
+                      <span class="form-check-label" data-i18n="both">Les deux</span>
+                    </label>
+                  </div>
+
+                  <div class="form-check mt-2" style="font-weight:900;">
+                    <input class="form-check-input" type="checkbox" name="dominant_hand" id="dominantHand">
+                    <label class="form-check-label" for="dominantHand" data-i18n="dominant">C'est ma main dominante</label>
+                  </div>
+                </div>
+
+                <!-- Traitement reçu + Autre dynamique -->
+                <div class="col-md-6">
+                  <label class="form-label" data-i18n="treatment">Traitement reçu *</label>
+                  <div class="box-soft highlight-on-hover">
+                    <div class="d-grid gap-2" style="font-weight:900;">
+                      <label class="form-check">
+                        <input class="form-check-input" type="checkbox" name="treatment" value="Plâtre">
+                        <span class="form-check-label" data-i18n="cast">Plâtre</span>
+                      </label>
+                      <label class="form-check">
+                        <input class="form-check-input" type="checkbox" name="treatment" value="Chirurgie">
+                        <span class="form-check-label" data-i18n="surgery">Intervention chirurgicale</span>
+                      </label>
+                      <label class="form-check">
+                        <input class="form-check-input" type="checkbox" name="treatment" value="Orthèse">
+                        <span class="form-check-label" data-i18n="splint">Orthèse / attelle</span>
+                      </label>
+
+                      <label class="form-check">
+                        <input class="form-check-input" type="checkbox" name="treatment" value="other" data-other-target="#treatOtherWrap">
+                        <span class="form-check-label" data-i18n="other">Autre</span>
+                      </label>
+
+                      <div id="treatOtherWrap" class="other-wrap">
+                        <div class="input-group highlight-on-hover">
+                          <span class="input-group-text ig"><i class="bi bi-pencil"></i></span>
+                          <input class="form-control field" name="treatment_other" data-i18n-placeholder="phSpecifyProtocol" placeholder="Précisez (ex: protocole particulier…)" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ✅ Douleur repos / effort (2 sliders) -->
+                <div class="col-12">
+                  <label class="form-label" data-i18n="painBlockTitle">Douleur actuelle (0–10) *</label>
+                  <div class="box-soft highlight-on-hover">
+                    <div class="row g-3">
+                      <div class="col-md-6">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div style="font-weight:950;" data-i18n="painRestLabel">Au repos</div>
+                          <div id="painRestVal" style="font-weight:950; min-width:52px; text-align:end;">3/10</div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 mt-1" style="font-weight:900;">
+                          <span class="badge text-bg-light border">0</span>
+                          <input type="range" class="form-range" min="0" max="10" step="1" name="pain_rest" id="painRest" value="3" />
+                          <span class="badge text-bg-light border">10</span>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div style="font-weight:950;" data-i18n="painEffortLabel">À l'effort</div>
+                          <div id="painEffortVal" style="font-weight:950; min-width:52px; text-align:end;">3/10</div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 mt-1" style="font-weight:900;">
+                          <span class="badge text-bg-light border">0</span>
+                          <input type="range" class="form-range" min="0" max="10" step="1" name="pain_effort" id="painEffort" value="3" />
+                          <span class="badge text-bg-light border">10</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="small-help mt-2" data-i18n="painHelp">Indiquez votre douleur au repos et pendant l'effort.</div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label" data-i18n="swellingLabel">Raideur / gonflement *</label>
+                  <div class="input-group highlight-on-hover">
+                    <span class="input-group-text ig"><i class="fas fa-hand-sparkles"></i></span>
+                    <select class="form-select field" name="swelling" required>
+                      <option value="" selected disabled data-i18n="dash">—</option>
+                      <option value="light" data-i18n="light">Léger</option>
+                      <option value="moderate" data-i18n="moderate">Modéré</option>
+                      <option value="high" data-i18n="high">Important</option>
+                      <option value="unsure" data-i18n="unsure">Je ne sais pas</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label" data-i18n="limitsLabel">Limitations actuelles (activités difficiles) (optionnel)</label>
+                  <div class="box-soft highlight-on-hover" style="font-weight:900;">
+                    <div class="row g-2">
+                      <div class="col-md-3"><label class="form-check"><input class="form-check-input" type="checkbox" name="limits" value="habillage"><span class="form-check-label" data-i18n="limDress">Habillage</span></label></div>
+                      <div class="col-md-3"><label class="form-check"><input class="form-check-input" type="checkbox" name="limits" value="toilette"><span class="form-check-label" data-i18n="limToilet">Toilette</span></label></div>
+                      <div class="col-md-3"><label class="form-check"><input class="form-check-input" type="checkbox" name="limits" value="cuisine"><span class="form-check-label" data-i18n="limCook">Cuisine</span></label></div>
+                      <div class="col-md-3"><label class="form-check"><input class="form-check-input" type="checkbox" name="limits" value="porte"><span class="form-check-label" data-i18n="limCarry">Port de charge</span></label></div>
+
+                      <div class="col-md-3"><label class="form-check"><input class="form-check-input" type="checkbox" name="limits" value="smartphone"><span class="form-check-label" data-i18n="limPhone">Téléphone</span></label></div>
+                      <div class="col-md-3"><label class="form-check"><input class="form-check-input" type="checkbox" name="limits" value="clavier"><span class="form-check-label" data-i18n="limKeyboard">Clavier / souris</span></label></div>
+                      <div class="col-md-3"><label class="form-check"><input class="form-check-input" type="checkbox" name="limits" value="conduite"><span class="form-check-label" data-i18n="limDrive">Conduite</span></label></div>
+                      <div class="col-md-3"><label class="form-check"><input class="form-check-input" type="checkbox" name="limits" value="other" data-other-target="#limitsOtherWrap"><span class="form-check-label" data-i18n="other">Autre</span></label></div>
+                    </div>
+
+                    <div id="limitsOtherWrap" class="other-wrap">
+                      <div class="input-group mt-2 highlight-on-hover">
+                        <span class="input-group-text ig"><i class="bi bi-pencil"></i></span>
+                        <input class="form-control field" name="limits_other" data-i18n-placeholder="phSpecifyDifficulties" placeholder="Précisez vos difficultés…" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Comorbidités + Autre -->
+                <div class="col-12">
+                  <label class="form-label" data-i18n="health">Autres problèmes de santé (optionnel)</label>
+                  <div class="box-soft highlight-on-hover" style="font-weight:900;">
+                    <div class="row g-2">
+                      <div class="col-md-3"><label class="form-check"><input class="form-check-input" type="checkbox" name="comorb" value="Diabète"><span class="form-check-label" data-i18n="comDiabetes">Diabète</span></label></div>
+                      <div class="col-md-3"><label class="form-check"><input class="form-check-input" type="checkbox" name="comorb" value="Hypertension"><span class="form-check-label" data-i18n="comHTN">Hypertension</span></label></div>
+                      <div class="col-md-3"><label class="form-check"><input class="form-check-input" type="checkbox" name="comorb" value="Ostéoporose"><span class="form-check-label" data-i18n="comOsteo">Ostéoporose</span></label></div>
+                      <div class="col-md-3"><label class="form-check"><input class="form-check-input" type="checkbox" name="comorb" value="Arthrite"><span class="form-check-label" data-i18n="comArthritis">Arthrite</span></label></div>
+
+                      <div class="col-md-3"><label class="form-check"><input class="form-check-input" type="checkbox" name="comorb" value="other" data-other-target="#comorbOtherWrap"><span class="form-check-label" data-i18n="other">Autre</span></label></div>
+                    </div>
+
+                    <div id="comorbOtherWrap" class="other-wrap">
+                      <div class="input-group mt-2 highlight-on-hover">
+                        <span class="input-group-text ig"><i class="bi bi-pencil"></i></span>
+                        <input class="form-control field" name="comorb_other" data-i18n-placeholder="phSpecify" placeholder="Précisez…" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label" data-i18n="meds">Médicaments actuels (optionnel)</label>
+                  <div class="input-group highlight-on-hover">
+                    <span class="input-group-text ig"><i class="fas fa-pills"></i></span>
+                    <input class="form-control field" name="meds" data-i18n-placeholder="medsPH" placeholder="ex : anti-inflammatoire..." />
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label" data-i18n="allergies">Allergies (optionnel)</label>
+                  <div class="input-group highlight-on-hover">
+                    <span class="input-group-text ig"><i class="fas fa-allergies"></i></span>
+                    <input class="form-control field" name="allergies" data-i18n-placeholder="allergiesPH" placeholder="Aucune / Médicaments / Autre..." />
+                  </div>
+                </div>
+
+                <div class="col-12 d-flex justify-content-between">
+                  <button type="button" class="btn btn-soft" onclick="openStep(1)">
+                    <i class="bi bi-arrow-left-circle me-1"></i><span data-i18n="back">Retour</span>
+                  </button>
+                  <button type="button" class="btn btn-soft" onclick="openStep(3)">
+                    <i class="bi bi-arrow-right-circle me-1"></i><span data-i18n="next">Continuer</span>
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3) Contexte & objectifs -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#s3">
+              <span class="section-title"><i class="fas fa-bullseye"></i><span data-i18n="sec3">Contexte & objectifs</span></span>
+            </button>
+          </h2>
+
+          <div id="s3" class="accordion-collapse collapse" data-bs-parent="#acc">
+            <div class="accordion-body">
+              <p class="section-sub" data-i18n="sec3sub">Dites-nous ce qui compte pour vous. Vos priorités guident le programme.</p>
+
+              <div class="row g-3 mt-1">
+
+                <!-- Profession + Autre -->
+                <div class="col-md-6">
+                  <label class="form-label" data-i18n="job">Profession / statut *</label>
+                  <div class="input-group highlight-on-hover">
+                    <span class="input-group-text ig"><i class="fas fa-briefcase"></i></span>
+                    <select class="form-select field" name="job" required data-other-target="#jobOtherWrap">
+                      <option value="" selected disabled data-i18n="dash">—</option>
+                      <option value="bureau" data-i18n="jobOffice">Employé(e) de bureau</option>
+                      <option value="manuel" data-i18n="jobManual">Travailleur manuel</option>
+                      <option value="etudiant" data-i18n="jobStudent">Étudiant(e)</option>
+                      <option value="retraite" data-i18n="jobRetired">Retraité(e)</option>
+                      <option value="sans" data-i18n="jobUnemployed">Sans emploi</option>
+                      <option value="other" data-i18n="other">Autre</option>
+                    </select>
+                  </div>
+                  <div id="jobOtherWrap" class="other-wrap">
+                    <div class="input-group highlight-on-hover">
+                      <span class="input-group-text ig"><i class="bi bi-pencil"></i></span>
+                      <input class="form-control field" name="job_other" data-i18n-placeholder="phSpecifyProfession" placeholder="Précisez votre profession…" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label" data-i18n="workImpact">Impact sur le travail *</label>
+                  <div class="input-group highlight-on-hover">
+                    <span class="input-group-text ig"><i class="fas fa-chart-line"></i></span>
+                    <select class="form-select field" name="work_impact" required>
+                      <option value="" selected disabled data-i18n="dash">—</option>
+                      <option value="stop" data-i18n="impactStop">Arrêt complet</option>
+                      <option value="light" data-i18n="impactLight">Travail adapté / léger</option>
+                      <option value="remote" data-i18n="impactRemote">Télétravail possible</option>
+                      <option value="none" data-i18n="impactNone">Pas d'impact</option>
+                      <option value="na" data-i18n="impactNA">Non applicable</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Activités avant fracture + Autre -->
+                <div class="col-12">
+                  <label class="form-label" data-i18n="activities">Activités importantes avant la fracture (optionnel)</label>
+                  <div class="box-soft highlight-on-hover" style="font-weight:900;">
+                    <div class="row g-2">
+                      <div class="col-md-3"><label class="form-check"><input class="form-check-input" type="checkbox" name="activities" value="Sport"><span class="form-check-label" data-i18n="actSport">Sport</span></label></div>
+                      <div class="col-md-3"><label class="form-check"><input class="form-check-input" type="checkbox" name="activities" value="Cuisine"><span class="form-check-label" data-i18n="actCook">Cuisine</span></label></div>
+                      <div class="col-md-3"><label class="form-check"><input class="form-check-input" type="checkbox" name="activities" value="Bricolage/Jardinage"><span class="form-check-label" data-i18n="actDIY">Bricolage/Jardinage</span></label></div>
+                      <div class="col-md-3"><label class="form-check"><input class="form-check-input" type="checkbox" name="activities" value="Écriture/Dessin"><span class="form-check-label" data-i18n="actWrite">Écriture/Dessin</span></label></div>
+
+                      <div class="col-md-3"><label class="form-check"><input class="form-check-input" type="checkbox" name="activities" value="Informatique"><span class="form-check-label" data-i18n="actIT">Informatique</span></label></div>
+                      <div class="col-md-3"><label class="form-check"><input class="form-check-input" type="checkbox" name="activities" value="Musique"><span class="form-check-label" data-i18n="actMusic">Musique</span></label></div>
+                      <div class="col-md-3"><label class="form-check"><input class="form-check-input" type="checkbox" name="activities" value="Artisanat"><span class="form-check-label" data-i18n="actCraft">Artisanat</span></label></div>
+
+                      <div class="col-md-3"><label class="form-check"><input class="form-check-input" type="checkbox" name="activities" value="other" data-other-target="#actOtherWrap"><span class="form-check-label" data-i18n="other">Autre</span></label></div>
+                    </div>
+
+                    <div id="actOtherWrap" class="other-wrap">
+                      <div class="input-group mt-2 highlight-on-hover">
+                        <span class="input-group-text ig"><i class="bi bi-pencil"></i></span>
+                        <input class="form-control field" name="activities_other" data-i18n-placeholder="phSpecify" placeholder="Précisez…" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ✅ Objectifs ergo + Autre -->
+                <div class="col-12">
+                  <label class="form-label" data-i18n="goal">Objectif principal de rééducation *</label>
+                  <div class="input-group highlight-on-hover">
+                    <span class="input-group-text ig"><i class="fas fa-flag-checkered"></i></span>
+                    <select class="form-select field" name="main_goal" required data-other-target="#goalOtherWrap">
+                      <option value="" selected disabled data-i18n="dash">—</option>
+                      <option value="adl" data-i18n="goalADL">Retrouver l'autonomie (toilette, habillage, soins personnels)</option>
+                      <option value="prise" data-i18n="goalGrip">Améliorer la prise / préhension (tenir un verre, ouvrir un bocal)</option>
+                      <option value="douleur" data-i18n="goalPain">Diminuer la douleur et reprendre les gestes sans appréhension</option>
+                      <option value="mobilite" data-i18n="goalMobility">Récupérer la mobilité (flexion/extension, pronation/supination)</option>
+                      <option value="force" data-i18n="goalStrength">Récupérer la force (porter, pousser, tirer)</option>
+                      <option value="fine" data-i18n="goalFine">Améliorer la motricité fine (écriture, boutonner, smartphone)</option>
+                      <option value="travail" data-i18n="goalWork">Reprendre le travail / gestes professionnels</option>
+                      <option value="loisirs" data-i18n="goalHobby">Reprendre les loisirs (sport, musique, bricolage)</option>
+                      <option value="other" data-i18n="other">Autre</option>
+                    </select>
+                  </div>
+
+                  <div id="goalOtherWrap" class="other-wrap">
+                    <div class="input-group highlight-on-hover">
+                      <span class="input-group-text ig"><i class="bi bi-pencil"></i></span>
+                      <input class="form-control field" name="main_goal_other" data-i18n-placeholder="phSpecifyGoal" placeholder="Précisez votre objectif…" />
+                    </div>
+                  </div>
+
+                  <div class="small-help" data-i18n="goalHelp">Choisissez l'objectif le plus important pour vous. Les autres seront travaillés ensuite.</div>
+                </div>
+
+                <div class="col-12 d-flex justify-content-between">
+                  <button type="button" class="btn btn-soft" onclick="openStep(2)">
+                    <i class="bi bi-arrow-left-circle me-1"></i><span data-i18n="back">Retour</span>
+                  </button>
+                  <button type="button" class="btn btn-soft" onclick="openStep(4)">
+                    <i class="bi bi-arrow-right-circle me-1"></i><span data-i18n="next">Continuer</span>
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4) Compte & sécurité -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#s4">
+              <span class="section-title"><i class="bi bi-key"></i><span data-i18n="sec4">Compte & sécurité</span></span>
+            </button>
+          </h2>
+
+          <div id="s4" class="accordion-collapse collapse" data-bs-parent="#acc">
+            <div class="accordion-body">
+              <p class="section-sub" data-i18n="sec4sub">Créez vos identifiants. Vous pourrez vous connecter en toute sécurité.</p>
+
+              <div class="row g-3 mt-1">
+                <div class="col-md-6">
+                  <label class="form-label" data-i18n="username">Nom d'utilisateur *</label>
+                  <div class="input-group highlight-on-hover">
+                    <span class="input-group-text ig"><i class="bi bi-person-bounding-box"></i></span>
+                    <input class="form-control field" name="username" required autocomplete="username" />
+                  </div>
+                  <div class="small-help" data-i18n="unique">Doit être unique.</div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label" data-i18n="password">Mot de passe *</label>
+                  <div class="input-group highlight-on-hover">
+                    <span class="input-group-text ig"><i class="bi bi-lock"></i></span>
+                    <input id="pw" type="password" class="form-control field pw-input" name="password" required autocomplete="new-password" />
+                    <button type="button" class="pw-eye" id="togglePw" aria-label="Afficher/Masquer"><i class="bi bi-eye"></i></button>
+                  </div>
+
+                  <div class="rules highlight-on-hover">
+                    <div class="rule-item"><i class="bi bi-check-circle"></i><span data-i18n="rule1">Minimum 8 caractères</span></div>
+                    <div class="rule-item"><i class="bi bi-check-circle"></i><span data-i18n="rule2">Au moins 1 majuscule (recommandé)</span></div>
+                    <div class="rule-item"><i class="bi bi-check-circle"></i><span data-i18n="rule3">Au moins 1 chiffre (recommandé)</span></div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label" data-i18n="confirm">Confirmer le mot de passe *</label>
+                  <div class="input-group highlight-on-hover">
+                    <span class="input-group-text ig"><i class="bi bi-shield-check"></i></span>
+                    <input id="pw2" type="password" class="form-control field pw-input" name="password_confirm" required autocomplete="new-password" />
+                    <button type="button" class="pw-eye" id="togglePw2" aria-label="Afficher/Masquer"><i class="bi bi-eye"></i></button>
+                  </div>
+                  <div class="small-help" id="matchHint"></div>
+                </div>
+
+                <!-- Source + Autre -->
+                <div class="col-md-6">
+                  <label class="form-label" data-i18n="source">Comment avez-vous entendu parler de nous ? (optionnel)</label>
+                  <div class="input-group highlight-on-hover">
+                    <span class="input-group-text ig"><i class="fas fa-bullhorn"></i></span>
+                    <select class="form-select field" name="source" data-other-target="#sourceOtherWrap">
+                      <option value="" selected data-i18n="dash">—</option>
+                      <option value="medecin" data-i18n="srcDoctor">Recommandation médecin</option>
+                      <option value="ergo" data-i18n="srcErgo">Recommandation ergothérapeute</option>
+                      <option value="internet" data-i18n="srcInternet">Recherche internet</option>
+                      <option value="rs" data-i18n="srcSocial">Réseaux sociaux</option>
+                      <option value="bouche" data-i18n="srcWord">Bouche-à-oreille</option>
+                      <option value="other" data-i18n="other">Autre</option>
+                    </select>
+                  </div>
+                  <div id="sourceOtherWrap" class="other-wrap">
+                    <div class="input-group highlight-on-hover">
+                      <span class="input-group-text ig"><i class="bi bi-pencil"></i></span>
+                      <input class="form-control field" name="source_other" data-i18n-placeholder="phSpecify" placeholder="Précisez…" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Consentements -->
+                <div class="col-12 mt-2">
+                  <div class="p-3 highlight-on-hover" style="border:1px solid rgba(0,0,0,.10); border-radius:16px; background:rgba(0,0,0,.02);">
+                    <div class="section-title mb-2"><i class="bi bi-file-earmark-text"></i><span data-i18n="consentTitle">Consentement</span></div>
+
+                    <label class="form-check mb-2" style="font-weight:900;">
+                      <input class="form-check-input" type="checkbox" name="cgu" required>
+                      <span class="form-check-label" data-i18n="cgu">J'accepte les Conditions Générales d'Utilisation *</span>
+                    </label>
+
+                    <label class="form-check mb-2" style="font-weight:900;">
+                      <input class="form-check-input" type="checkbox" name="privacy" required>
+                      <span class="form-check-label" data-i18n="privacy">Je consens au traitement de mes données de santé (confidentialité) *</span>
+                    </label>
+
+                    <label class="form-check mb-2" style="font-weight:900;">
+                      <input class="form-check-input" type="checkbox" name="tips_optin">
+                      <span class="form-check-label" data-i18n="tips">Je souhaite recevoir des rappels et conseils (email/SMS) (optionnel)</span>
+                    </label>
+
+                    <!-- ✅ Nouvelle mention de consentement avec support multilingue -->
+                    <div class="consent-mention mt-3">
+                      <i class="bi bi-google"></i>
+                      <span data-i18n="consentGoogle">Consentement recueilli auprès du patient via un formulaire Google</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 d-flex justify-content-between align-items-center flex-wrap gap-2 mt-2">
+    <button type="button" class="btn btn-soft" onclick="openStep(3)">
+        <i class="bi bi-arrow-left-circle me-1"></i><span data-i18n="back">Retour</span>
+    </button>
+
+    <div class="d-flex gap-2">
+        <!-- NOUVEAU BOUTON TÉLÉCHARGER -->
+        <button type="button" id="downloadBtn" class="btn btn-info" style="background: #17a2b8; color: white; padding: 12px 24px; border-radius: 50px; font-weight: bold;" onclick="genererPDF()">
+            <i class="bi bi-file-pdf-fill me-1"></i> 📄 Télécharger PDF
+        </button>
+        
+        <!-- BOUTON ENREGISTRER (inchangé) -->
+        <button type="submit" class="btn btn-main" id="submitBtn">
+            <i class="bi bi-person-check me-1"></i>
+            <span data-i18n="submit">S'enregistrer</span>
+        </button>
+    </div>
+</div>
+
+                <!-- ✅ Lien "Se connecter" supprimé -->
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- accordion -->
+    </form>
+
+  </div>
+
+  <footer class="mt-4 text-center small-help">
+    <div>
+      <a href="#" class="text-decoration-none me-2" data-i18n="legal">Mentions légales</a>
+      <!-- ✅ Contact supprimé -->
+    </div>
+    <div class="mt-1">
+      © <span id="year"></span> SmartWrist Rehab
+      <!-- ✅ Description supprimée -->
+    </div>
+  </footer>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+/* =========================
+   Helpers
+========================= */
+const $  = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+
+/* =========================
+   Password toggles + match
+========================= */
+const pw = $("#pw");
+const pw2 = $("#pw2");
+const togglePw = $("#togglePw");
+const togglePw2 = $("#togglePw2");
+const matchHint = $("#matchHint");
+
+togglePw?.addEventListener("click", () => {
+  const hidden = pw.type === "password";
+  pw.type = hidden ? "text" : "password";
+  togglePw.innerHTML = hidden ? '<i class="bi bi-eye-slash"></i>' : '<i class="bi bi-eye"></i>';
+});
+togglePw2?.addEventListener("click", () => {
+  const hidden = pw2.type === "password";
+  pw2.type = hidden ? "text" : "password";
+  togglePw2.innerHTML = hidden ? '<i class="bi bi-eye-slash"></i>' : '<i class="bi bi-eye"></i>';
+});
+
+/* =========================
+   Accordion + progress
+========================= */
+const acc = { 1:{id:"s1",p:25,chip:"#chip1"}, 2:{id:"s2",p:50,chip:"#chip2"}, 3:{id:"s3",p:75,chip:"#chip3"}, 4:{id:"s4",p:100,chip:"#chip4"} };
+const bar = $("#bar");
+
+window.openStep = function(n){
+  const target = document.getElementById(acc[n].id);
+  if(!target) return;
+  const collapse = bootstrap.Collapse.getOrCreateInstance(target, { toggle: false });
+  collapse.show();
+  if(bar) bar.style.width = acc[n].p + "%";
+  // chips
+  Object.values(acc).forEach(v => $(v.chip)?.classList.remove("active"));
+  $(acc[n].chip)?.classList.add("active");
+};
+
+/* =========================
+   "Other" dynamic fields
+========================= */
+function toggleOtherForSelect(sel){
+  const targetSel = sel.getAttribute("data-other-target");
+  if(!targetSel) return;
+  const wrap = document.querySelector(targetSel);
+  if(!wrap) return;
+  const isOther = (sel.value === "other");
+  wrap.classList.toggle("show", isOther);
+  if(!isOther){
+    wrap.querySelectorAll("input, textarea").forEach(i => i.value = "");
+  }
+}
+function toggleOtherForCheckbox(cb){
+  const targetSel = cb.getAttribute("data-other-target");
+  if(!targetSel) return;
+  const wrap = document.querySelector(targetSel);
+  if(!wrap) return;
+  wrap.classList.toggle("show", cb.checked);
+  if(!cb.checked){
+    wrap.querySelectorAll("input, textarea").forEach(i => i.value = "");
+  }
+}
+$$("select[data-other-target]").forEach(sel=>{
+  sel.addEventListener("change", ()=>toggleOtherForSelect(sel));
+  toggleOtherForSelect(sel);
+});
+$$("input[type='checkbox'][data-other-target]").forEach(cb=>{
+  cb.addEventListener("change", ()=>toggleOtherForCheckbox(cb));
+  toggleOtherForCheckbox(cb);
+});
+
+/* =========================
+   Pain sliders (rest/effort)
+========================= */
+const painRest = $("#painRest");
+const painEffort = $("#painEffort");
+const painRestVal = $("#painRestVal");
+const painEffortVal = $("#painEffortVal");
+
+function updatePain(){
+  if(painRestVal && painRest) painRestVal.textContent = painRest.value + "/10";
+  if(painEffortVal && painEffort) painEffortVal.textContent = painEffort.value + "/10";
+}
+painRest?.addEventListener("input", updatePain);
+painEffort?.addEventListener("input", updatePain);
+updatePain();
+
+/* =========================
+   Fracture date -> since
+========================= */
+const fractureDate = $("#fractureDate");
+const sinceText = $("#sinceText");
+
+let currentLang = "fr";
+
+function updateSinceText(lang){
+  if(!fractureDate || !sinceText) return;
+  const v = fractureDate.value;
+  if(!v){ sinceText.textContent = ""; return; }
+
+  const d = new Date(v);
+  const now = new Date();
+  const diffMs = now - d;
+  const days = Math.floor(diffMs / (1000*60*60*24));
+  if (isNaN(days) || days < 0){ sinceText.textContent = ""; return; }
+  const weeks = Math.floor(days / 7);
+
+  const t = {
+    fr: (weeks >= 1) ? `ℹ️ Il y a environ ${weeks} semaine(s).` : `ℹ️ Il y a environ ${days} jour(s).`,
+    en: (weeks >= 1) ? `ℹ️ About ${weeks} week(s) ago.` : `ℹ️ About ${days} day(s) ago.`,
+    ar: (weeks >= 1) ? `ℹ️ منذ حوالي ${weeks} أسبوع(أسابيع).` : `ℹ️ منذ حوالي ${days} يومًا.`
+  };
+
+  sinceText.textContent = t[lang] || t.fr;
+  sinceText.style.opacity = ".70";
+  sinceText.style.fontWeight = "900";
+}
+fractureDate?.addEventListener("change", () => updateSinceText(currentLang));
+
+/* =========================
+   i18n dictionaries
+========================= */
+const dict = {
+  fr:{
+    tagline:"Réapprendre à faire, agir et participer à l’ère numérique",
+    h1:"Créer votre compte patient",
+    sub:"Un premier pas vers une récupération plus sereine de votre poignet",
+    timeHint:"Prenez le temps qu'il vous faut, le parcours s'adapte à vous",
+    reqNote:"Les champs marqués d'un astérisque (*) sont obligatoires.",
+    privacyShort:"Vos données sont confidentielles et utilisées uniquement pour votre suivi.",
+    step1:"Identité", step2:"Fracture", step3:"Objectifs", step4:"Compte",
+    sec1:"Identité & contact",
+    sec1sub:"Mieux vous connaître pour vous accompagner de façon personnalisée",
+    lastName:"Nom *",
+    firstName:"Prénom *",
+    dob:"Date de naissance *",
+    gender:"Sexe",
+    female:"Femme", male:"Homme",
+    phone:"Téléphone *",
+    phoneHelp:"Pour les rappels et communications importantes.",
+    email:"Email *",
+    address:"Adresse (facultatif)",
+    displayName:"Nom à afficher (optionnel)",
+    prefLang:"Langue préférée",
+    next:"Continuer",
+    back:"Retour",
+    sec2:"Votre fracture",
+    sec2sub:"Ces informations restent confidentielles et aident à adapter votre suivi.",
+    fractType:"Type de fracture *",
+    fractDate:"Date de la fracture *",
+    side:"Côté atteint *",
+    right:"Droit", left:"Gauche", both:"Les deux",
+    dominant:"C'est ma main dominante",
+    treatment:"Traitement reçu *",
+    cast:"Plâtre", surgery:"Intervention chirurgicale", splint:"Orthèse / attelle",
+    painBlockTitle:"Douleur actuelle (0–10) *",
+    painRestLabel:"Au repos",
+    painEffortLabel:"À l'effort",
+    painHelp:"Indiquez votre douleur au repos et pendant l'effort.",
+    swellingLabel:"Raideur / gonflement *",
+    limitsLabel:"Limitations actuelles (activités difficiles) (optionnel)",
+    limDress:"Habillage", limToilet:"Toilette", limCook:"Cuisine", limCarry:"Port de charge",
+    limPhone:"Téléphone", limKeyboard:"Clavier / souris", limDrive:"Conduite",
+    health:"Autres problèmes de santé (optionnel)",
+    comDiabetes:"Diabète", comHTN:"Hypertension", comOsteo:"Ostéoporose", comArthritis:"Arthrite",
+    meds:"Médicaments actuels (optionnel)",
+    allergies:"Allergies (optionnel)",
+    medsPH:"ex : anti-inflammatoire...",
+    allergiesPH:"Aucune / Médicaments / Autre...",
+    sec3:"Contexte & objectifs",
+    sec3sub:"Dites-nous ce qui compte pour vous. Vos priorités guident le programme.",
+    job:"Profession / statut *",
+    workImpact:"Impact sur le travail *",
+    activities:"Activités importantes avant la fracture (optionnel)",
+    goal:"Objectif principal de rééducation *",
+    goalHelp:"Choisissez l'objectif le plus important pour vous. Les autres seront travaillés ensuite.",
+    sec4:"Compte & sécurité",
+    sec4sub:"Créez vos identifiants. Vous pourrez vous connecter en toute sécurité.",
+    username:"Nom d'utilisateur *",
+    unique:"Doit être unique.",
+    password:"Mot de passe *",
+    confirm:"Confirmer le mot de passe *",
+    rule1:"Minimum 8 caractères",
+    rule2:"Au moins 1 majuscule (recommandé)",
+    rule3:"Au moins 1 chiffre (recommandé)",
+    source:"Comment avez-vous entendu parler de nous ? (optionnel)",
+    consentTitle:"Consentement",
+    cgu:"J'accepte les Conditions Générales d'Utilisation *",
+    privacy:"Je consens au traitement de mes données de santé (confidentialité) *",
+    tips:"Je souhaite recevoir des rappels et conseils (email/SMS) (optionnel)",
+    submit:"S'enregistrer",
+    legal:"Mentions légales",
+    consentGoogle:"Consentement recueilli auprès du patient via un formulaire Google",
+
+    // options + misc
+    dash:"—",
+    other:"Autre",
+    unsure:"Je ne sais pas",
+    light:"Léger",
+    moderate:"Modéré",
+    high:"Important",
+
+    // placeholders
+    phAddress:"Rue, ville, code postal",
+    phDisplayName:"Comment souhaitez-vous être appelé(e) ?",
+    phEmail:"ex: nom@email.com",
+    phPhone:"+213 ...",
+    phSpecify:"Précisez…",
+    phSpecifyDx:"Précisez (diagnostic / protocole…)",
+    phSpecifyProtocol:"Précisez (ex: protocole particulier…)",
+    phSpecifyDifficulties:"Précisez vos difficultés…",
+    phSpecifyProfession:"Précisez votre profession…",
+    phSpecifyGoal:"Précisez votre objectif…",
+
+    // select texts
+    langFR:"Français", langEN:"English", langAR:"العربية",
+    fractPouteau:"Fracture de Pouteau-Colles",
+    fractScaphoid:"Fracture du scaphoïde",
+    fractArticular:"Fracture articulaire",
+    fractOther:"Autre / Je ne sais pas",
+    jobOffice:"Employé(e) de bureau",
+    jobManual:"Travailleur manuel",
+    jobStudent:"Étudiant(e)",
+    jobRetired:"Retraité(e)",
+    jobUnemployed:"Sans emploi",
+    impactStop:"Arrêt complet",
+    impactLight:"Travail adapté / léger",
+    impactRemote:"Télétravail possible",
+    impactNone:"Pas d'impact",
+    impactNA:"Non applicable",
+    actSport:"Sport",
+    actCook:"Cuisine",
+    actDIY:"Bricolage/Jardinage",
+    actWrite:"Écriture/Dessin",
+    actIT:"Informatique",
+    actMusic:"Musique",
+    actCraft:"Artisanat",
+    goalADL:"Retrouver l'autonomie (toilette, habillage, soins personnels)",
+    goalGrip:"Améliorer la prise / préhension (tenir un verre, ouvrir un bocal)",
+    goalPain:"Diminuer la douleur et reprendre les gestes sans appréhension",
+    goalMobility:"Récupérer la mobilité (flexion/extension, pronation/supination)",
+    goalStrength:"Récupérer la force (porter, pousser, tirer)",
+    goalFine:"Améliorer la motricité fine (écriture, boutonner, smartphone)",
+    goalWork:"Reprendre le travail / gestes professionnels",
+    goalHobby:"Reprendre les loisirs (sport, musique, bricolage)",
+    srcDoctor:"Recommandation médecin",
+    srcErgo:"Recommandation ergothérapeute",
+    srcInternet:"Recherche internet",
+    srcSocial:"Réseaux sociaux",
+    srcWord:"Bouche-à-oreille",
+
+    // password match
+    pwMatchOk:"✅ OK",
+    pwMatchNo:"⚠️ Les mots de passe ne correspondent pas"
+  },
+
+  en:{
+    tagline:"Relearning to do in the digital era",
+    h1:"Create your patient account",
+    sub:"A first step toward a calmer recovery of your wrist",
+    timeHint:"Take the time you need, the journey adapts to you",
+    reqNote:"Fields marked with an asterisk (*) are required.",
+    privacyShort:"Your data is confidential and used only for your follow-up.",
+    step1:"Identity", step2:"Fracture", step3:"Goals", step4:"Account",
+    sec1:"Identity & contact",
+    sec1sub:"Get to know you better to provide personalized support",
+    lastName:"Last name *",
+    firstName:"First name *",
+    dob:"Date of birth *",
+    gender:"Gender",
+    female:"Female", male:"Male",
+    phone:"Phone *",
+    phoneHelp:"For reminders and important communications.",
+    email:"Email *",
+    address:"Address (optional)",
+    displayName:"Display name (optional)",
+    prefLang:"Preferred language",
+    next:"Continue",
+    back:"Back",
+    sec2:"Your fracture",
+    sec2sub:"This information is confidential and helps tailor your follow-up.",
+    fractType:"Fracture type *",
+    fractDate:"Fracture date *",
+    side:"Affected side *",
+    right:"Right", left:"Left", both:"Both",
+    dominant:"This is my dominant hand",
+    treatment:"Treatment received *",
+    cast:"Cast", surgery:"Surgery", splint:"Splint / brace",
+    painBlockTitle:"Current pain (0–10) *",
+    painRestLabel:"At rest",
+    painEffortLabel:"During effort",
+    painHelp:"Rate your pain at rest and during effort.",
+    swellingLabel:"Stiffness / swelling *",
+    limitsLabel:"Current limitations (difficult activities) (optional)",
+    limDress:"Dressing", limToilet:"Toileting", limCook:"Cooking", limCarry:"Carrying loads",
+    limPhone:"Phone", limKeyboard:"Keyboard / mouse", limDrive:"Driving",
+    health:"Other health issues (optional)",
+    comDiabetes:"Diabetes", comHTN:"Hypertension", comOsteo:"Osteoporosis", comArthritis:"Arthritis",
+    meds:"Current medications (optional)",
+    allergies:"Allergies (optional)",
+    medsPH:"e.g., anti-inflammatory...",
+    allergiesPH:"None / Medications / Other...",
+    sec3:"Context & goals",
+    sec3sub:"Tell us what matters to you. Your priorities guide the program.",
+    job:"Job / status *",
+    workImpact:"Work impact *",
+    activities:"Important activities before the fracture (optional)",
+    goal:"Main rehabilitation goal *",
+    goalHelp:"Choose the most important goal. Others will be addressed later.",
+    sec4:"Account & security",
+    sec4sub:"Create your credentials to sign in securely.",
+    username:"Username *",
+    unique:"Must be unique.",
+    password:"Password *",
+    confirm:"Confirm password *",
+    rule1:"Minimum 8 characters",
+    rule2:"At least 1 uppercase (recommended)",
+    rule3:"At least 1 number (recommended)",
+    source:"How did you hear about us? (optional)",
+    consentTitle:"Consent",
+    cgu:"I accept the Terms of Use *",
+    privacy:"I consent to processing my health data (privacy) *",
+    tips:"I want reminders and tips (email/SMS) (optional)",
+    submit:"Register",
+    legal:"Legal notice",
+    consentGoogle:"Consent collected from the patient via a Google form",
+
+    dash:"—",
+    other:"Other",
+    unsure:"I don't know",
+    light:"Mild",
+    moderate:"Moderate",
+    high:"Severe",
+
+    phAddress:"Street, city, postal code",
+    phDisplayName:"How would you like to be called?",
+    phEmail:"e.g. name@email.com",
+    phPhone:"+213 ...",
+    phSpecify:"Specify…",
+    phSpecifyDx:"Specify (diagnosis / protocol…)",
+    phSpecifyProtocol:"Specify (e.g., specific protocol…)",
+    phSpecifyDifficulties:"Describe your difficulties…",
+    phSpecifyProfession:"Specify your profession…",
+    phSpecifyGoal:"Specify your goal…",
+
+    langFR:"Français", langEN:"English", langAR:"العربية",
+    fractPouteau:"Pouteau-Colles fracture",
+    fractScaphoid:"Scaphoid fracture",
+    fractArticular:"Articular fracture",
+    fractOther:"Other / I don't know",
+    jobOffice:"Office worker",
+    jobManual:"Manual worker",
+    jobStudent:"Student",
+    jobRetired:"Retired",
+    jobUnemployed:"Unemployed",
+    impactStop:"Complete leave",
+    impactLight:"Modified / light work",
+    impactRemote:"Remote work possible",
+    impactNone:"No impact",
+    impactNA:"Not applicable",
+    actSport:"Sports",
+    actCook:"Cooking",
+    actDIY:"DIY / Gardening",
+    actWrite:"Writing / Drawing",
+    actIT:"Computers",
+    actMusic:"Music",
+    actCraft:"Crafts",
+    goalADL:"Regain independence (toileting, dressing, self-care)",
+    goalGrip:"Improve grip (hold a glass, open a jar)",
+    goalPain:"Reduce pain and move with confidence",
+    goalMobility:"Recover mobility (flex/extend, pron/sup)",
+    goalStrength:"Recover strength (carry, push, pull)",
+    goalFine:"Improve fine motor skills (writing, buttons, phone)",
+    goalWork:"Return to work / professional gestures",
+    goalHobby:"Return to hobbies (sports, music, DIY)",
+    srcDoctor:"Doctor recommendation",
+    srcErgo:"Occupational therapist recommendation",
+    srcInternet:"Internet search",
+    srcSocial:"Social media",
+    srcWord:"Word of mouth",
+
+    pwMatchOk:"✅ OK",
+    pwMatchNo:"⚠️ Passwords do not match"
+  },
+
+  ar:{
+    tagline:"إعادة التعلّم في العصر الرقمي",
+    h1:"إنشاء حساب المريض",
+    sub:"خطوة أولى نحو تعافٍ أكثر هدوءًا لمعصمك",
+    timeHint:"خذ الوقت الذي تحتاجه، المسار يتكيف معك",
+    reqNote:"الحقول المعلّمة بنجمة (*) إلزامية.",
+    privacyShort:"بياناتك سرّية وتُستخدم فقط للمتابعة.",
+    step1:"الهوية", step2:"الكسر", step3:"الأهداف", step4:"الحساب",
+    sec1:"الهوية ووسائل الاتصال",
+    sec1sub:"التعرّف عليك بشكل أفضل لتقديم متابعة مخصّصة",
+    lastName:"اللقب *",
+    firstName:"الاسم *",
+    dob:"تاريخ الميلاد *",
+    gender:"الجنس",
+    female:"أنثى", male:"ذكر",
+    phone:"الهاتف *",
+    phoneHelp:"للتذكير والاتصالات المهمة.",
+    email:"البريد الإلكتروني *",
+    address:"العنوان (اختياري)",
+    displayName:"الاسم المعروض (اختياري)",
+    prefLang:"اللغة المفضلة",
+    next:"متابعة",
+    back:"رجوع",
+    sec2:"معلومات الكسر",
+    sec2sub:"هذه المعلومات سرّية وتساعد على تكييف المتابعة.",
+    fractType:"نوع الكسر *",
+    fractDate:"تاريخ الكسر *",
+    side:"الجهة المصابة *",
+    right:"يمين", left:"يسار", both:"الجهتان",
+    dominant:"هذه يدي المهيمنة",
+    treatment:"العلاج المتلقي *",
+    cast:"جبس", surgery:"جراحة", splint:"جبيرة / دعامة",
+    painBlockTitle:"الألم الحالي (0–10) *",
+    painRestLabel:"أثناء الراحة",
+    painEffortLabel:"أثناء الجهد",
+    painHelp:"قيّم الألم أثناء الراحة وأثناء الجهد.",
+    swellingLabel:"تيبّس / تورّم *",
+    limitsLabel:"القيود الحالية (أنشطة صعبة) (اختياري)",
+    limDress:"اللباس", limToilet:"الاستحمام/المرحاض", limCook:"الطبخ", limCarry:"حمل أوزان",
+    limPhone:"الهاتف", limKeyboard:"لوحة المفاتيح/الفأرة", limDrive:"القيادة",
+    health:"مشكلات صحية أخرى (اختياري)",
+    comDiabetes:"السكري", comHTN:"ارتفاع الضغط", comOsteo:"هشاشة العظام", comArthritis:"التهاب المفاصل",
+    meds:"الأدوية الحالية (اختياري)",
+    allergies:"الحساسية (اختياري)",
+    medsPH:"مثال: مضاد التهاب...",
+    allergiesPH:"لا يوجد / أدوية / أخرى...",
+    sec3:"السياق والأهداف",
+    sec3sub:"أخبرنا بما يهمّك. أولوياتك تقود البرنامج.",
+    job:"المهنة / الحالة *",
+    workImpact:"تأثير على العمل *",
+    activities:"أنشطة مهمة قبل الكسر (اختياري)",
+    goal:"الهدف الرئيسي للتأهيل *",
+    goalHelp:"اختر الهدف الأهم لك. سيتم العمل على البقية لاحقًا.",
+    sec4:"الحساب والأمان",
+    sec4sub:"أنشئ بيانات الدخول للدخول بأمان.",
+    username:"اسم المستخدم *",
+    unique:"يجب أن يكون فريدًا.",
+    password:"كلمة المرور *",
+    confirm:"تأكيد كلمة المرور *",
+    rule1:"على الأقل 8 أحرف",
+    rule2:"حرف كبير واحد على الأقل (مستحسن)",
+    rule3:"رقم واحد على الأقل (مستحسن)",
+    source:"كيف سمعت عنا؟ (اختياري)",
+    consentTitle:"الموافقة",
+    cgu:"أوافق على شروط الاستخدام *",
+    privacy:"أوافق على معالجة بياناتي الصحية (الخصوصية) *",
+    tips:"أرغب في تذكيرات ونصائح (بريد/رسائل) (اختياري)",
+    submit:"تسجيل",
+    legal:"إشعار قانوني",
+    consentGoogle:"تم جمع الموافقة من المريض عبر نموذج Google",
+
+    dash:"—",
+    other:"أخرى",
+    unsure:"لا أعرف",
+    light:"خفيف",
+    moderate:"متوسط",
+    high:"شديد",
+
+    phAddress:"الشارع، المدينة، الرمز البريدي",
+    phDisplayName:"كيف تحب أن نناديك؟",
+    phEmail:"مثال: name@email.com",
+    phPhone:"+213 ...",
+    phSpecify:"حدّد…",
+    phSpecifyDx:"حدّد (تشخيص / بروتوكول…)",
+    phSpecifyProtocol:"حدّد (مثال: بروتوكول خاص…)",
+    phSpecifyDifficulties:"صف صعوباتك…",
+    phSpecifyProfession:"حدّد مهنتك…",
+    phSpecifyGoal:"حدّد هدفك…",
+
+    langFR:"Français", langEN:"English", langAR:"العربية",
+    fractPouteau:"كسر بوتو-كوليس",
+    fractScaphoid:"كسر الزورقي",
+    fractArticular:"كسر مفصلي",
+    fractOther:"أخرى / لا أعرف",
+    jobOffice:"موظف مكتب",
+    jobManual:"عامل يدوي",
+    jobStudent:"طالب",
+    jobRetired:"متقاعد",
+    jobUnemployed:"بدون عمل",
+    impactStop:"توقف كامل",
+    impactLight:"عمل خفيف / مُعدّل",
+    impactRemote:"عمل عن بُعد ممكن",
+    impactNone:"لا تأثير",
+    impactNA:"غير applicable",
+    actSport:"رياضة",
+    actCook:"الطبخ",
+    actDIY:"أشغال/بستنة",
+    actWrite:"كتابة/رسم",
+    actIT:"الحاسوب",
+    actMusic:"موسيقى",
+    actCraft:"حِرف",
+    goalADL:"استعادة الاستقلالية (المرحاض، اللباس، العناية الذاتية)",
+    goalGrip:"تحسين القبضة (حمل كأس، فتح مرطبان)",
+    goalPain:"تقليل الألم واستعادة الثقة في الحركة",
+    goalMobility:"استعادة الحركة (ثني/مد، كب/بسط)",
+    goalStrength:"استعادة القوة (حمل، دفع، سحب)",
+    goalFine:"تحسين المهارات الدقيقة (كتابة، أزرار، هاتف)",
+    goalWork:"العودة للعمل / حركات مهنية",
+    goalHobby:"العودة للهوايات (رياضة، موسيقى، أشغال)",
+    srcDoctor:"توصية طبيب",
+    srcErgo:"توصية أخصائي علاج وظيفي",
+    srcInternet:"بحث عبر الإنترنت",
+    srcSocial:"وسائل التواصل",
+    srcWord:"عن طريق معارف",
+
+    pwMatchOk:"✅ تم",
+    pwMatchNo:"⚠️ كلمتا المرور غير متطابقتين"
+  }
+};
+
+/* =========================
+   Apply translations
+========================= */
+function applyLang(L){
+  currentLang = L;
+
+  document.documentElement.lang = L;
+  document.documentElement.dir = (L === "ar") ? "rtl" : "ltr";
+
+  // data-i18n text
+  $$("[data-i18n]").forEach(el=>{
+    const key = el.getAttribute("data-i18n");
+    if(dict[L] && dict[L][key] != null) el.textContent = dict[L][key];
+  });
+
+  // placeholders
+  $$("[data-i18n-placeholder]").forEach(el=>{
+    const key = el.getAttribute("data-i18n-placeholder");
+    if(dict[L] && dict[L][key] != null) el.setAttribute("placeholder", dict[L][key]);
+  });
+
+  // keep preferred_lang select synced
+  const pref = $("#preferredLang");
+  if(pref) pref.value = L;
+
+  // update since text
+  updateSinceText(L);
+
+  // update password match message in selected language
+  checkMatch();
+
+  // keep pain values display
+  updatePain();
+}
+
+/* =========================
+   Password match (i18n)
+========================= */
+function checkMatch(){
+  if (!pw?.value && !pw2?.value){ if(matchHint) matchHint.textContent = ""; return; }
+  const t = dict[currentLang] || dict.fr;
+  if (pw.value === pw2.value) {
+    matchHint.textContent = t.pwMatchOk || "✅ OK";
+    matchHint.style.opacity = ".75";
+  } else {
+    matchHint.textContent = t.pwMatchNo || "⚠️ Not match";
+    matchHint.style.opacity = ".75";
+  }
+}
+pw?.addEventListener("input", checkMatch);
+pw2?.addEventListener("input", checkMatch);
+
+/* =========================
+   Language buttons + select
+========================= */
+$$(".lang-dot").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    $$(".lang-dot").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    applyLang(btn.dataset.lang || "fr");
+  });
+});
+
+$("#preferredLang")?.addEventListener("change", (e)=>{
+  const L = e.target.value || "fr";
+  $$(".lang-dot").forEach(b=>b.classList.toggle("active", b.dataset.lang === L));
+  applyLang(L);
+});
+
+/* =========================
+   Year footer
+========================= */
+const yearEl = $("#year");
+if(yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+/* =========================
+   Date max (no future dates)
+========================= */
+function setMaxToday(id){
+  const el = document.getElementById(id);
+  if(!el) return;
+  const d = new Date();
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth()+1).padStart(2,"0");
+  const dd = String(d.getDate()).padStart(2,"0");
+  el.max = `${yyyy}-${mm}-${dd}`;
+}
+setMaxToday("birthDate");
+setMaxToday("fractureDate");
+
+/* =========================
+   Init
+========================= */
+applyLang("fr");
+openStep(1);
+// Ajoutez cette fonction pour afficher le message de confirmation
+function showConfirmationMessage(message, isError = false) {
+    const msgDiv = document.getElementById('confirmationMessage');
+    const msgText = document.getElementById('confirmationText');
+    
+    msgText.textContent = message;
+    msgDiv.style.background = isError ? 
+        'linear-gradient(135deg, #ef4444, #dc2626)' : 
+        'linear-gradient(135deg, var(--primary), var(--primary2))';
+    msgDiv.classList.add('show');
+    
+    setTimeout(() => {
+        msgDiv.classList.remove('show');
+    }, 3000);
+}
+
+// Surchargez la soumission du formulaire
+document.getElementById('regForm')?.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    // Vérification des mots de passe
+    const pw = document.getElementById('pw');
+    const pw2 = document.getElementById('pw2');
+    
+    if (pw.value !== pw2.value) {
+        showConfirmationMessage(
+            dict[currentLang]?.pwMatchNo || 'Les mots de passe ne correspondent pas',
+            true
+        );
+        return;
+    }
+    
+    // Vérification des champs requis
+    const requiredFields = document.querySelectorAll('[required]');
+    let isValid = true;
+    requiredFields.forEach(field => {
+        if (!field.value) {
+            field.style.borderColor = '#ef4444';
+            isValid = false;
+        } else {
+            field.style.borderColor = '';
+        }
+    });
+    
+    if (!isValid) {
+        showConfirmationMessage(
+            dict[currentLang]?.reqNote || 'Veuillez remplir tous les champs obligatoires',
+            true
+        );
+        return;
+    }
+    
+    // Vérification des checkbox de consentement
+    const cgu = document.querySelector('input[name="cgu"]');
+    const privacy = document.querySelector('input[name="privacy"]');
+    
+    if (!cgu?.checked || !privacy?.checked) {
+        showConfirmationMessage(
+            dict[currentLang]?.consentRequired || 'Veuillez accepter les conditions d\'utilisation',
+            true
+        );
+        return;
+    }
+    
+    // Simuler l'envoi (remplacez par votre logique d'envoi réelle)
+    showConfirmationMessage(
+        dict[currentLang]?.registerSuccess || 'Inscription réussie ! Redirection en cours...',
+        false
+    );
+    
+    // Soumettre le formulaire après validation
+    setTimeout(() => {
+        this.submit();
+    }, 1500);
+});
+function validatePasswordStrength() {
+    const password = pw.value;
+    const rules = document.querySelectorAll('.rule-item i');
+    
+    if (!password) return;
+    
+    // Règle 1: 8 caractères minimum
+    const hasMinLength = password.length >= 8;
+    updateRuleIcon(rules[0], hasMinLength);
+    
+    // Règle 2: Au moins une majuscule
+    const hasUpperCase = /[A-Z]/.test(password);
+    updateRuleIcon(rules[1], hasUpperCase);
+    
+    // Règle 3: Au moins un chiffre
+    const hasNumber = /[0-9]/.test(password);
+    updateRuleIcon(rules[2], hasNumber);
+    
+    return hasMinLength && hasUpperCase && hasNumber;
+}
+
+function updateRuleIcon(icon, isValid) {
+    if (!icon) return;
+    if (isValid) {
+        icon.className = 'bi bi-check-circle-fill';
+        icon.style.color = '#10b981';
+    } else {
+        icon.className = 'bi bi-check-circle';
+        icon.style.color = 'var(--primary)';
+    }
+}
+
+// Ajoutez l'écouteur
+pw?.addEventListener('input', () => {
+    validatePasswordStrength();
+    checkMatch();
+});
+// Fonction pour récupérer toutes les données du formulaire
+function collecterDonneesFormulaire() {
+    const formData = new FormData(document.getElementById('regForm'));
+    const data = {};
+    
+    // Récupérer les valeurs des champs
+    for (let [key, value] of formData.entries()) {
+        if (value) {
+            data[key] = value;
+        }
+    }
+    
+    // Récupérer les valeurs des checkbox multiples
+    data.limits = [];
+    document.querySelectorAll('input[name="limits"]:checked').forEach(cb => {
+        data.limits.push(cb.value);
+    });
+    
+    data.comorb = [];
+    document.querySelectorAll('input[name="comorb"]:checked').forEach(cb => {
+        data.comorb.push(cb.value);
+    });
+    
+    data.activities = [];
+    document.querySelectorAll('input[name="activities"]:checked').forEach(cb => {
+        data.activities.push(cb.value);
+    });
+    
+    data.treatment = [];
+    document.querySelectorAll('input[name="treatment"]:checked').forEach(cb => {
+        data.treatment.push(cb.value);
+    });
+    
+    // Récupérer les valeurs des radios
+    data.gender = document.querySelector('input[name="gender"]:checked')?.value;
+    data.side = document.querySelector('input[name="side"]:checked')?.value;
+    data.dominant_hand = document.querySelector('input[name="dominant_hand"]:checked')?.value === 'on';
+    
+    // Récupérer les valeurs des sliders
+    data.pain_rest = document.getElementById('painRest')?.value;
+    data.pain_effort = document.getElementById('painEffort')?.value;
+    
+    return data;
+}
+
+// Ajoutez cette fonction getCookie au début du script
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+async function genererPDF() {
+    const donnees = collecterDonneesFormulaire();
+    
+    showConfirmationMessage('📄 Génération du PDF en cours...', false);
+    
+    try {
+        const response = await fetch('/generer-pdf/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify(donnees)
+        });
+        
+        if (response.ok) {
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `fiche_inscription_${donnees.last_name || 'patient'}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }, 100);
+            showConfirmationMessage('✅ PDF téléchargé !', false);
+        } else {
+            let errorText = '❌ Erreur génération PDF';
+            try {
+                const errorJson = await response.json();
+                if (errorJson && errorJson.error) {
+                    errorText = `❌ ${errorJson.error}`;
+                }
+            } catch (parseError) {
+                console.error('Erreur parse PDF erreur:', parseError);
+            }
+            showConfirmationMessage(errorText, true);
+        }
+    } catch (error) {
+        console.error('Erreur:', error);
+        showConfirmationMessage('❌ Erreur de connexion', true);
+    }
+}
+</script>
+</body>
+</html>

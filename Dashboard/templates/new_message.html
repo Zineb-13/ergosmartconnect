@@ -1,0 +1,31 @@
+<h2>Nouveau message</h2>
+
+<form method="POST" enctype="multipart/form-data">
+
+{% csrf_token %}
+
+<label>Patient</label>
+
+<select name="patient">
+
+{% for p in patients %}
+
+<option value="{{ p.id }}">
+{{ p.prenom }} {{ p.nom }}
+</option>
+
+{% endfor %}
+
+</select>
+
+<label>Message</label>
+
+<textarea name="contenu"></textarea>
+
+<input type="file" name="piece_jointe">
+
+<button type="submit">
+Envoyer
+</button>
+
+</form>
