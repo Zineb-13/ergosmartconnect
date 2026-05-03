@@ -13,7 +13,6 @@ asttokens==3.0.0
 async-timeout==5.0.1
 attrs==25.3.0
 babel==2.17.0
-bcc
 beautifulsoup4==4.8.2
 bitsandbytes==0.47.0
 blinker==1.4
