@@ -14,7 +14,7 @@ import time
 import os
 from dotenv import load_dotenv
 load_dotenv()
-
+SECRET_KEY = "wh(@lu4833-zq*7b1-1g^7k4n$1@5h@-v2^fl^cxglrv%l4-30"
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 # Forcer le fuseau horaire de l'Algérie (UTC+1)
 # Cela corrige le décalage d'une heure
@@ -36,12 +36,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-j+6pxz80q2ejea=@q*nf@_*oj0n_&*-l#ujtngiphz40sp*c(t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     ".onrender.com",
+    "ergosmartconnect.onrender.com",
 ]
 
 
